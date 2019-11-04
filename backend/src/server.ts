@@ -1,9 +1,11 @@
-import http from "http";
 import express from "express";
 import { applyMiddleware, applyRoutes } from "./utils";
 import middleware from "./middleware";
 import errorHandlers from "./middleware/errorHandlers";
-import routes from "./services";
+import routes from "./service";
+import "reflect-metadata";
+import { createConnection } from 'typeorm';
+
 
 process.on("uncaughtException", e => {
   console.log(e);
@@ -15,14 +17,16 @@ process.on("unhandledRejection", e => {
   process.exit(1);
 });
 
-const router = express();
-applyMiddleware(middleware, router);
-applyRoutes(routes, router);
-applyMiddleware(errorHandlers, router);
+createConnection().then(async connection => {
 
-const { PORT = 3000 } = process.env;
-const server = http.createServer(router);
+  const app = express();
+  applyMiddleware(middleware, app);
+  applyRoutes(routes, app);
+  applyMiddleware(errorHandlers, app);
 
-server.listen(PORT, () =>
-  console.log(`Server is running http://localhost:${PORT}...`)
-);
+  const { PORT = 3000 } = process.env;
+  app.listen(PORT, () =>
+    console.log(`Server is running http://localhost:${PORT}...`)
+  );
+
+}).catch(console.log)
