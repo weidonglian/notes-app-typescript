@@ -5,8 +5,6 @@ import { applyMiddleware, applyRoutes } from "./utils";
 import middleware from "./middleware";
 import errorHandlers from "./middleware/errorHandlers";
 import routes from "./service";
-import { sqliteOrmConfig } from './config/ormconfig'
-
 
 process.on("uncaughtException", e => {
   console.log(e);
@@ -18,7 +16,7 @@ process.on("unhandledRejection", e => {
   process.exit(1);
 });
 
-createConnection(sqliteOrmConfig).then(async connection => {
+createConnection().then(async connection => {
 
   const app = express();
   applyMiddleware(middleware, app);

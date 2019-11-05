@@ -7,7 +7,7 @@
     "postinstall": "npx tsc",
     "start": "tsc-watch --onSuccess \"node ./dist/server.js\"",
     "prod": "tsc && node ./dist/server.js",
-    "deploy": "npx pm2 start pm2.yaml",
+    "prod-pm2": "npx pm2 start pm2.yaml",
     "migration:run": "node ./node_modules/typeorm/cli.js migration:run",
     "test": "jest"
   },

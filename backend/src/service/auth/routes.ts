@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
 import AuthController from "./AuthController";
-import { checkSearchParams, checkJwt } from "../../middleware/checks";
+import { checkJwt, checkRole } from "../../middleware/checks";
+import UserController from "./UserController";
 
 export default [
   {
@@ -16,6 +16,42 @@ export default [
     handler: [
       checkJwt,
       AuthController.changePassword
+    ]
+  },
+  {
+    path: "/api/v1/auth/users",
+    method: "get",
+    handler: [
+      checkJwt,
+      checkRole(["ADMIN"]),
+      UserController.listAll
+    ]
+  },
+  {
+    path: "/api/v1/auth/user/:id([0-9]+)",
+    method: "get",
+    handler: [
+      checkJwt,
+      checkRole(["ADMIN"]),
+      UserController.getOneById
+    ]
+  },
+  {
+    path: "/api/v1/auth/user/:id([0-9]+)",
+    method: "patch",
+    handler: [
+      checkJwt,
+      checkRole(["ADMIN"]),
+      UserController.editUser
+    ]
+  },
+  {
+    path: "/api/v1/auth/user/:id([0-9]+)",
+    method: "delete",
+    handler: [
+      checkJwt,
+      checkRole(["ADMIN"]),
+      UserController.deleteUser
     ]
   }
 ];
