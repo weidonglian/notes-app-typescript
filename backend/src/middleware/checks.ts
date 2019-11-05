@@ -14,8 +14,13 @@ export const checkSearchParams = (req: Request, res: Response, next: NextFunctio
 };
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
-  //Get the jwt token from the head
-  const token = <string>req.headers["auth"];
+  //Get the jwt token from the head and Express headers are auto converted to lowercase
+  let token = (req.headers['x-access-token'] || req.headers['authorization']) as string;
+  if (token && token.startsWith('Bearer ')) {
+    // Remove Bearer from string
+    token = token.slice(7, token.length);
+  }
+
   let jwtPayload;
 
   //Try to validate the token and get data
