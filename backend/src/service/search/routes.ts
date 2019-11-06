@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getPlacesByName } from "./SearchController";
-import { checkSearchParams } from "../../middleware/checks";
+import { checkSearchParams } from "../../utils/checks";
 
 export default [
   {

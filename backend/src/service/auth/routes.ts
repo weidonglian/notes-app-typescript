@@ -1,5 +1,5 @@
 import AuthController from "./AuthController";
-import { checkJwt, checkRole } from "../../middleware/checks";
+import { checkJwt, checkRole } from "../../utils/checks";
 import UserController from "./UserController";
 
 export default [

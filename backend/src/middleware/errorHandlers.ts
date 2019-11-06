@@ -1,22 +1,23 @@
 import { Request, Response, NextFunction, Router } from "express";
-import * as ErrorHandler from "../utils/ErrorHandler";
+import { notFoundError, clientError, serverError } from "../utils/handleErrors";
 
-const handle404Error = (router: Router) => {
+export const handle404Error = (router: Router) => {
+  // this will catch all the not found requests.
   router.use((req: Request, res: Response) => {
-    ErrorHandler.notFoundError();
+    notFoundError(req, res);
   });
 };
 
-const handleClientError = (router: Router) => {
+export const handleClientError = (router: Router) => {
+  // this will catch all errors with type HttpClientError
   router.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    ErrorHandler.clientError(err, res, next);
+    clientError(err, req, res, next);
   });
 };
 
-const handleServerError = (router: Router) => {
+export const handleServerError = (router: Router) => {
+  // this will be the last defense to catch errors, i.e. server side errors.
   router.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    ErrorHandler.serverError(err, res, next);
+    serverError(err, req, res, next);
   });
 };
-
-export default [handle404Error, handleClientError, handleServerError];

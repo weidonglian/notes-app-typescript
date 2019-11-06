@@ -2,8 +2,7 @@ import express, { Router } from "express";
 import request from "supertest";
 import { applyMiddleware, applyRoutes } from "../../utils";
 import promiseRequest from "request-promise";
-import middleware from "../../middleware";
-import errorHandlers from "../../middleware/errorHandlers";
+import { middlewares, errorHandlers} from "../../middleware";
 import routes from "./routes";
 
 jest.mock("request-promise");
@@ -14,7 +13,7 @@ describe("routes", () => {
 
   beforeEach(() => {
     router = express();
-    applyMiddleware(middleware, router);
+    applyMiddleware(middlewares, router);
     applyRoutes(routes, router);
     applyMiddleware(errorHandlers, router);
   });

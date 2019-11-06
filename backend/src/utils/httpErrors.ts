@@ -1,4 +1,5 @@
-export abstract class HTTPClientError extends Error {
+
+export abstract class HttpClientError extends Error {
   readonly statusCode!: number;
   readonly name!: string;
 
@@ -13,7 +14,7 @@ export abstract class HTTPClientError extends Error {
   }
 }
 
-export class HTTP400Error extends HTTPClientError {
+export class HttpErrorBadRequest extends HttpClientError {
   readonly statusCode = 400;
 
   constructor(message: string | object = "Bad Request") {
@@ -21,7 +22,7 @@ export class HTTP400Error extends HTTPClientError {
   }
 }
 
-export class HTTP401Error extends HTTPClientError {
+export class HttpErrorUnauthorized extends HttpClientError {
   readonly statusCode = 401;
 
   constructor(message: string | object = "Unauthorized") {
@@ -29,7 +30,7 @@ export class HTTP401Error extends HTTPClientError {
   }
 }
 
-export class HTTP403Error extends HTTPClientError {
+export class HttpErrorForbidden extends HttpClientError {
   readonly statusCode = 403;
 
   constructor(message: string | object = "Forbidden") {
@@ -37,7 +38,7 @@ export class HTTP403Error extends HTTPClientError {
   }
 }
 
-export class HTTP404Error extends HTTPClientError {
+export class HttpErrorNotFound extends HttpClientError {
   readonly statusCode = 404;
 
   constructor(message: string | object = "Not found") {

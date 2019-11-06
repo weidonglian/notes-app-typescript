@@ -2,8 +2,8 @@ import express from "express";
 import "reflect-metadata";
 import { createConnection } from 'typeorm';
 import { applyMiddleware, applyRoutes } from "./utils";
-import middleware from "./middleware";
-import errorHandlers from "./middleware/errorHandlers";
+import { middlewares, errorHandlers} from "./middleware";
+
 import routes from "./service";
 
 process.on("uncaughtException", e => {
@@ -19,7 +19,7 @@ process.on("unhandledRejection", e => {
 createConnection().then(async connection => {
 
   const app = express();
-  applyMiddleware(middleware, app);
+  applyMiddleware(middlewares, app);
   applyRoutes(routes, app);
   applyMiddleware(errorHandlers, app);
 
