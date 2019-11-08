@@ -1,5 +1,5 @@
 import * as jwt from "jsonwebtoken";
-import config from "../config/config";
+import { appConfig } from "../config/config";
 import { Request, Response, NextFunction } from "express";
 import { getRepository } from "typeorm";
 import { HttpErrorBadRequest, HttpErrorUnauthorized, HttpErrorForbidden } from "./httpErrors";
@@ -23,7 +23,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
 
   let jwtPayload;
 
-  const jwtSecret = config.jwtSecret
+  const jwtSecret = appConfig.jwtSecret
   //Try to validate the token and get data
   try {
     jwtPayload = <any>jwt.verify(token, jwtSecret);

@@ -4,7 +4,7 @@ import { getRepository } from "typeorm";
 import { validate } from "class-validator";
 
 import { User } from "../../entity/User";
-import config from "../../config/config";
+import { appConfig } from "../../config/config";
 import { HttpErrorBadRequest } from '../../utils/httpErrors';
 
 class AuthController {
@@ -25,7 +25,7 @@ class AuthController {
     //Sing JWT, valid for 1 hour
     const token = jwt.sign(
       { userId: user.id, username: user.username },
-      config.jwtSecret,
+      appConfig.jwtSecret,
       { expiresIn: "1h" }
     );
 

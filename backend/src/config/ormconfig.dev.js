@@ -1,8 +1,8 @@
 module.exports = {
     type: "sqlite",
     database: "database.sqlite",
-    synchronize: true,
-    logging: false,
+    synchronize: false,
+    logging: true,
     entities: [
        "dist/entity/**/*.js"
     ],
@@ -14,7 +14,8 @@ module.exports = {
     ],
     cli: {
        "entitiesDir": "dist/entity",
-       "migrationsDir": "dist/migration",
+       "migrationsDir": "src/migration",
        "subscribersDir": "dist/subscriber"
     }
  }
+

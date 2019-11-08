@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "npx tsc",
-    "start": "tsc-watch --onSuccess \"node ./dist/server.js\"",
-    "prod": "tsc && node ./dist/server.js",
-    "prod-pm2": "npx pm2 start pm2.yaml",
-    "migration:run": "node ./node_modules/typeorm/cli.js migration:run",
-    "test": "jest"
+    "dev-start": "tsc-watch --onSuccess \"node ./dist/server.js\"",
+    "dev-typeorm": "tsc && node ./node_modules/typeorm/cli.js --config src/config/ormconfig.dev",
+    "prod-start": "tsc && APP_MODE=prod node ./dist/server.js",
+    "prod-pm2": "tsc && APP_MODE=prod npx pm2 start pm2.yaml",
+    "prod-typeorm": "tsc && APP_MODE=prod node ./node_modules/typeorm/cli.js --config src/config/ormconfig.prod",
+    "start": "npm run dev-start",
+    "test": "jest",
+    "postinstall": "npx tsc"
   },
   "keywords": [],
   "author": "",
