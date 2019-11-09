@@ -1,3 +1,11 @@
+export enum HttpStatusCode {
+  OK = 200,
+  BadRequest = 400,
+  Unauthorized = 401,
+  Forbidden = 403,
+  NotFound = 404,
+  InternalServerError = 500
+}
 
 export abstract class HttpClientError extends Error {
   readonly statusCode!: number;
@@ -15,7 +23,7 @@ export abstract class HttpClientError extends Error {
 }
 
 export class HttpErrorBadRequest extends HttpClientError {
-  readonly statusCode = 400;
+  readonly statusCode = HttpStatusCode.BadRequest;
 
   constructor(message: string | object = "Bad Request") {
     super(message);
@@ -23,7 +31,7 @@ export class HttpErrorBadRequest extends HttpClientError {
 }
 
 export class HttpErrorUnauthorized extends HttpClientError {
-  readonly statusCode = 401;
+  readonly statusCode = HttpStatusCode.Unauthorized;
 
   constructor(message: string | object = "Unauthorized") {
     super(message);
@@ -31,7 +39,7 @@ export class HttpErrorUnauthorized extends HttpClientError {
 }
 
 export class HttpErrorForbidden extends HttpClientError {
-  readonly statusCode = 403;
+  readonly statusCode = HttpStatusCode.Forbidden;
 
   constructor(message: string | object = "Forbidden") {
     super(message);
@@ -39,7 +47,7 @@ export class HttpErrorForbidden extends HttpClientError {
 }
 
 export class HttpErrorNotFound extends HttpClientError {
-  readonly statusCode = 404;
+  readonly statusCode = HttpStatusCode.NotFound;
 
   constructor(message: string | object = "Not found") {
     super(message);

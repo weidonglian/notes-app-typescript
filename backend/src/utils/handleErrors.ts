@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { HttpClientError, HttpErrorNotFound } from "./httpErrors";
+import { HttpClientError, HttpErrorNotFound, HttpStatusCode } from "./httpErrors";
 
 // Just throw the client side error unknowns requests
 export const notFoundError = (req: Request, res: Response) => {
@@ -18,8 +18,8 @@ export const clientError = (err: Error, req: Request, res: Response, next: NextF
 export const serverError = (err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
   if (process.env.NODE_ENV === "production") {
-    res.status(500).send("Internal Server Error");
+    res.status(HttpStatusCode.InternalServerError).send("Internal Server Error");
   } else {
-    res.status(500).send(err.stack);
+    res.status(HttpStatusCode.InternalServerError).send(err.stack);
   }
 };

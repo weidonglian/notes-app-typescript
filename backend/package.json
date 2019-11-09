@@ -10,27 +10,12 @@
     "prod-pm2": "tsc && APP_MODE=prod npx pm2 start pm2.yaml",
     "prod-typeorm": "tsc && APP_MODE=prod node ./node_modules/typeorm/cli.js --config src/config/ormconfig.prod",
     "start": "npm run dev-start",
-    "test": "jest",
+    "test": "APP_MODE=test jest",
     "postinstall": "npx tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "jest": {
-    "verbose": true,
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
-  },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/compression": "0.0.36",

@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express, { Application, Router } from "express";
 import "reflect-metadata";
 import { createConnection, Connection } from 'typeorm';
 import { applyMiddleware, applyRoutes } from "./utils";
@@ -19,9 +19,10 @@ process.on("unhandledRejection", e => {
 });
 
 export interface App {
-  appExpress: Application
-  serverExpress: Server
-  dbConnection: Connection
+  router: Router
+  express: Application
+  server: Server
+  db: Connection
 }
 
 export const createApp = async (): Promise<App> => {
@@ -34,10 +35,15 @@ export const createApp = async (): Promise<App> => {
   const serverExpress = appExpress.listen(port, () =>
     console.log(`Server is running in '${appMode}' mode http://localhost:${port}...`)
   )
-  return { appExpress, serverExpress, dbConnection }
+  return {
+    router: appExpress,
+    express: appExpress,
+    server: serverExpress,
+    db: dbConnection
+  }
 }
 
 export const shutdownApp = (app: App) => {
-  app.dbConnection.close()
-  app.serverExpress.close()
+  app.db.close()
+  app.server.close()
 }
