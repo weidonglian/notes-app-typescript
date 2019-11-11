@@ -5,7 +5,7 @@ import { getRepository } from "typeorm";
 import { HttpErrorBadRequest, HttpErrorUnauthorized, HttpErrorForbidden } from "./httpErrors";
 import { User } from "../entity/User";
 
-export const checkSearchParams = (req: Request, res: Response, next: NextFunction) => {
+export const doCheckSearchParams = (req: Request, res: Response, next: NextFunction) => {
   if (!req.query.q) {
     throw new HttpErrorBadRequest("Missing q parameter");
   } else {
@@ -13,7 +13,7 @@ export const checkSearchParams = (req: Request, res: Response, next: NextFunctio
   }
 };
 
-export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
+export const doCheckJwt = (req: Request, res: Response, next: NextFunction) => {
   //Get the jwt token from the head and Express headers are auto converted to lowercase
   let token = (req.headers['x-access-token'] || req.headers['authorization']) as string;
   if (token && token.startsWith('Bearer ')) {
@@ -46,7 +46,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // we must have done the checkJwt first and then check the role
-export const checkRole = (roles: Array<string>) => {
+export const doCheckRole = (roles: Array<string>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     //Get the user ID from previous midleware
     const id = res.locals.jwtPayload.userId;
@@ -65,5 +65,5 @@ export const checkRole = (roles: Array<string>) => {
     } catch (id) {
       throw new HttpErrorForbidden()
     }
-  };
-};
+  }
+}

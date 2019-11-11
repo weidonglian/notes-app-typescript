@@ -3,14 +3,17 @@ const { defaults } = require('jest-config')
 module.exports = {
     verbose: true,
     transform: {
-        "^.+\\.tsx?$": "ts-jest"
+        "^.+\\.(ts|tsx)?$": "ts-jest"
     },
     testPathIgnorePatterns: [
         ...defaults.testPathIgnorePatterns,
         "<rootDir>/src/config/",
         "<rootDir>/dist/"
     ],
-    testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    testMatch: [
+        "**/__tests__/**/*.+(ts|tsx|js)",
+        "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    ],
     moduleFileExtensions: [
         "ts",
         "tsx",
@@ -19,5 +22,6 @@ module.exports = {
         "json",
         "node"
     ],
+
     //restoreMocks: true
 }

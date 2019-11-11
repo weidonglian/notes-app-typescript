@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getPlacesByName } from "./SearchController";
-import { checkSearchParams, checkJwt } from "../../utils/checks";
+import { checkJwt } from '../../validator/auth';
+import { checkSearchParams } from '../../validator/search';
 
 export default [
   {

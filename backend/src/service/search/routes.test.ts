@@ -1,25 +1,36 @@
 import request from "supertest";
+import { NextFunction, Request, Response } from 'express'
 import * as rp from "request-promise";
+import * as checks from '../../utils/checks';
 import { App, createApp, shutdownApp } from '../../app';
 import { HttpStatusCode } from '../../utils/httpErrors';
-import * as checks from '../../utils/checks';
-import { NextFunction, Request, Response } from 'express'
+
 
 describe("routes", () => {
+  const checkJwtMock = jest.spyOn(checks, "doCheckJwt")
+  const rpMock = jest.spyOn(rp, 'get')
   let app: App
-  const checkJwtMock = jest.spyOn(checks, "checkJwt")
-  const rpMock =  jest.spyOn(rp, 'default')
 
   beforeAll(async () => {
-    app = await createApp();
-    checkJwtMock.mockImplementation((req: Request, res: Response, next: NextFunction)=> {
+    // mock implementation should be done before create app
+    checkJwtMock.mockImplementation((req: Request, res: Response, next: NextFunction) => {
       next()
     });
-    (rpMock as any).mockImplementation(() => '{"features": []}');
+
+    (rpMock as any).mockImplementation(() => {
+      return JSON.stringify({
+        features: []
+      })
+    });
+
+    // now create app
+    app = await createApp();
   });
 
   afterAll(() => {
+    // shutdown first
     shutdownApp(app);
+    // restore mock
     checkJwtMock.mockRestore();
     rpMock.mockRestore();
   })
