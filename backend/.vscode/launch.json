@@ -11,6 +11,17 @@
             "program": "${workspaceFolder}/src/server.ts",
             "preLaunchTask": "tsc: build - tsconfig.json",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "launch jest tests",
+            "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "outFiles": ["${workspaceRoot}/dist/**/*.js"],
+            "env": {
+                "APP_MODE": "test"
+            }
         }
     ]
 }

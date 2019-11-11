@@ -1,24 +1,27 @@
-import express, { Router } from "express";
 import request from "supertest";
-import { applyMiddleware, applyRoutes } from "../../utils";
-import rp from "request-promise";
-import { middlewares, errorHandlers} from "../../middleware";
-import routes from "./routes";
+import * as rp from "request-promise";
 import { App, createApp, shutdownApp } from '../../app';
-import { HttpErrorNotFound, HttpStatusCode } from '../../utils/httpErrors';
-
-jest.mock("request-promise");
-(rp as any).mockImplementation(() => '{"features": []}');
+import { HttpStatusCode } from '../../utils/httpErrors';
+import * as checks from '../../utils/checks';
+import { NextFunction, Request, Response } from 'express'
 
 describe("routes", () => {
-  let app: App;
+  let app: App
+  const checkJwtMock = jest.spyOn(checks, "checkJwt")
+  const rpMock =  jest.spyOn(rp, 'default')
 
   beforeAll(async () => {
-    app = await createApp()
+    app = await createApp();
+    checkJwtMock.mockImplementation((req: Request, res: Response, next: NextFunction)=> {
+      next()
+    });
+    (rpMock as any).mockImplementation(() => '{"features": []}');
   });
 
   afterAll(() => {
-    shutdownApp(app)
+    shutdownApp(app);
+    checkJwtMock.mockRestore();
+    rpMock.mockRestore();
   })
 
   test("a valid string query", async () => {
@@ -37,7 +40,7 @@ describe("routes", () => {
   });
 
   test("a service is not available", async () => {
-    (rp as any).mockImplementation(() => "Service Unavailable.");
+    (rpMock as any).mockImplementation(() => "Service Unavailable.");
     const response = await request(app.router).get("/api/v1/search?q=Paris");
     expect(response.status).toEqual(HttpStatusCode.InternalServerError);
   });

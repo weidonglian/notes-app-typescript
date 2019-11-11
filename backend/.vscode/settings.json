@@ -1,0 +1,4 @@
+{
+    "jest.autoEnable": false,
+    "debug.node.autoAttach": "on"
+}
