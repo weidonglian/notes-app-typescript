@@ -1,6 +1,6 @@
 import request from "supertest";
 import { NextFunction, Request, Response } from 'express'
-import * as rp from "request-promise";
+import axios from 'axios'
 import * as checks from '../../utils/checks';
 import { App, createApp, shutdownApp } from '../../app';
 import { HttpStatusCode } from '../../utils/httpErrors';
@@ -8,7 +8,7 @@ import { HttpStatusCode } from '../../utils/httpErrors';
 
 describe("routes", () => {
   const checkJwtMock = jest.spyOn(checks, "doCheckJwt")
-  const rpMock = jest.spyOn(rp, 'get')
+  const axiosMock = jest.spyOn(axios, 'get')
   let app: App
 
   beforeAll(async () => {
@@ -16,12 +16,13 @@ describe("routes", () => {
     checkJwtMock.mockImplementation((req: Request, res: Response, next: NextFunction) => {
       next()
     });
-
-    (rpMock as any).mockImplementation(() => {
-      return JSON.stringify({
+    axiosMock.mockResolvedValue({
+      status: HttpStatusCode.OK,
+      data: JSON.stringify({
+        type: "FeatureCollection",
         features: []
       })
-    });
+    })
 
     // now create app
     app = await createApp();
@@ -31,8 +32,8 @@ describe("routes", () => {
     // shutdown first
     shutdownApp(app);
     // restore mock
+    axiosMock.mockRestore()
     checkJwtMock.mockRestore();
-    rpMock.mockRestore();
   })
 
   test("a valid string query", async () => {
@@ -51,7 +52,10 @@ describe("routes", () => {
   });
 
   test("a service is not available", async () => {
-    (rpMock as any).mockImplementation(() => "Service Unavailable.");
+    axiosMock.mockResolvedValue({
+      status: 503,
+      data: 'Service Unavailable.'
+    })
     const response = await request(app.router).get("/api/v1/search?q=Paris");
     expect(response.status).toEqual(HttpStatusCode.InternalServerError);
   });

@@ -8,24 +8,28 @@ export interface AppConfig {
   appMode: AppMode
   port: Number
   jwtSecret: string
+  openCageDataKey: string
 }
 
 const devConfig: AppConfig = {
   appMode: AppMode.Dev,
   port: 4000,
-  jwtSecret: "@Development"
+  jwtSecret: "@Development",
+  openCageDataKey: "s"
 }
 
 const prodConfig: AppConfig = {
   appMode: AppMode.Prod,
   port: 3000,
-  jwtSecret: '@eEux&U12io'
+  jwtSecret: '@eEux&U12io',
+  openCageDataKey: ''
 }
 
 const testConfig : AppConfig = {
   appMode: AppMode.Test,
   port: 5000,
-  jwtSecret: '@Test'
+  jwtSecret: '@Test',
+  openCageDataKey: ''
 }
 
 const appConfigs = [devConfig, prodConfig, testConfig]
