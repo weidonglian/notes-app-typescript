@@ -2,6 +2,7 @@ const { defaults } = require('jest-config')
 
 module.exports = {
     verbose: true,
+    setupFilesAfterEnv: ["<rootDir>/src/config/jest.setup.js"],
     transform: {
         "^.+\\.(ts|tsx)?$": "ts-jest"
     },
@@ -21,7 +22,5 @@ module.exports = {
         "jsx",
         "json",
         "node"
-    ],
-
-    //restoreMocks: true
+    ]
 }
