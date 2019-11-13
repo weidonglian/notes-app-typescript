@@ -28,9 +28,9 @@ describe("routes", () => {
     app = await createApp();
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     // shutdown first
-    shutdownApp(app);
+    await shutdownApp(app);
     // restore mock
     axiosMock.mockRestore()
     checkJwtMock.mockRestore();

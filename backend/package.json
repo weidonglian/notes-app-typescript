@@ -2,6 +2,9 @@
   "name": "notesapp",
   "version": "1.0.0",
   "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "main": "index.js",
   "scripts": {
     "dev-start": "tsc-watch --onSuccess \"node ./dist/server.js\"",
@@ -10,12 +13,32 @@
     "prod-pm2": "tsc && APP_MODE=prod npx pm2 start pm2.yaml",
     "prod-typeorm": "tsc && APP_MODE=prod node ./node_modules/typeorm/cli.js --config src/config/ormconfig.prod",
     "start": "npm run dev-start",
-    "test": "APP_MODE=test jest --coverage",
+    "test": "APP_MODE=test jest",
     "postinstall": "npx tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "jest": {
+    "verbose": true,
+    "setupFilesAfterEnv": ["<rootDir>/src/config/jest.setup.js"],
+    "transform": {
+        "^.+\\.(ts|tsx)?$": "ts-jest"
+    },
+    "testPathIgnorePatterns": [
+        "<rootDir>/src/config/",
+        "<rootDir>/dist/"
+    ],
+    "testMatch": [
+        "**/__tests__/**/*.+(ts|tsx|js)",
+        "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    ],
+    "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json",
+        "node"
+    ]
+  },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/compression": "0.0.36",
