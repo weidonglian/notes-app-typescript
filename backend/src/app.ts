@@ -1,7 +1,7 @@
 import express, { Application, Router } from "express";
 import "reflect-metadata";
 import { createConnection, Connection } from 'typeorm';
-import { applyMiddleware, applyRoutes } from "./utils";
+import { applyMiddleware, applyRoutes } from "./util";
 import { middlewares, errorHandlers} from "./middleware";
 import routes from "./service";
 import appConfig from './config/config'
@@ -43,7 +43,15 @@ export const createApp = async (): Promise<App> => {
   }
 }
 
-export const shutdownApp = (app: App) => {
-  app.db.close()
-  app.server.close()
+export const shutdownApp = async (app: App) => {
+  await app.db.close()
+  let closePromise = new Promise((resolve, reject) => {
+    app.server.close(err => {
+      if (err)
+        reject(err)
+      else
+        resolve()
+    })
+  })
+  await closePromise
 }

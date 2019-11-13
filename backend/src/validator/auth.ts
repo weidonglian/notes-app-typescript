@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { doCheckJwt, doCheckRole } from '../utils/checks';
+import { doCheckJwt, doCheckRole } from '../util/checks';
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
   doCheckJwt(req, res, next)

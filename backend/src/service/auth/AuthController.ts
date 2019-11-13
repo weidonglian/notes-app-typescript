@@ -5,7 +5,7 @@ import { validate } from "class-validator";
 
 import { User } from "../../entity/User";
 import { appConfig } from "../../config/config";
-import { HttpErrorBadRequest } from '../../utils/httpErrors';
+import { HttpErrorBadRequest } from '../../util/httpErrors';
 
 class AuthController {
   static login = async (req: Request, res: Response) => {

@@ -16,48 +16,39 @@ describe("routes", () => {
     checkJwtMock.mockImplementation((req: Request, res: Response, next: NextFunction) => {
       next()
     });
+    axiosMock.mockResolvedValue({
+      status: HttpStatusCode.OK,
+      data: JSON.stringify({
+        type: "FeatureCollection",
+        features: []
+      })
+    })
 
     // now create app
     app = await createApp();
   });
 
-  afterAll(async () => {
+  afterAll(() => {
     // shutdown first
-    await shutdownApp(app);
+    shutdownApp(app);
     // restore mock
+    axiosMock.mockRestore()
     checkJwtMock.mockRestore();
   })
 
-  describe('with valid search service', () => {
-    beforeAll(() => {
-      axiosMock.mockResolvedValue({
-        status: HttpStatusCode.OK,
-        data: JSON.stringify({
-          type: "FeatureCollection",
-          features: []
-        })
-      })
-    });
+  test("a valid string query", async () => {
+    const response = await request(app.router).get("/api/v1/search?q=Cham");
+    expect(response.status).toEqual(HttpStatusCode.OK);
+  });
 
-    afterAll(() => {
-      axiosMock.mockRestore()
-    });
+  test("a non-existing api method", async () => {
+    const response = await request(app.router).get("/api/v11/search");
+    expect(response.status).toEqual(HttpStatusCode.NotFound);
+  });
 
-    test("a valid string query", async () => {
-      const response = await request(app.router).get("/api/v1/search?q=Cham");
-      expect(response.status).toEqual(HttpStatusCode.OK);
-    });
-
-    test("a non-existing api method", async () => {
-      const response = await request(app.router).get("/api/v11/search");
-      expect(response.status).toEqual(HttpStatusCode.NotFound);
-    });
-
-    test("an empty string", async () => {
-      const response = await request(app.router).get("/api/v1/search?q=");
-      expect(response.status).toEqual(HttpStatusCode.BadRequest);
-    });
-
+  test("an empty string", async () => {
+    const response = await request(app.router).get("/api/v1/search?q=");
+    expect(response.status).toEqual(HttpStatusCode.BadRequest);
   });
 
   test("a service is not available", async () => {
@@ -67,6 +58,5 @@ describe("routes", () => {
     })
     const response = await request(app.router).get("/api/v1/search?q=Paris");
     expect(response.status).toEqual(HttpStatusCode.InternalServerError);
-    axiosMock.mockRestore()
   });
 });
