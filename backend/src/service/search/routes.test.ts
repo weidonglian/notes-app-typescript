@@ -6,7 +6,7 @@ import { App, createApp, shutdownApp } from '../../app';
 import { HttpStatusCode } from '../../util/httpErrors';
 
 
-describe("routes", () => {
+describe("search routes", () => {
   const checkJwtMock = jest.spyOn(checks, "doCheckJwt")
   const axiosMock = jest.spyOn(axios, 'get')
   let app: App
