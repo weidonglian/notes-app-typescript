@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { doCheckJwt, doCheckRole } from '../util/checks';
+import handleChecks from '../util/handleChecks';
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
-  doCheckJwt(req, res, next)
+  handleChecks.checkJwt(req, res, next)
 }
 // we must have done the checkJwt first and then check the role
 export const checkRole = (roles: Array<string>) => {
-  return doCheckRole(roles)
+  return handleChecks.checkRole(roles)
 }

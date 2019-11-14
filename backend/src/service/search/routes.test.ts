@@ -1,13 +1,13 @@
 import request from "supertest";
 import { NextFunction, Request, Response } from 'express'
 import axios from 'axios'
-import * as checks from '../../util/checks';
+import handleChecks from '../../util/handleChecks';
 import { App, createApp, shutdownApp } from '../../app';
 import { HttpStatusCode } from '../../util/httpErrors';
 
 
 describe("search routes", () => {
-  const checkJwtMock = jest.spyOn(checks, "doCheckJwt")
+  const checkJwtMock = jest.spyOn(handleChecks, "checkJwt")
   const axiosMock = jest.spyOn(axios, 'get')
   let app: App
 
