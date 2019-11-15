@@ -27,7 +27,7 @@ const prodConfig: AppConfig = {
 
 const testConfig : AppConfig = {
   appMode: AppMode.Test,
-  port: 5000,
+  port: 0,
   jwtSecret: '@Test',
   openCageDataKey: ''
 }

@@ -13,12 +13,12 @@
     "prod-pm2": "tsc && APP_MODE=prod npx pm2 start pm2.yaml",
     "prod-typeorm": "tsc && APP_MODE=prod node ./node_modules/typeorm/cli.js --config src/config/ormconfig.prod",
     "start": "npm run dev-start",
-    "test": "APP_MODE=test jest",
+    "testg": "APP_MODE=test jest --runInBand",
+    "test": "APP_MODE=test jest --runInBand --setupFilesAfterEnv=./src/config/jest.setup.js",
     "postinstall": "npx tsc"
   },
   "jest": {
     "verbose": true,
-    "setupFilesAfterEnv": ["<rootDir>/src/config/jest.setup.js"],
     "transform": {
         "^.+\\.(ts|tsx)?$": "ts-jest"
     },

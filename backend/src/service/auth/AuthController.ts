@@ -12,12 +12,18 @@ class AuthController {
     //Check if username and password are set
     let { username, password } = req.body;
     if (!(username && password)) {
-      throw new HttpErrorBadRequest("unknown or empty username and password")
+      throw new HttpErrorBadRequest("Unknown or empty username or password")
     }
 
     //Get user from database
     const userRepository = getRepository(User);
-    const user: User = await userRepository.findOneOrFail({ where: { username } });
+    let user: User
+    try {
+      user = await userRepository.findOneOrFail({ where: { username } });
+    } catch(error) {
+      throw new HttpErrorBadRequest("Unknown user:" + username);
+    }
+
     //Check if encrypted password match
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
       throw new HttpErrorBadRequest("Bad password")
