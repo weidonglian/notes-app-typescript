@@ -3,6 +3,14 @@ import { checkJwt } from '../../validator/auth';
 
 export default [
   {
+    path: "/api/v1/auth/ping",
+    method: "get",
+    handler: [
+      checkJwt,
+      AuthController.ping
+    ]
+  },
+  {
     path: "/api/v1/auth/login",
     method: "post",
     handler: [

@@ -8,6 +8,10 @@ import { appConfig } from "../../config/config";
 import { HttpErrorBadRequest, HttpStatusCode } from '../../util/httpErrors';
 
 class AuthController {
+  static ping = async (req: Request, res: Response) => {
+    res.status(HttpStatusCode.Success).send('hello')
+  }
+
   static login = async (req: Request, res: Response) => {
     //Check if username and password are set
     let { username, password } = req.body;
@@ -37,7 +41,7 @@ class AuthController {
 
     //Send the jwt in the response
     res.send({
-      toakn: token
+      token: token
     });
   };
 

@@ -48,7 +48,7 @@ describe("auth service", () => {
 
   describe('/auth/password', () => {
 
-    test('new password', async () => {
+    test('change password', async () => {
       const app = await testAppWithTestUser()
       // first need to login
       let response = await request(app.router)
@@ -59,9 +59,9 @@ describe("auth service", () => {
         })
 
       expect(response.status).toBe(HttpStatusCode.Success)
-
       const { token } = response.body
       expect(token).toBeDefined()
+
       // invalid token
       response = await request(app.router)
         .post('/api/v1/auth/password')
@@ -69,6 +69,13 @@ describe("auth service", () => {
         .set('Authorization', 'Bearer invalid token')
 
       expect(response.status).toBe(HttpStatusCode.Unauthorized)
+
+      response = await request(app.router)
+        .get('/api/v1/auth/ping')
+        .set('Authorization', 'Bearer ' + token);
+
+      expect(response.status).toBe(HttpStatusCode.Success)
+      expect(response.text).toBe('hello')
 
       response = await request(app.router)
         .post('/api/v1/auth/password')
@@ -86,6 +93,14 @@ describe("auth service", () => {
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + token)
       expect(response.status).toBe(HttpStatusCode.BadRequest)
+
+      // changed password should not invalid the token.
+      response = await request(app.router)
+        .get('/api/v1/auth/ping')
+        .set('Authorization', 'Bearer ' + token)
+      expect(response.status).toBe(HttpStatusCode.Success)
+      expect(response.text).toBe('hello')
+
       // shutdown
       await testAppShutdown(app)
     })
