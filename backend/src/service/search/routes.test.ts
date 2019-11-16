@@ -31,7 +31,7 @@ describe("search routes", () => {
   describe('with valid search service', () => {
     beforeAll(() => {
       axiosMock.mockResolvedValue({
-        status: HttpStatusCode.OK,
+        status: HttpStatusCode.Success,
         data: JSON.stringify({
           type: "FeatureCollection",
           features: []
@@ -45,7 +45,7 @@ describe("search routes", () => {
 
     test("a valid string query", async () => {
       const response = await request(app.router).get("/api/v1/search?q=Cham");
-      expect(response.status).toEqual(HttpStatusCode.OK);
+      expect(response.status).toEqual(HttpStatusCode.Success);
     });
 
     test("a non-existing api method", async () => {

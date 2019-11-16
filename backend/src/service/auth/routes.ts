@@ -10,7 +10,7 @@ export default [
     ]
   },
   {
-    path: "/api/v1/auth/change-password",
+    path: "/api/v1/auth/password",
     method: "post",
     handler: [
       checkJwt,

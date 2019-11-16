@@ -13,8 +13,7 @@
     "prod-pm2": "tsc && APP_MODE=prod npx pm2 start pm2.yaml",
     "prod-typeorm": "tsc && APP_MODE=prod node ./node_modules/typeorm/cli.js --config src/config/ormconfig.prod",
     "start": "npm run dev-start",
-    "testg": "APP_MODE=test jest --runInBand",
-    "test": "APP_MODE=test jest --runInBand --setupFilesAfterEnv=./src/config/jest.setup.js",
+    "test": "APP_MODE=test jest --runInBand",
     "postinstall": "npx tsc"
   },
   "jest": {
@@ -25,6 +24,9 @@
     "testPathIgnorePatterns": [
         "<rootDir>/src/config/",
         "<rootDir>/dist/"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/config/jest.setup.js"
     ],
     "testMatch": [
         "**/__tests__/**/*.+(ts|tsx|js)",

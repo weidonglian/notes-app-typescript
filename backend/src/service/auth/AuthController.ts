@@ -5,7 +5,7 @@ import { validate } from "class-validator";
 
 import { User } from "../../entity/User";
 import { appConfig } from "../../config/config";
-import { HttpErrorBadRequest } from '../../util/httpErrors';
+import { HttpErrorBadRequest, HttpStatusCode } from '../../util/httpErrors';
 
 class AuthController {
   static login = async (req: Request, res: Response) => {
@@ -36,7 +36,9 @@ class AuthController {
     );
 
     //Send the jwt in the response
-    res.send(token);
+    res.send({
+      toakn: token
+    });
   };
 
   static changePassword = async (req: Request, res: Response) => {
@@ -67,7 +69,7 @@ class AuthController {
     user.hashPassword();
     userRepository.save(user);
 
-    res.status(204).send();
+    res.status(HttpStatusCode.Success).send();
   };
 }
 export default AuthController;
