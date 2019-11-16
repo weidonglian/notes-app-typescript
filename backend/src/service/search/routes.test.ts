@@ -29,7 +29,7 @@ describe("search routes", () => {
   })
 
   describe('with valid search service', () => {
-    beforeAll(() => {
+    beforeAll(async () => {
       axiosMock.mockResolvedValue({
         status: HttpStatusCode.Success,
         data: JSON.stringify({
@@ -39,7 +39,7 @@ describe("search routes", () => {
       })
     });
 
-    afterAll(() => {
+    afterAll(async () => {
       axiosMock.mockRestore()
     });
 
