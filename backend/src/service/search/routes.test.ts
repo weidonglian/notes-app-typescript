@@ -1,4 +1,4 @@
-import request from "supertest";
+import supertest from "supertest";
 import { NextFunction, Request, Response } from 'express'
 import axios from 'axios'
 import handleChecks from '../../util/handleChecks';
@@ -6,7 +6,7 @@ import { App, createApp, shutdownApp } from '../../app';
 import { HttpStatusCode } from '../../util/httpErrors';
 
 
-describe("search routes", () => {
+describe("service /search", () => {
   const checkJwtMock = jest.spyOn(handleChecks, "checkJwt")
   const axiosMock = jest.spyOn(axios, 'get')
   let app: App
@@ -44,17 +44,17 @@ describe("search routes", () => {
     });
 
     test("a valid string query", async () => {
-      const response = await request(app.router).get("/api/v1/search?q=Cham");
+      const response = await supertest(app.router).get("/api/v1/search?q=Cham");
       expect(response.status).toEqual(HttpStatusCode.Success);
     });
 
     test("a non-existing api method", async () => {
-      const response = await request(app.router).get("/api/v11/search");
+      const response = await supertest(app.router).get("/api/v11/search");
       expect(response.status).toEqual(HttpStatusCode.NotFound);
     });
 
     test("an empty string", async () => {
-      const response = await request(app.router).get("/api/v1/search?q=");
+      const response = await supertest(app.router).get("/api/v1/search?q=");
       expect(response.status).toEqual(HttpStatusCode.BadRequest);
     });
 
@@ -65,7 +65,7 @@ describe("search routes", () => {
       status: 503,
       data: 'Service Unavailable.'
     })
-    const response = await request(app.router).get("/api/v1/search?q=Paris");
+    const response = await supertest(app.router).get("/api/v1/search?q=Paris");
     expect(response.status).toEqual(HttpStatusCode.InternalServerError);
     axiosMock.mockRestore()
   });

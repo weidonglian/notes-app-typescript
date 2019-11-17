@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { validate } from "class-validator";
 
 import { User } from "../../entity/User";
+import { HttpStatusCode } from '../../util/httpErrors';
 
 class UserController {
 
@@ -99,7 +100,8 @@ class UserController {
       return;
     }
     //After all send a 204 (no content, but accepted) response
-    res.status(204).send();
+    const { password, ...allowedUser } =  user
+    res.status(HttpStatusCode.Success).send(allowedUser);
   };
 
   static deleteUser = async (req: Request, res: Response) => {

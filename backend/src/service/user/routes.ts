@@ -3,7 +3,7 @@ import { checkJwt, checkRole } from '../../validator/auth';
 
 export default [
   {
-    path: "/api/v1/users",
+    path: "/api/v1/user",
     method: "get",
     handler: [
       checkJwt,

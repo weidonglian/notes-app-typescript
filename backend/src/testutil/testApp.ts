@@ -2,6 +2,8 @@ import { createApp, shutdownApp, App } from '../app'
 import { User } from '../entity/User';
 import { getRepository } from 'typeorm';
 import appConfig, { AppMode } from '../config/config';
+import supertest from 'supertest';
+import { HttpStatusCode } from '../util/httpErrors';
 
 const addUser = async (name: string, password: string, role: string) => {
     let user = new User;
@@ -13,6 +15,18 @@ const addUser = async (name: string, password: string, role: string) => {
     await userRepository.save(user);
 }
 
+const loginUser = async (username: string, password: string, app: App) => {
+    const resp = await supertest(app.router)
+        .post('/api/v1/auth/login')
+        .send({
+            username: username,
+            password: password
+        })
+    expect(resp.status).toBe(HttpStatusCode.Success)
+    expect(resp.body.token).toBeDefined()
+    return resp.body.token as string
+}
+
 export const testAppWithTestUser = async () => {
     if (appConfig.appMode !== AppMode.Test) {
         console.error('test can only be run in APP_MODE: "test"')
@@ -22,6 +36,18 @@ export const testAppWithTestUser = async () => {
     await addUser('test', 'test', 'USER')
     await addUser('admin', 'admin', 'ADMIN')
     return app
+}
+
+export interface TestApp extends App {
+    testUserToken: string
+    adminUserToken: string
+}
+
+export const testAppWithLoginTestUser = async (): Promise<TestApp> => {
+    const app = await testAppWithTestUser()
+    const testUserToken = await loginUser('test', 'test', app)
+    const adminUserToken = await loginUser('admin', 'admin', app)
+    return { ...app, testUserToken, adminUserToken }
 }
 
 export const testAppShutdown = async (app: App) => {
