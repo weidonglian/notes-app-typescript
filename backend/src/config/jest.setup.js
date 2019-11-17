@@ -1,3 +1,9 @@
+// set the env APP_MODE for testing
+process.env = Object.assign(process.env, {
+    APP_MODE : 'test'
+})
+
+// Hijack the global console
 var original_console = global.console;
 global.console = {
     dd: original_console.log,
