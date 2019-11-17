@@ -4,17 +4,17 @@ module.exports = {
     synchronize: false,
     logging: false,
     entities: [
-       "dist/entity/**/*.js"
+        "dist/entity/**/*.js"
     ],
     migrations: [
-       "dist/migration/**/*.js"
+        "dist/migration/**/*.js"
     ],
     subscribers: [
-       "dist/subscriber/**/*.js"
+        "dist/subscriber/**/*.js"
     ],
     cli: {
-       "entitiesDir": "dist/entity",
-       "migrationsDir": "src/migration",
-       "subscribersDir": "dist/subscriber"
+        "entitiesDir": "dist/entity",
+        "migrationsDir": "src/migration",
+        "subscribersDir": "dist/subscriber"
     }
 }

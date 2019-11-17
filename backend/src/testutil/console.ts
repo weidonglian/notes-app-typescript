@@ -1,4 +1,3 @@
-
 const tconsole = {
     log: (global as any).test_console.log,
     error: (global as any).test_console.error,
@@ -7,4 +6,4 @@ const tconsole = {
     debug: (global as any).test_console.debug
 }
 
-export default tconsole;
+export default tconsole

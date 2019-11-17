@@ -6,13 +6,13 @@ import { User } from '../entity/User'
 import { HttpStatusCode } from '../util/httpErrors'
 
 const addUser = async (name: string, password: string, role: string) => {
-    let user = new User;
-    user.username = name;
-    user.password = password;
-    user.hashPassword();
-    user.role = role;
-    const userRepository = getRepository(User);
-    await userRepository.save(user);
+    let user = new User
+    user.username = name
+    user.password = password
+    user.hashPassword()
+    user.role = role
+    const userRepository = getRepository(User)
+    await userRepository.save(user)
 }
 
 const loginUser = async (username: string, password: string, app: App) => {
@@ -32,7 +32,7 @@ export const testAppWithTestUser = async () => {
         console.error('test can only be run in APP_MODE: "test"')
         process.exit(1)
     }
-    const app = await createApp();
+    const app = await createApp()
     await addUser('test', 'test', 'USER')
     await addUser('admin', 'admin', 'ADMIN')
     return app

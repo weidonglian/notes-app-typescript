@@ -1,21 +1,21 @@
 module.exports = {
-   type: "sqlite",
-   database: ":memory:",
-   dropSchema: true,
-   synchronize: true,
-   logging: true,
-   entities: [
-      "dist/entity/**/*.js"
-   ],
-   migrations: [
-      "dist/migration/**/*.js"
-   ],
-   subscribers: [
-      "dist/subscriber/**/*.js"
-   ],
-   cli: {
-      "entitiesDir": "dist/entity",
-      "migrationsDir": "dist/migration",
-      "subscribersDir": "dist/subscriber"
-   }
+    type: "sqlite",
+    database: ":memory:",
+    dropSchema: true,
+    synchronize: true,
+    logging: true,
+    entities: [
+        "dist/entity/**/*.js"
+    ],
+    migrations: [
+        "dist/migration/**/*.js"
+    ],
+    subscribers: [
+        "dist/subscriber/**/*.js"
+    ],
+    cli: {
+        "entitiesDir": "dist/entity",
+        "migrationsDir": "dist/migration",
+        "subscribersDir": "dist/subscriber"
+    }
 }
