@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import handleChecks from '../util/handleChecks';
+import { NextFunction, Request, Response } from 'express'
+import handleChecks from '../util/handleChecks'
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
   handleChecks.checkJwt(req, res, next)

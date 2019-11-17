@@ -1,9 +1,9 @@
-import * as jwt from "jsonwebtoken";
-import { appConfig } from "../config/config";
-import { Request, Response, NextFunction } from "express";
-import { getRepository } from "typeorm";
-import { HttpErrorBadRequest, HttpErrorUnauthorized, HttpErrorForbidden } from "./httpErrors";
-import { User } from "../entity/User";
+import { NextFunction, Request, Response } from 'express'
+import * as jwt from 'jsonwebtoken'
+import { getRepository } from 'typeorm'
+import { appConfig } from '../config/config'
+import { User } from '../entity/User'
+import { HttpErrorBadRequest, HttpErrorForbidden, HttpErrorUnauthorized } from './httpErrors'
 
 const checkSearchParams = (req: Request, res: Response, next: NextFunction) => {
   if (!req.query.q) {

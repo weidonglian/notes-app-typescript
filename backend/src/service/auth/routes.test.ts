@@ -1,7 +1,7 @@
-import supertest from "supertest";
-import { App } from '../../app';
-import { HttpStatusCode } from '../../util/httpErrors';
-import { testAppWithTestUser, testAppShutdown } from '../../testutil/testapp';
+import supertest from 'supertest'
+import { App } from '../../app'
+import { testAppShutdown, testAppWithTestUser } from '../../testutil/testapp'
+import { HttpStatusCode } from '../../util/httpErrors'
 
 describe("service /auth", () => {
   let app: App

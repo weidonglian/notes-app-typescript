@@ -1,9 +1,9 @@
-import { createApp, shutdownApp, App } from '../app'
-import { User } from '../entity/User';
-import { getRepository } from 'typeorm';
-import appConfig, { AppMode } from '../config/config';
-import supertest from 'supertest';
-import { HttpStatusCode } from '../util/httpErrors';
+import supertest from 'supertest'
+import { getRepository } from 'typeorm'
+import { App, createApp, shutdownApp } from '../app'
+import appConfig, { AppMode } from '../config/config'
+import { User } from '../entity/User'
+import { HttpStatusCode } from '../util/httpErrors'
 
 const addUser = async (name: string, password: string, role: string) => {
     let user = new User;

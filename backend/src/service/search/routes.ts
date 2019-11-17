@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { getPlacesByName } from "./SearchController";
-import { checkJwt } from '../../validator/auth';
-import { checkSearchParams } from '../../validator/search';
+import { Request, Response } from 'express'
+import { checkJwt } from '../../validator/auth'
+import { checkSearchParams } from '../../validator/search'
+import { getPlacesByName } from './SearchController'
 
 export default [
   {

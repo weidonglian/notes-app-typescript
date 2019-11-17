@@ -1,5 +1,5 @@
-import { appConfig, AppMode, AppConfig } from './config'
 import { ConnectionOptions } from 'typeorm'
+import { appConfig, AppMode } from './config'
 import * as devOrmConfig from './ormconfig.dev'
 import * as prodOrmConfig from './ormconfig.prod'
 import * as testOrmConfig from './ormconfig.test'

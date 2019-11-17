@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
-import { getRepository } from "typeorm";
-import { validate } from "class-validator";
+import { validate } from 'class-validator'
+import { Request, Response } from 'express'
+import * as jwt from 'jsonwebtoken'
+import { getRepository } from 'typeorm'
+import { appConfig } from '../../config/config'
 
-import { User } from "../../entity/User";
-import { appConfig } from "../../config/config";
-import { HttpErrorBadRequest, HttpStatusCode } from '../../util/httpErrors';
+import { User } from '../../entity/User'
+import { HttpErrorBadRequest, HttpStatusCode } from '../../util/httpErrors'
 
 class AuthController {
   static ping = async (req: Request, res: Response) => {

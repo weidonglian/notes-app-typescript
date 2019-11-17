@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios'
 import appConfig from '../../../config/config'
 
 export const getPlaces = async (query: string) => {

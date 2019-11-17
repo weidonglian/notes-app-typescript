@@ -1,5 +1,5 @@
-import AuthController from "./AuthController";
-import { checkJwt } from '../../validator/auth';
+import { checkJwt } from '../../validator/auth'
+import AuthController from './AuthController'
 
 export default [
   {

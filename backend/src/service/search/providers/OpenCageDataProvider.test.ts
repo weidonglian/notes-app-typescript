@@ -1,5 +1,5 @@
-import * as Provider from "./OpenCageDataProvider";
 import axios from 'axios'
+import * as Provider from './OpenCageDataProvider'
 
 describe("OpenCageDataProvider", () => {
 

@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction, Router } from "express";
-import { notFoundError, clientError, serverError } from "../util/handleErrors";
+import { NextFunction, Request, Response, Router } from 'express'
+import { clientError, notFoundError, serverError } from '../util/handleErrors'
 
 export const handle404Error = (router: Router) => {
   // this will catch all the not found requests.

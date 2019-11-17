@@ -1,4 +1,4 @@
-import { createApp, App } from './app';
+import { App, createApp } from './app'
 
 let currentApp: App
 

@@ -1,7 +1,7 @@
 import supertest from 'supertest'
-import { testAppShutdown, TestApp, testAppWithLoginTestUser } from '../../testutil/testapp';
-import { HttpStatusCode } from '../../util/httpErrors';
-import tconsole from '../../testutil/console';
+import tconsole from '../../testutil/console'
+import { TestApp, testAppShutdown, testAppWithLoginTestUser } from '../../testutil/testapp'
+import { HttpStatusCode } from '../../util/httpErrors'
 
 describe("service /user get", () => {
   let app: TestApp

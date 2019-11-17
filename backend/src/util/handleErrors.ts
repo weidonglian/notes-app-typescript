@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { HttpClientError, HttpErrorNotFound, HttpStatusCode } from "./httpErrors";
+import { NextFunction, Request, Response } from 'express'
+import { HttpClientError, HttpErrorNotFound, HttpStatusCode } from './httpErrors'
 
 // Just throw the client side error unknowns requests
 export const notFoundError = (req: Request, res: Response) => {

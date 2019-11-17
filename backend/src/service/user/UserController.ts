@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { getRepository } from "typeorm";
-import { validate } from "class-validator";
+import { validate } from 'class-validator'
+import { Request, Response } from 'express'
+import { getRepository } from 'typeorm'
 
-import { User } from "../../entity/User";
-import { HttpStatusCode } from '../../util/httpErrors';
+import { User } from '../../entity/User'
+import { HttpStatusCode } from '../../util/httpErrors'
 
 class UserController {
 

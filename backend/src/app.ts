@@ -1,12 +1,12 @@
-import express, { Application, Router } from "express";
-import "reflect-metadata";
-import { createConnection, Connection } from 'typeorm';
-import { applyMiddleware, applyRoutes } from "./util";
-import { middlewares, errorHandlers} from "./middleware";
-import routes from "./service";
+import express, { Application, Router } from 'express'
+import { Server } from 'http'
+import 'reflect-metadata'
+import { Connection, createConnection } from 'typeorm'
 import appConfig from './config/config'
 import ormConfig from './config/ormconfig'
-import { Server } from 'http';
+import { errorHandlers, middlewares } from './middleware'
+import routes from './service'
+import { applyMiddleware, applyRoutes } from './util'
 
 process.on("uncaughtException", e => {
   console.log(e);

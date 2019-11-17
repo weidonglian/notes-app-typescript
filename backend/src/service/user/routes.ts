@@ -1,5 +1,5 @@
-import UserController from "./UserController";
-import { checkJwt, checkRole } from '../../validator/auth';
+import { checkJwt, checkRole } from '../../validator/auth'
+import UserController from './UserController'
 
 export default [
   {
