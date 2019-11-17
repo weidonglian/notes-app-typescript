@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "launch jest test",
+            "name": "vscode-jest-tests",
             "program": "${workspaceFolder}/node_modules/jest/bin/jest.js",
             "args": [
                 "--runInBand"
@@ -28,6 +28,42 @@
             "program": "${workspaceFolder}/src/server.ts",
             "preLaunchTask": "tsc: build - tsconfig.json",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"]
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Jest All",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "args": ["--runInBand"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+            "windows": {
+              "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            },
+            "env": {
+                "NODE_ENV": "test",
+                "APP_MODE": "test"
+            }
+          },
+          {
+            "type": "node",
+            "request": "launch",
+            "name": "Jest Current File",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "args": [
+              "${fileBasenameNoExtension}",
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+            "windows": {
+              "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            },
+            "env": {
+                "NODE_ENV": "test",
+                "APP_MODE": "test"
+            }
+          }
     ]
 }
