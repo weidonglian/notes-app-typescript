@@ -3,7 +3,7 @@ import AuthController from './AuthController'
 
 export default [
     {
-        path: '/api/v1/auth/ping',
+        path: '/auth/ping',
         method: 'get',
         handler: [
             checkJwt,
@@ -11,14 +11,14 @@ export default [
         ]
     },
     {
-        path: '/api/v1/auth/login',
+        path: '/auth/login',
         method: 'post',
         handler: [
             AuthController.login
         ]
     },
     {
-        path: '/api/v1/auth/password',
+        path: '/auth/password',
         method: 'post',
         handler: [
             checkJwt,

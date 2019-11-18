@@ -7,6 +7,7 @@ export enum AppMode {
 export interface AppConfig {
     appMode: AppMode
     port: Number
+    routeBasePath: string
     jwtSecret: string
     openCageDataKey: string
 }
@@ -14,6 +15,7 @@ export interface AppConfig {
 const devConfig: AppConfig = {
     appMode: AppMode.Dev,
     port: 4000,
+    routeBasePath: '/api/v1',
     jwtSecret: '@Development',
     openCageDataKey: 's'
 }
@@ -21,6 +23,7 @@ const devConfig: AppConfig = {
 const prodConfig: AppConfig = {
     appMode: AppMode.Prod,
     port: 3000,
+    routeBasePath: '/api/v1',
     jwtSecret: '@eEux&U12io',
     openCageDataKey: ''
 }
@@ -28,6 +31,7 @@ const prodConfig: AppConfig = {
 const testConfig: AppConfig = {
     appMode: AppMode.Test,
     port: 0,
+    routeBasePath: '/api/v1',
     jwtSecret: '@Test',
     openCageDataKey: ''
 }

@@ -3,7 +3,7 @@ import UserController from './UserController'
 
 export default [
     {
-        path: '/api/v1/user',
+        path: '/user',
         method: 'get',
         handler: [
             checkJwt,
@@ -12,7 +12,7 @@ export default [
         ]
     },
     {
-        path: '/api/v1/user/:id([0-9]+)',
+        path: '/user/:id([0-9]+)',
         method: 'get',
         handler: [
             checkJwt,
@@ -21,7 +21,7 @@ export default [
         ]
     },
     {
-        path: '/api/v1/user/:id([0-9]+)',
+        path: '/user/:id([0-9]+)',
         method: 'patch',
         handler: [
             checkJwt,
@@ -30,7 +30,7 @@ export default [
         ]
     },
     {
-        path: '/api/v1/user/:id([0-9]+)',
+        path: '/user/:id([0-9]+)',
         method: 'delete',
         handler: [
             checkJwt,

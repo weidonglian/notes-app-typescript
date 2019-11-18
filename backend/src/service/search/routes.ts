@@ -5,7 +5,7 @@ import { getPlacesByName } from './SearchController'
 
 export default [
     {
-        path: '/api/v1/search',
+        path: '/search',
         method: 'get',
         handler: [
             checkJwt,

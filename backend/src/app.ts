@@ -17,6 +17,7 @@ process.on('uncaughtException', e => {
 process.on('unhandledRejection', e => {
     console.log(e)
     process.exit(1)
+
 })
 
 export interface App {
@@ -30,7 +31,7 @@ export const createApp = async (): Promise<App> => {
     const dbConnection = await createConnection(ormConfig)
     const appExpress = express()
     applyMiddleware(middlewares, appExpress)
-    applyRoutes(routes, appExpress)
+    applyRoutes(routes, appExpress, appConfig.routeBasePath)
     applyMiddleware(errorHandlers, appExpress)
     const { port, appMode } = appConfig
     const server = http.createServer(appExpress)
