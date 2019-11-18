@@ -16,10 +16,10 @@ export const clientError = (err: Error, req: Request, res: Response, next: NextF
 }
 
 export const serverError = (err: Error, req: Request, res: Response, next: NextFunction) => {
-    if (appConfig.appMode == AppMode.Prod) {
+    if (appConfig.appMode === AppMode.Prod) {
         console.error(err)
         res.status(HttpStatusCode.InternalServerError).send('Internal Server Error')
-    } else if (appConfig.appMode == AppMode.Test) {
+    } else if (appConfig.appMode === AppMode.Test) {
         res.status(HttpStatusCode.InternalServerError).send(err)
     } else {
         console.error(err.stack)

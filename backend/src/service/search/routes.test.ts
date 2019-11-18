@@ -5,10 +5,10 @@ import { App, createApp, shutdownApp } from '../../app'
 import handleChecks from '../../util/handleChecks'
 import { HttpStatusCode } from '../../util/httpErrors'
 import { testAppWithTestUser, TestApp, testAppShutdown, testAppWithLoginTestUser, TestAppWithTokens, makeAuthHeaderOptions } from '../../testutil/testapp'
+import moxios from 'moxios'
 
 
 describe('service /search', () => {
-    const axiosMock = jest.spyOn(axios, 'get')
     let app: TestAppWithTokens
     let authOptions: AxiosRequestConfig
 
@@ -24,18 +24,20 @@ describe('service /search', () => {
     })
 
     describe('with valid search service', () => {
-        beforeAll(async () => {
-            axiosMock.mockResolvedValue({
-                status: HttpStatusCode.Success,
-                data: JSON.stringify({
-                    type: 'FeatureCollection',
-                    features: []
-                })
+        beforeAll(() => {
+            moxios.install()
+            const response = {
+                features: [],
+                resp: [1, 2, 3]
+            }
+            moxios.stubRequest(/api.opencagedata.com.*/, {
+                status: 200,
+                response: response
             })
         })
 
-        afterAll(async () => {
-            axiosMock.mockRestore()
+        afterAll(() => {
+            moxios.uninstall()
         })
 
         test('a valid string query', async () => {
@@ -56,12 +58,13 @@ describe('service /search', () => {
     })
 
     test('a service is not available', async () => {
-        axiosMock.mockResolvedValue({
-            status: 503,
-            data: 'Service Unavailable.'
+        moxios.install()
+        moxios.stubRequest(/api.opencagedata.com.*/, {
+            status: HttpStatusCode.ServiceUnavailable,
+            responseText: 'Service Unavailable'
         })
         const response = await axiosist(app.express).get('/api/v1/search?q=Paris', authOptions)
-        expect(response.status).toEqual(HttpStatusCode.InternalServerError)
-        axiosMock.mockRestore()
+        expect(response.status).toBe(HttpStatusCode.InternalServerError)
+        moxios.uninstall()
     })
 })

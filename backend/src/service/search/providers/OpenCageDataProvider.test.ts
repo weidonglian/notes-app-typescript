@@ -1,29 +1,34 @@
-import axios from 'axios'
+import moxios from 'moxios'
 import * as Provider from './OpenCageDataProvider'
+import { HttpStatusCode } from '../../../util/httpErrors'
 
 describe('OpenCageDataProvider', () => {
+    beforeEach(() => {
+        moxios.install()
+    })
 
+    afterEach(() => {
+        moxios.uninstall()
+    })
 
     test('an empty query string', async () => {
-        const axiosMock = jest.spyOn(axios, 'get')
-        axiosMock.mockResolvedValue({
+        const response = {
+            features: [],
+            resp: [1, 2, 3]
+        }
+        moxios.stubRequest(/api.opencagedata.com.*/, {
             status: 200,
-            data: JSON.stringify({
-                features: []
-            })
+            response: response
         })
         const result = await Provider.getPlaces('Chamonix')
-        expect(result).toEqual({ features: [] })
-        axiosMock.mockRestore()
+        expect(result).toEqual(response)
     })
 
     test('an invalid non-json response', async () => {
-        const axiosMock = jest.spyOn(axios, 'get')
-        axiosMock.mockResolvedValue({
-            status: 503,
-            data: 'Service Unavailable.'
+        moxios.stubRequest(/api.opencagedata.com.*/, {
+            status: HttpStatusCode.ServiceUnavailable,
+            responseText: 'Service Unavailable'
         })
-        await expect(Provider.getPlaces('Chamonix')).rejects.toThrow(SyntaxError)
-        axiosMock.mockRestore()
+        await expect(Provider.getPlaces('Chamonix')).rejects.toBeTruthy()
     })
 })
