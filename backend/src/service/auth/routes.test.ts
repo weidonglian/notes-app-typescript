@@ -1,5 +1,5 @@
-import supertest from 'supertest'
-import { testAppShutdown, testAppWithTestUser, TestApp } from '../../testutil/testapp'
+import axiosist from 'axiosist'
+import { testAppShutdown, testAppWithTestUser, TestApp, makeAuthHeaderOptions } from '../../testutil/testapp'
 import { HttpStatusCode } from '../../util/httpErrors'
 
 describe('service /auth', () => {
@@ -20,27 +20,27 @@ describe('service /auth', () => {
         })
 
         test('login with valid user and password', async () => {
-            const response = await supertest(app.router).post('/api/v1/auth/login').send(testUser)
+            const response = await axiosist(app.express).post('/api/v1/auth/login', testUser)
             expect(response.status).toEqual(HttpStatusCode.Success)
         })
 
         test('login with valid user but invalid password', async () => {
-            const response = await supertest(app.router).post('/api/v1/auth/login').send({
+            const response = await axiosist(app.express).post('/api/v1/auth/login', {
                 username: 'test', password: 'invalidtest'
             })
             expect(response.status).toEqual(HttpStatusCode.BadRequest)
-            expect(response.text).toEqual('Bad password')
+            expect(response.data).toEqual('Bad password')
         })
 
         test('login with invalid user and valid password', async () => {
-            const response = await supertest(app.router).post('/api/v1/auth/login').send({
+            const response = await axiosist(app.express).post('/api/v1/auth/login', {
                 username: 'invalidtest', password: 'test'
             })
             expect(response.status).toEqual(HttpStatusCode.BadRequest)
         })
 
         test('login with empty user and empty password', async () => {
-            const response = await supertest(app.router).post('/api/v1/auth/login')
+            const response = await axiosist(app.express).post('/api/v1/auth/login')
             expect(response.status).toEqual(HttpStatusCode.BadRequest)
         })
     })
@@ -50,55 +50,40 @@ describe('service /auth', () => {
         test('change password', async () => {
             const app = await testAppWithTestUser()
             // first need to login
-            let response = await supertest(app.router)
-                .post('/api/v1/auth/login')
-                .send({
+            let response = await axiosist(app.express).post('/api/v1/auth/login', {
                     username: 'test',
                     password: 'test'
                 })
 
             expect(response.status).toBe(HttpStatusCode.Success)
-            const { token } = response.body
+            const { token } = response.data
             expect(token).toBeDefined()
 
-            // invalid token
-            response = await supertest(app.router)
-                .post('/api/v1/auth/password')
-                .set('Content-Type', 'application/json')
-                .set('Authorization', 'Bearer invalid token')
+            const authTokenOptions = makeAuthHeaderOptions(token)
+            const invalidTokenOptions = makeAuthHeaderOptions('invalid token')
 
+            // invalid token
+            response = await axiosist(app.express).post('/api/v1/auth/password', {}, invalidTokenOptions)
             expect(response.status).toBe(HttpStatusCode.Unauthorized)
 
-            response = await supertest(app.router)
-                .get('/api/v1/auth/ping')
-                .set('Authorization', 'Bearer ' + token)
-
+            response = await axiosist(app.express).get('/api/v1/auth/ping', authTokenOptions)
             expect(response.status).toBe(HttpStatusCode.Success)
-            expect(response.text).toBe('hello')
+            expect(response.data).toBe('hello')
 
-            response = await supertest(app.router)
-                .post('/api/v1/auth/password')
-                .set('Content-Type', 'application/json')
-                .set('Authorization', 'Bearer ' + token)
-                .send({
-                    oldPassword: 'test',
-                    newPassword: 'testnew'
-                })
+            response = await axiosist(app.express).post('/api/v1/auth/password', {
+                oldPassword: 'test',
+                newPassword: 'testnew'
+            }, authTokenOptions)
             expect(response.status).toBe(HttpStatusCode.Success)
 
             //no old and new password
-            response = await supertest(app.router)
-                .post('/api/v1/auth/password')
-                .set('Content-Type', 'application/json')
-                .set('Authorization', 'Bearer ' + token)
+            response = await axiosist(app.express).post('/api/v1/auth/password', {}, authTokenOptions)
             expect(response.status).toBe(HttpStatusCode.BadRequest)
 
             // changed password should not invalid the token.
-            response = await supertest(app.router)
-                .get('/api/v1/auth/ping')
-                .set('Authorization', 'Bearer ' + token)
+            response = await axiosist(app.express).get('/api/v1/auth/ping', authTokenOptions)
             expect(response.status).toBe(HttpStatusCode.Success)
-            expect(response.text).toBe('hello')
+            expect(response.data).toBe('hello')
 
             // shutdown
             await testAppShutdown(app)

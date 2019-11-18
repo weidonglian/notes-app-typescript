@@ -1,5 +1,5 @@
 import { spyOnConsole, restoreConsole } from './mockConsole'
-import supertest from 'supertest'
+import axiosist from 'axiosist'
 import { getRepository } from 'typeorm'
 import { App, createApp, shutdownApp } from '../app'
 import appConfig, { AppMode } from '../config/config'
@@ -17,16 +17,20 @@ const addUser = async (name: string, password: string, role: string) => {
 }
 
 const loginUser = async (username: string, password: string, app: App) => {
-    const resp = await supertest(app.router)
-        .post('/api/v1/auth/login')
-        .send({
+    const resp = await axiosist(app.express).post('/api/v1/auth/login', {
             username: username,
             password: password
         })
     expect(resp.status).toBe(HttpStatusCode.Success)
-    expect(resp.body.token).toBeDefined()
-    return resp.body.token as string
+    expect(resp.data.token).toBeDefined()
+    return resp.data.token as string
 }
+
+export const makeAuthHeaderOptions = (token: string) => ({
+    headers: {
+        'Authorization': 'Bearer ' + token
+    }
+})
 
 export interface TestApp extends App {
     consoleMock: ReturnType<typeof spyOnConsole>
