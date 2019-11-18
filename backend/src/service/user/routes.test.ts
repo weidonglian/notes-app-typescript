@@ -94,6 +94,7 @@ describe('service /user patch and delete', () => {
             .set('Authorization', 'Bearer ' + app.adminUserToken)
         expect(rsp.status).toBe(HttpStatusCode.Success)
         let users = rsp.body
+        //console.log(users)
         expect(users).toBeDefined()
         expect(Array.isArray(users)).toBe(true)
         const numOfUsersBefore = users.length
@@ -110,6 +111,7 @@ describe('service /user patch and delete', () => {
             .set('Authorization', 'Bearer ' + app.adminUserToken)
         expect(rsp.status).toBe(HttpStatusCode.Success)
         users = rsp.body
+        //console.log(users)
         expect(users).toBeDefined()
         expect(Array.isArray(users)).toBe(true)
         const numOfUsersAfter = users.length
