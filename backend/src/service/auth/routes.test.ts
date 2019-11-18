@@ -1,10 +1,9 @@
 import supertest from 'supertest'
-import { App } from '../../app'
-import { testAppShutdown, testAppWithTestUser } from '../../testutil/testapp'
+import { testAppShutdown, testAppWithTestUser, TestApp } from '../../testutil/testapp'
 import { HttpStatusCode } from '../../util/httpErrors'
 
 describe('service /auth', () => {
-    let app: App
+    let app: TestApp
 
     const testUser = {
         username: 'test',
@@ -46,8 +45,8 @@ describe('service /auth', () => {
         })
     })
 
-    describe('/auth/password', () => {
 
+    describe('/auth/password', () => {
         test('change password', async () => {
             const app = await testAppWithTestUser()
             // first need to login

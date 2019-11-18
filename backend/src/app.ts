@@ -1,5 +1,5 @@
 import express, { Application, Router } from 'express'
-import { Server } from 'http'
+import http, { Server } from 'http'
 import 'reflect-metadata'
 import { Connection, createConnection } from 'typeorm'
 import appConfig from './config/config'
@@ -7,6 +7,7 @@ import ormConfig from './config/ormconfig'
 import { errorHandlers, middlewares } from './middleware'
 import routes from './service'
 import { applyMiddleware, applyRoutes } from './util'
+import { resolve } from 'dns'
 
 process.on('uncaughtException', e => {
     console.log(e)
@@ -32,15 +33,22 @@ export const createApp = async (): Promise<App> => {
     applyRoutes(routes, appExpress)
     applyMiddleware(errorHandlers, appExpress)
     const { port, appMode } = appConfig
-    const serverExpress = appExpress.listen(port, () =>
-        console.log(`Server is running in '${appMode}' mode http://localhost:${port}...`)
-    )
-    return {
-        router: appExpress,
-        express: appExpress,
-        server: serverExpress,
-        db: dbConnection
-    }
+    const server = http.createServer(appExpress)
+    return new Promise<App>((resolve: any, reject: any) => {
+        try {
+            server.listen(port, () => {
+                console.log(`Server is running in '${appMode}' mode http://localhost:${port}...`)
+                resolve({
+                    router: appExpress,
+                    express: appExpress,
+                    server: server,
+                    db: dbConnection
+                })
+            })
+        } catch(error) {
+            reject(error)
+        }
+    })
 }
 
 export const shutdownApp = async (app: App) => {

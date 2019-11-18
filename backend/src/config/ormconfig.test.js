@@ -3,7 +3,7 @@ module.exports = {
     database: ":memory:",
     dropSchema: true,
     synchronize: true,
-    logging: true,
+    logging: false,
     entities: [
         "dist/entity/**/*.js"
     ],

@@ -1,10 +1,9 @@
 import supertest from 'supertest'
-import tconsole from '../../testutil/console'
-import { TestApp, testAppShutdown, testAppWithLoginTestUser } from '../../testutil/testapp'
+import { TestApp, testAppShutdown, testAppWithLoginTestUser, TestAppWithTokens } from '../../testutil/testapp'
 import { HttpStatusCode } from '../../util/httpErrors'
 
-describe('service /user get', () => {
-    let app: TestApp
+describe('service /user GET', () => {
+    let app: TestAppWithTokens
     beforeAll(async () => {
         app = await testAppWithLoginTestUser()
     })
@@ -63,8 +62,8 @@ describe('service /user get', () => {
     })
 })
 
-describe('service /user patch delete', () => {
-    let app: TestApp
+describe('service /user patch and delete', () => {
+    let app: TestAppWithTokens
     beforeEach(async () => {
         app = await testAppWithLoginTestUser()
     })
@@ -73,7 +72,7 @@ describe('service /user patch delete', () => {
         await testAppShutdown(app)
     })
 
-    test('Patch /user', async () => {
+    test('PATCH /user', async () => {
         let rsp = await supertest(app.router)
             .patch('/api/v1/user/1')
             .set('Authorization', 'Bearer ' + app.adminUserToken)
@@ -84,10 +83,37 @@ describe('service /user patch delete', () => {
         expect(rsp.status).toBe(HttpStatusCode.Success)
         const user = rsp.body
         expect(user).toBeDefined()
-        tconsole.log(user);
-        (user)
         expect(user).toHaveProperty('username', 'newtest')
         expect(user).toHaveProperty('role', 'ADMIN')
+    })
+
+    test('DELETE /user', async () => {
+        // before
+        let rsp = await supertest(app.router)
+            .get('/api/v1/user')
+            .set('Authorization', 'Bearer ' + app.adminUserToken)
+        expect(rsp.status).toBe(HttpStatusCode.Success)
+        let users = rsp.body
+        expect(users).toBeDefined()
+        expect(Array.isArray(users)).toBe(true)
+        const numOfUsersBefore = users.length
+
+        // delete now
+        rsp = await supertest(app.router)
+            .delete('/api/v1/user/1')
+            .set('Authorization', 'Bearer ' + app.adminUserToken)
+        expect(rsp.status).toBe(HttpStatusCode.Success)
+
+        // after
+        rsp = await supertest(app.router)
+            .get('/api/v1/user')
+            .set('Authorization', 'Bearer ' + app.adminUserToken)
+        expect(rsp.status).toBe(HttpStatusCode.Success)
+        users = rsp.body
+        expect(users).toBeDefined()
+        expect(Array.isArray(users)).toBe(true)
+        const numOfUsersAfter = users.length
+        expect(numOfUsersBefore-1).toEqual(numOfUsersAfter)
     })
 
 })

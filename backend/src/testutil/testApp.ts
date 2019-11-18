@@ -1,3 +1,4 @@
+import { spyOnConsole, restoreConsole } from './mockConsole'
 import supertest from 'supertest'
 import { getRepository } from 'typeorm'
 import { App, createApp, shutdownApp } from '../app'
@@ -27,29 +28,36 @@ const loginUser = async (username: string, password: string, app: App) => {
     return resp.body.token as string
 }
 
-export const testAppWithTestUser = async () => {
+export interface TestApp extends App {
+    consoleMock: ReturnType<typeof spyOnConsole>
+}
+
+export const testAppWithTestUser = async (): Promise<TestApp> => {
     if (appConfig.appMode !== AppMode.Test) {
         console.error('test can only be run in APP_MODE: "test"')
         process.exit(1)
     }
+
+    const consoleMock = spyOnConsole();
     const app = await createApp()
     await addUser('test', 'test', 'USER')
     await addUser('admin', 'admin', 'ADMIN')
-    return app
+    return { ...app, consoleMock }
 }
 
-export interface TestApp extends App {
+export interface TestAppWithTokens extends TestApp {
     testUserToken: string
     adminUserToken: string
 }
 
-export const testAppWithLoginTestUser = async (): Promise<TestApp> => {
+export const testAppWithLoginTestUser = async (): Promise<TestAppWithTokens> => {
     const app = await testAppWithTestUser()
     const testUserToken = await loginUser('test', 'test', app)
     const adminUserToken = await loginUser('admin', 'admin', app)
     return { ...app, testUserToken, adminUserToken }
 }
 
-export const testAppShutdown = async (app: App) => {
+export const testAppShutdown = async (app: TestApp) => {
+    restoreConsole(app.consoleMock)
     await shutdownApp(app)
 }
