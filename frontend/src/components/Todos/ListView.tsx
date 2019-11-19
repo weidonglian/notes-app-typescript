@@ -2,12 +2,12 @@ import React from 'react';
 import { Todo } from '../../models';
 import { FormGroup, Typography, FormControlLabel, Checkbox } from '@material-ui/core';
 
-interface UiTodosListProps {
+interface TodosListViewProps {
     todos: Todo[],
     toggleTodo: (todoId: number) => void
 }
 
-export class UiTodosList extends React.PureComponent<UiTodosListProps> {
+export class TodosListView extends React.PureComponent<TodosListViewProps> {
     render() {
         const { todos, toggleTodo } = this.props;
         return (

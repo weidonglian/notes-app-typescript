@@ -3,7 +3,7 @@ import { AppState } from '../../reducers';
 import { Dispatch } from 'redux';
 import { getTodos } from '../../selectors/todos';
 import { toggleTodo } from '../../actions/todos';
-import { UiTodosList } from './UiList';
+import { TodosListView } from './ListView';
 
 const mapStateToProps = (appState: AppState) => ({
     todos: getTodos(appState)
@@ -16,4 +16,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export const TodosList = connect(
     mapStateToProps,
     mapDispatchToProps
-)(UiTodosList)
+)(TodosListView)

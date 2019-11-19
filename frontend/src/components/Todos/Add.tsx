@@ -3,22 +3,22 @@ import { Dispatch } from 'redux'
 import { addTodo } from '../../actions/todos';
 import { connect } from 'react-redux';
 
-interface UiTodosAddProps {
+interface TodosAddViewProps {
     add: (name: string) => void;
 }
 
-interface UiTodosAddState {
+interface TodosAddViewState {
     name: string
 }
 
-class UiTodosAdd extends React.PureComponent<UiTodosAddProps, UiTodosAddState> {
-    state: UiTodosAddState = {
+class TodosAddView extends React.PureComponent<TodosAddViewProps, TodosAddViewState> {
+    state: TodosAddViewState = {
         name: ''
     }
 
     onInputChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         const val = evt.target.value;
-        this.setState((prevState: Readonly<UiTodosAddState>) => ({
+        this.setState((prevState: Readonly<TodosAddViewState>) => ({
             ...prevState,
             name: val
         }));
@@ -48,5 +48,5 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 export const TodosAdd = connect(
     null, mapDispatchToProps
-)(UiTodosAdd)
+)(TodosAddView)
 
