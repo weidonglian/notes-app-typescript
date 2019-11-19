@@ -9,7 +9,7 @@ import { Note } from '../../models'
 import { AppState } from '../../reducers'
 import { getNotes } from '../../selectors/notes'
 import { TodosAddView } from '../Todos/Add'
-import { TodosListView as TodosListView } from '../Todos/List'
+import { TodosListView } from '../Todos/List'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
