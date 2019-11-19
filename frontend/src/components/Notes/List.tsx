@@ -8,8 +8,8 @@ import { addTodo, toggleTodo } from '../../actions/notes'
 import { Note } from '../../models'
 import { AppState } from '../../reducers'
 import { getNotes } from '../../selectors/notes'
-import { UiTodosAdd } from '../Todos/Add'
-import { UiTodosList } from '../Todos/List'
+import { TodosAddView } from '../Todos/Add'
+import { TodosListView as TodosListView } from '../Todos/List'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }))
 
-interface UiNotesListProps {
+interface NotesListViewProps {
     notes: Note[],
     toggleTodo: (noteId: number, todoId: number) => void,
     addTodo: (noteId: number, todoName: string) => void
 }
 
-const UiNotesList = ({ notes, toggleTodo, addTodo }: UiNotesListProps) => {
+const NotesListView = ({ notes, toggleTodo, addTodo }: NotesListViewProps) => {
 
     const classes = useStyles()
     const [editingNoteId, setEditingNoteId] = React.useState(-1)
@@ -47,9 +47,9 @@ const UiNotesList = ({ notes, toggleTodo, addTodo }: UiNotesListProps) => {
                         <Typography variant='h5'>
                             {note.name}
                         </Typography>
-                        <UiTodosList todos={note.todos}
+                        <TodosListView todos={note.todos}
                                      toggleTodo={(todoId: number) => toggleTodo(note.id, todoId)}/>
-                        {editingNoteId === note.id && <UiTodosAdd addTodo={(todoName: string) => addTodo(note.id, todoName)}/>}
+                        {editingNoteId === note.id && <TodosAddView addTodo={(todoName: string) => addTodo(note.id, todoName)}/>}
                     </Paper>
                 </Grid>
             ))}
@@ -69,4 +69,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export const NotesList = connect(
     mapStateToProps,
     mapDispatchToProps
-)(UiNotesList)
+)(NotesListView)

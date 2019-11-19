@@ -9,17 +9,17 @@ const styles = (theme: Theme) => createStyles({
     }
 })
 
-interface UiTodosAddProps extends WithStyles<typeof styles> {
+interface TodosAddViewProps extends WithStyles<typeof styles> {
     addTodo: (name: string) => void
 }
 
-interface UiTodosAddState {
+interface TodosAddViewState {
     name: string
 }
 
-export const UiTodosAdd = withStyles(styles)(
-    class extends React.PureComponent<UiTodosAddProps, UiTodosAddState> {
-        state: UiTodosAddState = {
+export const TodosAddView = withStyles(styles)(
+    class extends React.PureComponent<TodosAddViewProps, TodosAddViewState> {
+        state: TodosAddViewState = {
             name: ''
         }
 

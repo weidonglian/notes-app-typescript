@@ -23,18 +23,18 @@ const styles = (theme: Theme) => createStyles({
     }
 })
 
-interface UiNotesAddProps extends WithStyles<typeof styles> {
+interface NotesAddViewProps extends WithStyles<typeof styles> {
     addNote: (name: string) => void
 }
 
-interface UiNotesAddState {
+interface NotesAddViewState {
     open: boolean,
     name: string
 }
 
 
-class UiNotesAdd extends React.PureComponent<UiNotesAddProps, UiNotesAddState> {
-    state: UiNotesAddState = {
+class NotesAddView extends React.PureComponent<NotesAddViewProps, NotesAddViewState> {
+    state: NotesAddViewState = {
         open: false,
         name: ''
     }
@@ -112,4 +112,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export const NotesAdd = connect(
     null,
     mapDispatchToProps
-)(withStyles(styles)(UiNotesAdd))
+)(withStyles(styles)(NotesAddView))
