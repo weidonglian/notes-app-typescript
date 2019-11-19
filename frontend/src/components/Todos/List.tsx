@@ -1,19 +1,23 @@
-import { connect } from 'react-redux';
-import { AppState } from '../../reducers';
-import { Dispatch } from 'redux';
-import { getTodos } from '../../selectors/todos';
-import { toggleTodo } from '../../actions/todos';
-import { TodosListView } from './ListView';
+import { Box, Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
+import React from 'react'
+import { Todo } from '../../models'
 
-const mapStateToProps = (appState: AppState) => ({
-    todos: getTodos(appState)
-});
+interface UiTodosListProps {
+    todos: Todo[],
+    toggleTodo: (todoId: number) => void
+}
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    toggleTodo: (todoId: number) => dispatch(toggleTodo(todoId)),
-});
-
-export const TodosList = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(TodosListView)
+export const UiTodosList = ({ todos, toggleTodo }: UiTodosListProps) => {
+    return (
+        <Box p={0}>
+            <FormGroup>
+                {todos.map(todo => (
+                    <FormControlLabel key={todo.id}
+                                      control={<Checkbox checked={todo.done} onChange={() => toggleTodo(todo.id)}/>}
+                                      label={todo.name}
+                    />)
+                )}
+            </FormGroup>
+        </Box>
+    )
+}

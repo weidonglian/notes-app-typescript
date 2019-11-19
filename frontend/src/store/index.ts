@@ -1,9 +1,9 @@
-import logger from 'redux-logger';
-import { createStore, applyMiddleware, Action } from 'redux';
-import { AppState, appReducer, initialAppState } from '../reducers';
+import { Action, applyMiddleware, createStore } from 'redux'
+import logger from 'redux-logger'
+import { appReducer, AppState, initialAppState } from '../reducers'
 
 const store = createStore<AppState, Action, any, any>(
     appReducer, initialAppState, applyMiddleware(logger)
-);
+)
 
-export default store;
+export default store

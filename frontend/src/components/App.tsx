@@ -1,10 +1,12 @@
-import React from 'react';
-import ScreenTodos from '../screens/Todos';
+import React from 'react'
+import { ScreenNotes } from '../screens/Notes'
 
 export class App extends React.Component<{}> {
     render() {
         return (
-            <ScreenTodos />
+            <React.Fragment>
+                <ScreenNotes/>
+            </React.Fragment>
         )
     }
 }
