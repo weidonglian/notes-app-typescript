@@ -20,7 +20,6 @@ const customRender = (ui: RenderParameters[0], options?: RenderParameters[1]) =>
 
 // re-export everything
 export * from '@testing-library/react'
-export * from '@testing-library/jest-dom/extend-expect'
 
 // override render method
 export { customRender as testRender }
