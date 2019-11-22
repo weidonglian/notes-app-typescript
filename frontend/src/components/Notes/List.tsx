@@ -8,8 +8,8 @@ import { addTodo, toggleTodo } from '../../actions/notes'
 import { Note } from '../../models'
 import { AppState } from '../../reducers'
 import { getNotes } from '../../selectors/notes'
-import { TodosAddView } from '../Todos/Add'
-import { TodosListView } from '../Todos/List'
+import { TodosAddView } from '../Todos/AddView'
+import { TodosListView } from '../Todos/ListView'
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

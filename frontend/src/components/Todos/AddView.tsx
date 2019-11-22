@@ -17,7 +17,7 @@ interface TodosAddViewState {
     name: string
 }
 
-export const TodosAddView = withStyles(styles)(
+export const TodosAddView = withStyles(styles) (
     class extends React.PureComponent<TodosAddViewProps, TodosAddViewState> {
         state: TodosAddViewState = {
             name: ''
