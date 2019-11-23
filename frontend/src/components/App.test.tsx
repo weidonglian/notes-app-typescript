@@ -1,13 +1,12 @@
 import React from 'react'
 import { App } from './App'
-import { renderWith, renderWithState } from '../utils/test-utils'
-import { AppState } from '../reducers'
+import { renderWithState } from '../utils/test-utils'
+import { AppState, initialAppState } from '../reducers'
 import { addNote } from '../actions/notes'
 
 describe('App test', () => {
-
     test('renders without crashing', () => {
-        const t = renderWith(<App />)
+        const t = renderWithState(<App />, initialAppState)
         expect(t.container).toHaveTextContent(/First NoteSecond NoteThird Note/)
     })
 
@@ -18,7 +17,6 @@ describe('App test', () => {
             }
         }
         const t = renderWithState(<App />, initState)
-        t.debug(t.container)
         expect(t.container).toHaveTextContent(/nx1nx3nx2nx4/)
     })
 })
