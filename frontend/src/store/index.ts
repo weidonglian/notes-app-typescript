@@ -1,6 +1,6 @@
 import { Action, applyMiddleware, createStore } from 'redux'
 import logger from 'redux-logger'
-import thunk from 'redux-thunk';
+import thunk from 'redux-thunk'
 import { appReducer, AppState, initialAppState } from '../reducers'
 
 export const createStoreWith = (initialState: AppState) =>

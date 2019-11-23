@@ -7,7 +7,7 @@ export enum NotesActionTypes {
     CHANGE_NOTE_VISIBILITY,
 
     ADD_TODO,
-    TOGGLE_TODO
+    UPDATE_TODO
 }
 
 /// Actions
@@ -34,27 +34,26 @@ export interface AddTodoAction extends Action {
     }
 }
 
-export interface ToggleTodoAction extends Action {
-    type: NotesActionTypes.TOGGLE_TODO,
+export interface UpdateTodoAction extends Action {
+    type: NotesActionTypes.UPDATE_TODO,
     payload: {
-        noteId: number,
+        noteId: number
         todoId: number
+        done: boolean
+        name: string
     }
 }
 
-export type NotesAction = AddNoteAction | ChangeNoteVisibilityAction | AddTodoAction | ToggleTodoAction
+export type NotesAction = AddNoteAction | ChangeNoteVisibilityAction | AddTodoAction | UpdateTodoAction
 
 /// Action creators
 
-/** In order to automatically generate the action id. */
-let nextNoteId = 0
-
-export const addNote = (name: string): AddNoteAction => {
+const addNote = (id: number, name: string): AddNoteAction => {
     return {
         type: NotesActionTypes.ADD_NOTE,
         payload: {
             note: {
-                id: nextNoteId++,
+                id: id,
                 name: name,
                 visibility: NoteVisibility.DEFAULT,
                 todos: []
@@ -63,7 +62,7 @@ export const addNote = (name: string): AddNoteAction => {
     }
 }
 
-export const changeNoteVisibility = (id: number, visibility: NoteVisibility): ChangeNoteVisibilityAction => {
+const changeNoteVisibility = (id: number, visibility: NoteVisibility): ChangeNoteVisibilityAction => {
     return {
         type: NotesActionTypes.CHANGE_NOTE_VISIBILITY,
         payload: {
@@ -72,16 +71,13 @@ export const changeNoteVisibility = (id: number, visibility: NoteVisibility): Ch
     }
 }
 
-/** Automatic generate todo id */
-let nextTodoId = 0
-
-export const addTodo = (noteId: number, name: string): AddTodoAction => {
+const addTodo = (id: number, noteId: number, name: string): AddTodoAction => {
     return {
         type: NotesActionTypes.ADD_TODO,
         payload: {
             noteId,
             todo: {
-                id: nextTodoId++,
+                id: id,
                 name: name,
                 done: false
             }
@@ -89,11 +85,18 @@ export const addTodo = (noteId: number, name: string): AddTodoAction => {
     }
 }
 
-export const toggleTodo = (noteId: number, todoId: number): ToggleTodoAction => {
+const updateTodo = (noteId: number, todoId: number, done: boolean, name: string): UpdateTodoAction => {
     return {
-        type: NotesActionTypes.TOGGLE_TODO,
+        type: NotesActionTypes.UPDATE_TODO,
         payload: {
-            noteId, todoId
+            noteId, todoId, done, name
         }
     }
+}
+
+export const notesActions = {
+    addNote,
+    changeNoteVisibility,
+    addTodo,
+    updateTodo
 }

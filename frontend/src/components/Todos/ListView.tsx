@@ -12,7 +12,7 @@ export const TodosListView = ({ todos, toggleTodo }: TodosListViewProps) => {
         <Box p={0}>
             <FormGroup>
                 {todos.map(todo => (
-                    <FormControlLabel key={todo.id} data-testid={'todos
+                    <FormControlLabel key={todo.id}
                                       control={<Checkbox checked={todo.done} onChange={() => toggleTodo(todo.id)}/>}
                                       label={todo.name}
                     />)

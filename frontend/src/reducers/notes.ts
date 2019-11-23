@@ -1,5 +1,5 @@
 import iassign from 'immutable-assign'
-import { addNote, NotesAction, NotesActionTypes } from '../actions/notes'
+import { NotesAction, notesActions, NotesActionTypes } from '../actions/notes'
 import { Note } from '../models'
 
 /// state definition
@@ -9,7 +9,7 @@ export interface NotesState {
 
 /// init state
 export const initialNotesState: NotesState = {
-    notes: ['First Note', 'Second Note', 'Third Note'].map(name => addNote(name).payload.note)
+    notes: ['First Note', 'Second Note', 'Third Note'].map((name, id) => notesActions.addNote(id, name).payload.note)
 }
 
 /// reducer
@@ -28,7 +28,7 @@ export const notesReducer = (state: NotesState = initialNotesState, action: Note
             }
         }
 
-        case NotesActionTypes.TOGGLE_TODO: {
+        case NotesActionTypes.UPDATE_TODO: {
             const { noteId, todoId } = action.payload
             const noteIndex = state.notes.findIndex(note => note.id === noteId)
             const todoIndex = state.notes[noteIndex].todos.findIndex(todo => todo.id === todoId)

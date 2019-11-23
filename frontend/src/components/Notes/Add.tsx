@@ -14,8 +14,8 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import React from 'react'
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
-import { addNote } from '../../actions/notes'
+import { notesReqActions } from '../../actions/notes-req'
+import { TkDispatch } from '../../utils/redux-utils'
 
 const styles = (theme: Theme) => createStyles({
     fab: {
@@ -105,8 +105,8 @@ class NotesAddView extends React.PureComponent<NotesAddViewProps, NotesAddViewSt
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    addNote: (name: string) => dispatch(addNote(name))
+const mapDispatchToProps = (dispatch: TkDispatch) => ({
+    addNote: (name: string) => dispatch(notesReqActions.addNote(name))
 })
 
 export const NotesAdd = connect(

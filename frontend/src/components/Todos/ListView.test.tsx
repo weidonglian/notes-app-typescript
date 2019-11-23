@@ -1,6 +1,6 @@
-import React from 'react';
-import { TodosListView } from './ListView';
+import React from 'react'
 import { render } from '../../utils/test-utils'
+import { TodosListView } from './ListView'
 
 describe('TodosListView', () => {
     test('should show the correct items', () => {
@@ -10,8 +10,8 @@ describe('TodosListView', () => {
             name: item,
             done: false
         }))
-        const t = render(<TodosListView todos={todos} toggleTodo={toggleTodoMock} />)
-        t.debug(t.container)
+        const t = render(<TodosListView todos={todos} toggleTodo={toggleTodoMock}/>)
+        //t.debug(t.container)
         expect(t.container).toHaveTextContent('todo1todo3todo2')
-    });
+    })
 })

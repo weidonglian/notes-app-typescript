@@ -1,5 +1,3 @@
-import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-
 export interface Todo {
     id: number,
     name: string,
