@@ -1,3 +1,5 @@
+import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+
 export interface Todo {
     id: number,
     name: string,
@@ -13,4 +15,19 @@ export interface Note {
     name: string,
     todos: Todo[],
     visibility: NoteVisibility
+}
+
+export enum ApiId {
+    ADD_NOTE,
+    DELETE_NODE,
+    ADD_TODO,
+    DELETE_TODO
+}
+
+export interface ApiRequest {
+    id: ApiId
+    config: AxiosRequestConfig
+    withAuth: boolean
+    onData: (data: any) => void
+    onError: (error: any) => void
 }
