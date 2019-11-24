@@ -1,5 +1,5 @@
 import { checkJwt, checkRole } from '../../validator/auth'
-import UserController from './UserController'
+import { UsersController } from './UsersController'
 
 export default [
     {
@@ -8,7 +8,7 @@ export default [
         handler: [
             checkJwt,
             checkRole(['ADMIN']),
-            UserController.listAll
+            UsersController.listAll
         ]
     },
     {
@@ -17,7 +17,7 @@ export default [
         handler: [
             checkJwt,
             checkRole(['ADMIN']),
-            UserController.getOneById
+            UsersController.getOneById
         ]
     },
     {
@@ -26,7 +26,7 @@ export default [
         handler: [
             checkJwt,
             checkRole(['ADMIN']),
-            UserController.editUser
+            UsersController.editUser
         ]
     },
     {
@@ -35,7 +35,7 @@ export default [
         handler: [
             checkJwt,
             checkRole(['ADMIN']),
-            UserController.deleteUser
+            UsersController.deleteUser
         ]
     }
 ]

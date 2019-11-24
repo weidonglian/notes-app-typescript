@@ -5,7 +5,7 @@ import { getRepository } from 'typeorm'
 import { User } from '../../entity/User'
 import { HttpStatusCode } from '../../util/httpErrors'
 
-class UserController {
+export class UsersController {
 
     static listAll = async (req: Request, res: Response) => {
         //Get users from database
@@ -121,5 +121,3 @@ class UserController {
         res.status(HttpStatusCode.Success).send()
     }
 }
-
-export default UserController

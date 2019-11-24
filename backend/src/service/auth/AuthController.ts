@@ -6,6 +6,7 @@ import { appConfig } from '../../config/config'
 
 import { User } from '../../entity/User'
 import { HttpErrorBadRequest, HttpStatusCode } from '../../util/httpErrors'
+import { getUserFromRequest } from '../../util/user'
 
 class AuthController {
     static ping = async (req: Request, res: Response) => {
@@ -46,18 +47,13 @@ class AuthController {
     }
 
     static changePassword = async (req: Request, res: Response) => {
-        //Get ID from JWT
-        const id = res.locals.jwtPayload.userId
-
         //Get parameters from the body
         const { oldPassword, newPassword } = req.body
         if (!(oldPassword && newPassword)) {
             throw new HttpErrorBadRequest('old or new password are empty')
         }
 
-        //Get user from the database
-        const userRepository = getRepository(User)
-        const user: User = await userRepository.findOneOrFail(id)
+        const user = await getUserFromRequest(req, res)
         //Check if old password matchs
         if (!user.checkIfUnencryptedPasswordIsValid(oldPassword)) {
             throw new HttpErrorBadRequest('old password is not matching to the new one')
@@ -71,6 +67,7 @@ class AuthController {
         }
         //Hash the new password and save
         user.hashPassword()
+        const userRepository = getRepository(User)
         userRepository.save(user)
 
         res.status(HttpStatusCode.Success).send()

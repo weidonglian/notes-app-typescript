@@ -1,5 +1,6 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
 import { Todo } from './Todo';
+import { User } from './User';
 
 @Entity()
 export class Note extends BaseEntity {
@@ -8,6 +9,9 @@ export class Note extends BaseEntity {
 
     @Column()
     name: string
+
+    @ManyToOne(type => User, user => user.notes)
+    user: User
 
     @OneToMany(type => Todo, todo => todo.note, {
         cascade: true

@@ -11,17 +11,17 @@ export const applyMiddleware = (
     }
 }
 
-type Handler = (
+export type Handler = (
     req: Request,
     res: Response,
     next: NextFunction
 ) => Promise<void> | void;
 
-type Route = {
+export type Route = {
     path: string;
     method: string;
     handler: Handler | Handler[];
-};
+}
 
 export const applyRoutes = (routes: Route[], router: Router, basePath: string) => {
     for (const route of routes) {

@@ -1,7 +1,8 @@
 import * as bcrypt from 'bcryptjs'
 import { IsNotEmpty, Length } from 'class-validator'
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn, OneToMany } from 'typeorm'
 import { BaseEntity } from './BaseEntity'
+import { Note } from './Note'
 
 @Entity()
 @Unique(['username'])
@@ -20,6 +21,9 @@ export class User extends BaseEntity {
     @Column()
     @IsNotEmpty()
     role: string
+
+    @OneToMany(type => Note, note => note.user)
+    notes: Note[]
 
     hashPassword() {
         this.password = bcrypt.hashSync(this.password, 8)

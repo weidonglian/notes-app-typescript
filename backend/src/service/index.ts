@@ -1,9 +1,11 @@
-import authRoutes from './auth/routes'
-import searchRoutes from './search/routes'
-import userRoutes from './users/routes'
+import auth from './auth/routes'
+import search from './search/routes'
+import users from './users/routes'
+import notes from './notes/routes'
 
 export default [
-    ...userRoutes,
-    ...authRoutes,
-    ...searchRoutes
+    ...auth,
+    ...search,
+    ...users,
+    ...notes,
 ]
