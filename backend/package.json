@@ -14,6 +14,7 @@
     "prod-typeorm": "tsc && APP_MODE=prod node ./node_modules/typeorm/cli.js --config src/config/ormconfig.prod",
     "start": "npm run dev-start",
     "test": "APP_MODE=test jest --runInBand",
+    "test-watch": "APP_MODE=test jest --runInBand --watchAll",
     "postinstall": "npx tsc"
   },
   "jest": {

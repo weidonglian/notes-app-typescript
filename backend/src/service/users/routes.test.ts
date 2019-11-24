@@ -3,7 +3,7 @@ import { testAppShutdown, testAppWithLoginTestUser, TestAppWithTokens, makeAuthH
 import { HttpStatusCode } from '../../util/httpErrors'
 import { AxiosRequestConfig } from 'axios'
 
-describe('service /user GET', () => {
+describe('service /users GET', () => {
     let app: TestAppWithTokens
     let authOptions: AxiosRequestConfig
     let adminAuthOptions: AxiosRequestConfig
@@ -19,18 +19,18 @@ describe('service /user GET', () => {
         await testAppShutdown(app)
     })
 
-    test('GET /user invalid token', async () => {
-        let rsp = await axiosist(app.express).get('/api/v1/user', invalidAuthOptions)
+    test('GET /users invalid token', async () => {
+        let rsp = await axiosist(app.express).get('/api/v1/users', invalidAuthOptions)
         expect(rsp.status).toBe(HttpStatusCode.Unauthorized)
     })
 
-    test('GET /user valid token but admin', async () => {
-        let rsp = await axiosist(app.express).get('/api/v1/user', authOptions)
+    test('GET /users valid token but admin', async () => {
+        let rsp = await axiosist(app.express).get('/api/v1/users', authOptions)
         expect(rsp.status).toBe(HttpStatusCode.Forbidden)
     })
 
-    test('GET /user valid admin token', async () => {
-        let rsp = await axiosist(app.express).get('/api/v1/user', adminAuthOptions)
+    test('GET /users valid admin token', async () => {
+        let rsp = await axiosist(app.express).get('/api/v1/users', adminAuthOptions)
         expect(rsp.status).toBe(HttpStatusCode.Success)
         const users = rsp.data
         expect(users).toBeDefined()
@@ -38,19 +38,19 @@ describe('service /user GET', () => {
         expect(users.length).toBeGreaterThanOrEqual(2)
     })
 
-    test('GET /user/:id', async () => {
+    test('GET /users/:id', async () => {
         let rsp = await axiosist(app.express)
-            .get('/api/v1/user/1')
+            .get('/api/v1/users/1')
         expect(rsp.status).toBe(HttpStatusCode.Unauthorized)
 
-        rsp = await axiosist(app.express).get('/api/v1/user/1', adminAuthOptions)
+        rsp = await axiosist(app.express).get('/api/v1/users/1', adminAuthOptions)
         expect(rsp.status).toBe(HttpStatusCode.Success)
         let user = rsp.data
         expect(user).toBeDefined()
         expect(user).toHaveProperty('username', 'test')
         expect(user).toHaveProperty('role', 'USER')
 
-        rsp = await axiosist(app.express).get('/api/v1/user/2', adminAuthOptions)
+        rsp = await axiosist(app.express).get('/api/v1/users/2', adminAuthOptions)
         expect(rsp.status).toBe(HttpStatusCode.Success)
         user = rsp.data
         expect(user).toBeDefined()
@@ -59,7 +59,7 @@ describe('service /user GET', () => {
     })
 })
 
-describe('service /user patch and delete', () => {
+describe('service /users patch and delete', () => {
     let app: TestAppWithTokens
     let authOptions: AxiosRequestConfig
     let adminAuthOptions: AxiosRequestConfig
@@ -75,8 +75,8 @@ describe('service /user patch and delete', () => {
         await testAppShutdown(app)
     })
 
-    test('PATCH /user', async () => {
-        let rsp = await axiosist(app.express).patch('/api/v1/user/1', {
+    test('PATCH /users', async () => {
+        let rsp = await axiosist(app.express).patch('/api/v1/users/1', {
             username: 'newtest',
             role: 'ADMIN'
         }, adminAuthOptions)
@@ -87,9 +87,9 @@ describe('service /user patch and delete', () => {
         expect(user).toHaveProperty('role', 'ADMIN')
     })
 
-    test('DELETE /user', async () => {
+    test('DELETE /users', async () => {
         // before
-        let rsp = await axiosist(app.express).get('/api/v1/user', adminAuthOptions)
+        let rsp = await axiosist(app.express).get('/api/v1/users', adminAuthOptions)
         expect(rsp.status).toBe(HttpStatusCode.Success)
         let users = rsp.data
         //console.log(users)
@@ -98,11 +98,11 @@ describe('service /user patch and delete', () => {
         const numOfUsersBefore = users.length
 
         // delete now
-        rsp = await axiosist(app.express).delete('/api/v1/user/1', adminAuthOptions)
+        rsp = await axiosist(app.express).delete('/api/v1/users/1', adminAuthOptions)
         expect(rsp.status).toBe(HttpStatusCode.Success)
 
         // after
-        rsp = await axiosist(app.express).get('/api/v1/user', adminAuthOptions)
+        rsp = await axiosist(app.express).get('/api/v1/users', adminAuthOptions)
         expect(rsp.status).toBe(HttpStatusCode.Success)
         users = rsp.data
         //console.log(users)
