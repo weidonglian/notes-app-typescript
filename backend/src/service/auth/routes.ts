@@ -1,4 +1,4 @@
-import { checkJwt } from '../../validator/auth'
+import { checkJwt } from '../../validator'
 import AuthController from './AuthController'
 
 export default [

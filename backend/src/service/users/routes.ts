@@ -1,4 +1,4 @@
-import { checkJwt, checkRole } from '../../validator/auth'
+import { checkJwt, checkRole } from '../../validator'
 import { UsersController } from './UsersController'
 
 export default [

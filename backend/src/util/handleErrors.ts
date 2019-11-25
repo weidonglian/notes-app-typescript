@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { HttpClientError, HttpErrorNotFound, HttpStatusCode } from './httpErrors'
 import appConfig, { AppMode } from '../config/config'
+import { ValidationError } from 'class-validator'
 
 // Just throw the client side error unknowns requests
 export const notFoundError = (req: Request, res: Response) => {
@@ -10,6 +11,8 @@ export const notFoundError = (req: Request, res: Response) => {
 export const clientError = (err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof HttpClientError) {
         res.status(err.statusCode).send(err.message)
+    } else if (err instanceof ValidationError) {
+        res.status(HttpStatusCode.BadRequest).send(err)
     } else {
         next(err)
     }

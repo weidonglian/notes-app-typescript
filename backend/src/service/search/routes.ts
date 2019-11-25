@@ -1,5 +1,4 @@
-import { checkJwt } from '../../validator/auth'
-import { checkSearchParams } from '../../validator/search'
+import { checkJwt, checkSearchParams } from '../../validator'
 import { SearchController } from './SearchController'
 
 export default [

@@ -4,12 +4,27 @@ import { getRepository } from 'typeorm'
 import { appConfig } from '../config/config'
 import { User } from '../entity/User'
 import { HttpErrorBadRequest, HttpErrorForbidden, HttpErrorUnauthorized } from './httpErrors'
+import { ValidatorOptions } from 'class-validator'
+import { transformAndValidateSync } from 'class-transformer-validator'
 
 const checkSearchParams = (req: Request, res: Response, next: NextFunction) => {
     if (!req.query.q) {
         throw new HttpErrorBadRequest('Missing q parameter')
     } else {
         next()
+    }
+}
+
+function checkBody<T>(t: T, validatorOptions?: ValidatorOptions) {
+    return function(req: Request, res: Response, next: NextFunction) {
+        if (!req.body)
+            throw new HttpErrorBadRequest('checkBody: No request body found')
+        try {
+            req.body = transformAndValidateSync(t as any, req.body, { validator: validatorOptions })
+            next()
+        } catch(error) {
+            throw new HttpErrorBadRequest(`checkBody: ${error}`)
+        }
     }
 }
 
@@ -69,7 +84,7 @@ const checkRole = (roles: Array<string>) => {
 }
 
 const handleChecks = {
-    checkJwt, checkRole, checkSearchParams
+    checkJwt, checkRole, checkBody, checkSearchParams
 }
 
 export default handleChecks

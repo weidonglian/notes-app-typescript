@@ -1,5 +1,5 @@
 import { Route } from '../../util/index'
-import { checkJwt } from '../../validator/auth'
+import { checkJwt } from '../../validator'
 import { NotesController } from './NotesController'
 
 const routes: Route[] = [
