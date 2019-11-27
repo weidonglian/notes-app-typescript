@@ -7,14 +7,6 @@ import { HttpErrorBadRequest, HttpErrorForbidden, HttpErrorUnauthorized } from '
 import { ValidatorOptions } from 'class-validator'
 import { transformAndValidateSync } from 'class-transformer-validator'
 
-const checkSearchParams = (req: Request, res: Response, next: NextFunction) => {
-    if (!req.query.q) {
-        throw new HttpErrorBadRequest('Missing q parameter')
-    } else {
-        next()
-    }
-}
-
 function checkBody<T>(t: T, validatorOptions?: ValidatorOptions) {
     return function(req: Request, res: Response, next: NextFunction) {
         if (!req.body)
@@ -84,7 +76,7 @@ const checkRole = (roles: Array<string>) => {
 }
 
 const handleChecks = {
-    checkJwt, checkRole, checkBody, checkSearchParams
+    checkJwt, checkRole, checkBody
 }
 
 export default handleChecks

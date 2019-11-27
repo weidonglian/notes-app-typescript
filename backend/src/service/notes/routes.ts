@@ -10,6 +10,30 @@ const routes: Route[] = [
             checkJwt,
             NotesController.getNotes
         ]
+    },
+    {
+        path: '/notes',
+        method: 'post',
+        handler: [
+            checkJwt,
+            NotesController.postNotes
+        ]
+    },
+    {
+        path: '/notes',
+        method: 'put',
+        handler: [
+            checkJwt,
+            NotesController.putNotes
+        ]
+    },
+    {
+        path: '/notes',
+        method: 'delete',
+        handler: [
+            checkJwt,
+            NotesController.deleteNotes
+        ]
     }
 ]
 

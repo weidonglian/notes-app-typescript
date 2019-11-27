@@ -1,14 +1,16 @@
-import { checkJwt, checkSearchParams } from '../../validator'
+import { checkJwt } from '../../validator'
 import { SearchController } from './SearchController'
+import { Route } from '../../util'
 
-export default [
+const routes: Route[] = [
     {
         path: '/search',
         method: 'get',
         handler: [
             checkJwt,
-            checkSearchParams,
             SearchController.search
         ]
     }
 ]
+
+export default routes;

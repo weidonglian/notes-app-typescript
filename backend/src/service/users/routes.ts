@@ -1,7 +1,8 @@
 import { checkJwt, checkRole } from '../../validator'
 import { UsersController } from './UsersController'
+import { Route } from '../../util'
 
-export default [
+const routes: Route[] = [
     {
         path: '/users',
         method: 'get',
@@ -39,3 +40,5 @@ export default [
         ]
     }
 ]
+
+export default routes

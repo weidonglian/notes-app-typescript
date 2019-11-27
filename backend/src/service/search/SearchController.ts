@@ -1,10 +1,13 @@
 import { Request, Response } from 'express'
 import { getPlaces } from './providers/OpenCageDataProvider'
-import { HttpStatusCode } from '../../util/httpErrors'
+import { HttpStatusCode, HttpErrorBadRequest } from '../../util/httpErrors'
+import { classValidator } from '../../validator'
 
 export class SearchController {
     static search = async (req: Request, res: Response) => {
         const { query } = req
+        if (classValidator.isEmpty(query.q))
+            throw new HttpErrorBadRequest('Missing q parameter')
         if (query.q.length < 3) {
             return {
                 type: 'FeatureCollection',
