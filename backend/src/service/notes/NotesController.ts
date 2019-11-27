@@ -2,19 +2,17 @@ import { User } from '../../entity/User'
 import { getRepository } from 'typeorm'
 import { Response, Request } from 'express'
 import { getUserFromRequest } from '../../util/user'
-import { transformAndValidate } from 'class-transformer-validator'
 import { Note } from '../../entity/Note'
-import { makeArray } from '../../util/collection'
-import { deserialize } from 'class-transformer'
-import { validateOrReject, validateSync } from 'class-validator'
-import { classValidator, checkNotEmpty } from '../../validator'
-import { HttpErrorBadRequest, HttpStatusCode } from '../../util/httpErrors'
+import { plainToClass } from 'class-transformer'
+import { validateOrReject } from 'class-validator'
+import { checkNotEmpty } from '../../validator'
+import { HttpStatusCode } from '../../util/httpErrors'
 
 export class NotesController {
 
     static postNotes = async (req: Request, res: Response) => {
         const user = await getUserFromRequest(req, res)
-        const note = await deserialize(Note, req.body)
+        const note = plainToClass(Note, req.body)
         note.user = user
         await validateOrReject(note)
         const notesRepo = getRepository(Note)
@@ -26,7 +24,9 @@ export class NotesController {
         //Get users from database
         const user = await getUserFromRequest(req, res)
         const notesRepo = getRepository(Note)
-        const notes = await notesRepo.find({ user })
+        const notes = await notesRepo.find({
+            user: user
+        })
         //Send the users object
         res.send(notes)
     }
