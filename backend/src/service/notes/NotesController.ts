@@ -1,20 +1,17 @@
-import { User } from '../../entity/User'
 import { getRepository } from 'typeorm'
 import { Response, Request } from 'express'
 import { getUserFromRequest } from '../../util/user'
 import { Note } from '../../entity/Note'
-import { plainToClass } from 'class-transformer'
-import { validateOrReject } from 'class-validator'
 import { checkNotEmpty } from '../../validator'
 import { HttpStatusCode } from '../../util/httpErrors'
+import { transformAndValidate } from 'class-transformer-validator'
 
 export class NotesController {
 
     static postNotes = async (req: Request, res: Response) => {
         const user = await getUserFromRequest(req, res)
-        const note = plainToClass(Note, req.body)
+        const note = await transformAndValidate(Note, req.body as object)
         note.user = user
-        await validateOrReject(note)
         const notesRepo = getRepository(Note)
         await notesRepo.save(note)
         res.send(note)

@@ -20,7 +20,7 @@ const routes: Route[] = [
         ]
     },
     {
-        path: '/notes',
+        path: '/notes/:id([0-9]+)',
         method: 'put',
         handler: [
             checkJwt,
@@ -28,7 +28,7 @@ const routes: Route[] = [
         ]
     },
     {
-        path: '/notes',
+        path: '/notes/:id([0-9]+)',
         method: 'delete',
         handler: [
             checkJwt,
