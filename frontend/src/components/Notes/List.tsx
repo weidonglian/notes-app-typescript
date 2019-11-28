@@ -1,7 +1,7 @@
 import { makeStyles, Theme, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { notesReqActions } from '../../actions/notes-req'
 import { Note } from '../../models'
@@ -30,14 +30,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface NotesListViewProps {
     notes: Note[],
+    reinitNotes: () => void,
     toggleTodo: (noteId: number, todoId: number) => void,
     addTodo: (noteId: number, todoName: string) => void
 }
 
-const NotesListView = ({ notes, toggleTodo, addTodo }: NotesListViewProps) => {
+const NotesListView = ({ notes, toggleTodo, addTodo, reinitNotes }: NotesListViewProps) => {
 
     const classes = useStyles()
     const [editingNoteId, setEditingNoteId] = React.useState(-1)
+
+    useEffect(() => {
+        reinitNotes()
+    });
 
     return (
         <Grid container spacing={2} className={classes.root}>
@@ -64,6 +69,7 @@ const mapStateToProps = (appState: AppState) => ({
 })
 
 const mapDispatchToProps = (dispatch: TkDispatch) => ({
+    reinitNotes: () => dispatch(notesReqActions.reinitNotes()),
     addTodo: (noteId: number, todoName: string) => dispatch(notesReqActions.addTodo(noteId, todoName)),
     toggleTodo: (todoId: number) => dispatch(notesReqActions.toggleTodo(todoId))
 })

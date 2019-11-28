@@ -1,8 +1,11 @@
 import { Action } from 'redux'
 import { Note, NoteVisibility, Todo } from '../models'
+import { NotesState } from '../reducers/notes'
 
 /// Types
 export enum NotesActionTypes {
+    REINIT_NOTES,
+
     ADD_NOTE,
     CHANGE_NOTE_VISIBILITY,
 
@@ -11,6 +14,13 @@ export enum NotesActionTypes {
 }
 
 /// Actions
+export interface ReinitNotesAction extends Action {
+    type: NotesActionTypes.REINIT_NOTES,
+    payload: {
+        notesState: NotesState
+    }
+}
+
 export interface AddNoteAction extends Action {
     type: NotesActionTypes.ADD_NOTE,
     payload: {
@@ -47,6 +57,12 @@ export interface UpdateTodoAction extends Action {
 export type NotesAction = AddNoteAction | ChangeNoteVisibilityAction | AddTodoAction | UpdateTodoAction
 
 /// Action creators
+const reinitNotes = (notesState: NotesState): ReinitNotesAction => ({
+    type: NotesActionTypes.REINIT_NOTES,
+    payload: {
+        notesState
+    }
+})
 
 const addNote = (id: number, name: string): AddNoteAction => {
     return {
@@ -95,6 +111,7 @@ const updateTodo = (noteId: number, todoId: number, done: boolean, name: string)
 }
 
 export const notesActions = {
+    reinitNotes,
     addNote,
     changeNoteVisibility,
     addTodo,

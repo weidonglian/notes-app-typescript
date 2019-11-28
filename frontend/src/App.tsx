@@ -1,5 +1,6 @@
+import 'reflect-metadata'
 import React from 'react'
-import { ScreenNotes } from './screens/Notes'
+import { ScreenNotes } from './pages/Notes'
 
 export class App extends React.Component<{}> {
     render() {

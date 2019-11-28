@@ -1,6 +1,22 @@
 import { TkDispatch } from '../utils/redux-utils'
 import { apiClient } from '../utils/request-utils'
 import { notesActions } from './notes'
+import { plainToClass } from 'class-transformer'
+import { Note } from '../models'
+
+const reinitNotes = () => async (dispatch: TkDispatch) => {
+    const respLogin = await apiClient.post('/auth/login', {
+        username: 'dev',
+        password: 'dev'
+    })
+    const { token } = respLogin.data
+    apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    console.log(token)
+    const resp = await apiClient.get('/notes')
+    const notes = plainToClass(Note, resp.data as object[])
+    console.log(notes)
+    dispatch(notesActions.reinitNotes({notes}))
+}
 
 const addNote = (name: string) => async (dispatch: TkDispatch) => {
     // first add it to server and then add to actual note
@@ -24,6 +40,7 @@ const toggleTodo = (id: number) => async (dispatch: TkDispatch) => {
 }
 
 export const notesReqActions = {
+    reinitNotes,
     addNote,
     addTodo,
     updateTodoName,

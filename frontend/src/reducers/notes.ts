@@ -1,5 +1,5 @@
 import iassign from 'immutable-assign'
-import { NotesAction, notesActions, NotesActionTypes } from '../actions/notes'
+import { NotesAction, NotesActionTypes } from '../actions/notes'
 import { Note } from '../models'
 
 /// state definition
@@ -9,7 +9,8 @@ export interface NotesState {
 
 /// init state
 export const initialNotesState: NotesState = {
-    notes: ['First Note', 'Second Note', 'Third Note'].map((name, id) => notesActions.addNote(id, name).payload.note)
+    //notes: ['First Note', 'Second Note', 'Third Note'].map((name, id) => notesActions.addNote(id, name).payload.note)
+    notes: []
 }
 
 /// reducer
