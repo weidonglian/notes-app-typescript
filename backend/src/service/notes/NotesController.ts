@@ -22,7 +22,12 @@ export class NotesController {
         const user = await getUserFromRequest(req, res)
         const notesRepo = getRepository(Note)
         const notes = await notesRepo.find({
-            user: user
+            where: {
+                user: user
+            },
+            relations: [
+                'todos'
+            ]
         })
         //Send the users object
         res.send(notes)
