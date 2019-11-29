@@ -54,7 +54,7 @@ export interface UpdateTodoAction extends Action {
     }
 }
 
-export type NotesAction = AddNoteAction | ChangeNoteVisibilityAction | AddTodoAction | UpdateTodoAction
+export type NotesAction = ReinitNotesAction | AddNoteAction | ChangeNoteVisibilityAction | AddTodoAction | UpdateTodoAction
 
 /// Action creators
 const reinitNotes = (notesState: NotesState): ReinitNotesAction => ({

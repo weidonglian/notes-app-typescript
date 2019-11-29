@@ -42,7 +42,7 @@ const NotesListView = ({ notes, toggleTodo, addTodo, reinitNotes }: NotesListVie
 
     useEffect(() => {
         reinitNotes()
-    });
+    }, [reinitNotes]);
 
     return (
         <Grid container spacing={2} className={classes.root}>

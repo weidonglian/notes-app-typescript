@@ -1,17 +1,17 @@
 import { TkDispatch } from '../utils/redux-utils'
-import { apiClient } from '../utils/request-utils'
+import { apiClient } from '../services/request'
 import { notesActions } from './notes'
 import { plainToClass } from 'class-transformer'
 import { Note } from '../models'
 
 const reinitNotes = () => async (dispatch: TkDispatch) => {
+    // TODO Move the code to login actions
     const respLogin = await apiClient.post('/auth/login', {
         username: 'dev',
         password: 'dev'
     })
     const { token } = respLogin.data
     apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    console.log(token)
     const resp = await apiClient.get('/notes')
     const notes = plainToClass(Note, resp.data as object[])
     console.log(notes)

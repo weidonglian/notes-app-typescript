@@ -16,6 +16,10 @@ export const initialNotesState: NotesState = {
 /// reducer
 export const notesReducer = (state: NotesState = initialNotesState, action: NotesAction): NotesState => {
     switch (action.type) {
+        case NotesActionTypes.REINIT_NOTES: {
+            return action.payload.notesState
+        }
+
         case NotesActionTypes.ADD_TODO: {
             const { noteId, todo } = action.payload
             const noteIndex = state.notes.findIndex(note => note.id === noteId)
