@@ -26,6 +26,7 @@ const addNote = (name: string) => async (dispatch: TkDispatch) => {
 
 const addTodo = (noteId: number, name: string) => async (dispatch: TkDispatch) => {
     const resp = await apiClient.post('/todos', { noteId, name })
+    console.log(resp.data)
     dispatch(notesActions.addTodo(resp.data.id, resp.data.noteId, resp.data.name))
 }
 
