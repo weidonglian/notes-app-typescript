@@ -14,7 +14,6 @@ const reinitNotes = () => async (dispatch: TkDispatch) => {
     apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`
     const resp = await apiClient.get('/notes')
     const notes = plainToClass(Note, resp.data as object[])
-    console.log(notes)
     dispatch(notesActions.reinitNotes({notes}))
 }
 
@@ -26,7 +25,6 @@ const addNote = (name: string) => async (dispatch: TkDispatch) => {
 
 const addTodo = (noteId: number, name: string) => async (dispatch: TkDispatch) => {
     const resp = await apiClient.post('/todos', { noteId, name })
-    console.log(resp.data)
     dispatch(notesActions.addTodo(resp.data.id, resp.data.noteId, resp.data.name))
 }
 
@@ -35,9 +33,10 @@ const updateTodoName = (id: number, name: string) => async (dispatch: TkDispatch
     dispatch(notesActions.updateTodo(resp.data.todoId, resp.data.noteId, resp.data.done, resp.data.name))
 }
 
-const toggleTodo = (id: number) => async (dispatch: TkDispatch) => {
+const toggleTodo = (id: number, noteId: number) => async (dispatch: TkDispatch) => {
     const resp = await apiClient.put(`/todos/${id}/toggle_done`)
-    dispatch(notesActions.updateTodo(resp.data.todoId, resp.data.noteId, resp.data.done, resp.data.name))
+    console.log(resp.data)
+    dispatch(notesActions.updateTodo(noteId, resp.data.id, resp.data.done, resp.data.name))
 }
 
 export const notesReqActions = {

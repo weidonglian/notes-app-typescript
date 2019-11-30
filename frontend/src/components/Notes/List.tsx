@@ -71,7 +71,7 @@ const mapStateToProps = (appState: AppState) => ({
 const mapDispatchToProps = (dispatch: TkDispatch) => ({
     reinitNotes: () => dispatch(notesReqActions.reinitNotes()),
     addTodo: (noteId: number, todoName: string) => dispatch(notesReqActions.addTodo(noteId, todoName)),
-    toggleTodo: (todoId: number) => dispatch(notesReqActions.toggleTodo(todoId))
+    toggleTodo: (noteId: number, todoId: number) => dispatch(notesReqActions.toggleTodo(todoId, noteId))
 })
 
 export const NotesList = connect(

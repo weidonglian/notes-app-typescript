@@ -34,9 +34,9 @@ export const notesReducer = (state: NotesState = initialNotesState, action: Note
         }
 
         case NotesActionTypes.UPDATE_TODO: {
-            const { noteId, todoId } = action.payload
+            const { noteId, id } = action.payload
             const noteIndex = state.notes.findIndex(note => note.id === noteId)
-            const todoIndex = state.notes[noteIndex].todos.findIndex(todo => todo.id === todoId)
+            const todoIndex = state.notes[noteIndex].todos.findIndex(todo => todo.id === id)
             return iassign(state,
                 s => s.notes[noteIndex].todos[todoIndex],
                 t => {

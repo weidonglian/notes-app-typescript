@@ -48,7 +48,7 @@ export interface UpdateTodoAction extends Action {
     type: NotesActionTypes.UPDATE_TODO,
     payload: {
         noteId: number
-        todoId: number
+        id: number
         done: boolean
         name: string
     }
@@ -101,11 +101,11 @@ const addTodo = (id: number, noteId: number, name: string): AddTodoAction => {
     }
 }
 
-const updateTodo = (noteId: number, todoId: number, done: boolean, name: string): UpdateTodoAction => {
+const updateTodo = (noteId: number, id: number, done: boolean, name: string): UpdateTodoAction => {
     return {
         type: NotesActionTypes.UPDATE_TODO,
         payload: {
-            noteId, todoId, done, name
+            noteId, id, done, name
         }
     }
 }
