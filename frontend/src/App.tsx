@@ -13,7 +13,9 @@ export const App = () => {
             <Switch>
                 <Route exact path='/' component={HomePage} />
                 <Route exact path='/signup' component={SignupPage} />
-                <RestrictedRoute exact path='/login' component={LoginPage} />
+                <RestrictedRoute>
+                    <Route exact path='/login' component={LoginPage} />
+                </RestrictedRoute>
                 <PrivateRoute>
                     <Route exact path='/notes' component={NotesPage} />
                 </PrivateRoute>
