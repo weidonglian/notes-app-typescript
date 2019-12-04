@@ -4,7 +4,7 @@ import axiosist from 'axiosist'
 import { App, createApp, shutdownApp } from '../../app'
 import handleChecks from '../../util/handleChecks'
 import { HttpStatusCode } from '../../util/httpErrors'
-import { testAppWithTestUser, TestApp, testAppShutdown, testAppWithLoginTestUser, TestAppWithTokens, makeAuthHeaderOptions } from '../../testutil/testapp'
+import { testAppWithTestUser, TestApp, testAppShutdown, testAppWithLoginTestUser, TestAppWithTokens, makeAuthHeaderOptions } from '../../testutil/testApp'
 import moxios from 'moxios'
 
 

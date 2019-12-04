@@ -1,5 +1,5 @@
 import axiosist from 'axiosist'
-import { testAppShutdown, testAppWithTestUser, TestApp, makeAuthHeaderOptions } from '../../testutil/testapp'
+import { testAppShutdown, testAppWithTestUser, TestApp, makeAuthHeaderOptions } from '../../testutil/testApp'
 import { HttpStatusCode } from '../../util/httpErrors'
 
 describe('service /auth', () => {

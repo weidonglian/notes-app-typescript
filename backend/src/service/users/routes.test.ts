@@ -1,5 +1,5 @@
 import axiosist from 'axiosist'
-import { testAppShutdown, testAppWithLoginTestUser, TestAppWithTokens, makeAuthHeaderOptions } from '../../testutil/testapp'
+import { testAppShutdown, testAppWithLoginTestUser, TestAppWithTokens, makeAuthHeaderOptions } from '../../testutil/testApp'
 import { HttpStatusCode } from '../../util/httpErrors'
 import { AxiosRequestConfig } from 'axios'
 
