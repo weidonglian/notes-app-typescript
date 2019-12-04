@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 
 export const LoginPage: React.FC = () => {
 
-  const classes = useStyles();
+  const classes = useStyles()
   const history = useHistory()
   return (
     <Container component="main" maxWidth="xs">

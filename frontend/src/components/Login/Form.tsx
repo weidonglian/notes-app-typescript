@@ -1,10 +1,11 @@
 import React from 'react'
-import { Button, Grid, Link, makeStyles } from '@material-ui/core'
+import { Button, Grid, makeStyles, Link } from '@material-ui/core'
 import { TextField, CheckboxWithLabel } from 'formik-material-ui'
 import { Form, Field, FormikProps, withFormik } from 'formik'
 import * as yup from 'yup'
 import { auth } from '../../services/auth'
 import { History } from 'history'
+import { Link as RouterLink } from 'react-router-dom'
 
 const formValuesSchema = yup.object({
   username: yup
@@ -78,12 +79,12 @@ const FormView = (props: FormViewProps) => {
       </Button>
       <Grid container>
         <Grid item xs>
-          <Link href="#" variant="body2">
+          <Link to="/forgot-password" component={RouterLink} variant='body2'>
             Forgot password?
-        </Link>
+          </Link>
         </Grid>
         <Grid item>
-          <Link href="#" variant="body2">
+          <Link to="/signup" component={RouterLink} variant='body2'>
             {"Don't have an account? Sign Up"}
           </Link>
         </Grid>
