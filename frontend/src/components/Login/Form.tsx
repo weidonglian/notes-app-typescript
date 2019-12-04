@@ -3,6 +3,7 @@ import { Button, Grid, Link, makeStyles } from '@material-ui/core'
 import { TextField, CheckboxWithLabel } from 'formik-material-ui'
 import { Form, Field, FormikProps, withFormik } from 'formik'
 import * as yup from 'yup'
+import { auth } from '../../services/auth'
 
 const formValuesSchema = yup.object({
   username: yup
@@ -101,8 +102,8 @@ export const LoginForm = withFormik<LoginFormProps, FormValues>({
     password: '',
     remember: true
   }),
-  handleSubmit: values => {
-    console.log(values)
+  handleSubmit: async (values, {setSubmitting}) => {
+    await auth.login(values)
   },
   validationSchema: formValuesSchema
 })(FormView)

@@ -1,12 +1,12 @@
 import React from 'react'
 import {NotesList} from '../components/Notes/List'
-import {NotesHeader} from '../components/Notes/Header'
+import { NotesAdd } from '../components/Notes/Add'
 
 export class NotesPage extends React.Component {
     render() {
         return (
             <div>
-                <NotesHeader/>
+                <NotesAdd/>
                 <NotesList/>
             </div>
         )

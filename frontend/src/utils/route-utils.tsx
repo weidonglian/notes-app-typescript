@@ -8,7 +8,6 @@ export const PrivateRoute = (props: RouteProps) => (
     </Fragment>
 )
 
-
 export const RestrictedRoute = (props: RouteProps) => (
     <Fragment>
         {auth.isAuthenticated() ? <Redirect to='/' /> : props.children}

@@ -1,8 +1,8 @@
 import React from 'react'
-import { notesActions } from './actions/notes'
+import { notesActions } from '../../actions/notes'
 import { App } from './App'
-import { AppState, initialAppState } from './reducers'
-import { renderWithState } from './utils/test-utils'
+import { AppState, initialAppState } from '../../reducers'
+import { renderWithState } from '../../utils/test-utils'
 
 describe('App test', () => {
     test('renders without crashing', () => {
