@@ -1,7 +1,8 @@
-import { getRepository, MigrationInterface, QueryRunner } from 'typeorm'
-import { User } from '../entity/User'
+import {MigrationInterface, QueryRunner, getRepository} from "typeorm";
+import { User } from '../entity/User';
 
-export class CreateAdminUser1547919837483 implements MigrationInterface {
+export class AddDevUsers1575491804293 implements MigrationInterface {
+
     public async up(queryRunner: QueryRunner): Promise<any> {
         const users = [
             {
@@ -35,4 +36,5 @@ export class CreateAdminUser1547919837483 implements MigrationInterface {
 
     public async down(queryRunner: QueryRunner): Promise<any> {
     }
+
 }
