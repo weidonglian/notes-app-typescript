@@ -30,9 +30,9 @@ export const AppHeader = () => {
     const open = Boolean(anchorEl)
     const history = useHistory()
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       //setAuth(event.target.checked);
-    }
+    //}
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);

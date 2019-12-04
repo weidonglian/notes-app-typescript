@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { LoginForm } from '../components/Login/Form';
+import { useHistory } from 'react-router';
 
 const Copyright: React.FC = () => (
   <Typography variant="body2" color="textSecondary" align="center">
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 export const LoginPage: React.FC = () => {
 
   const classes = useStyles();
-
+  const history = useHistory()
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -47,7 +48,7 @@ export const LoginPage: React.FC = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <LoginForm />
+        <LoginForm history={history} />
       </div>
       <Box mt={8}>
         <Copyright />

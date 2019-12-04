@@ -4,6 +4,7 @@ import { TextField, CheckboxWithLabel } from 'formik-material-ui'
 import { Form, Field, FormikProps, withFormik } from 'formik'
 import * as yup from 'yup'
 import { auth } from '../../services/auth'
+import { History } from 'history'
 
 const formValuesSchema = yup.object({
   username: yup
@@ -36,7 +37,6 @@ interface FormViewProps extends FormikProps<FormValues> {
 const FormView = (props: FormViewProps) => {
   const classes = useStyles()
   const { submitForm } = props
-
   return (
     <Form className={classes.form}>
       <Field
@@ -93,7 +93,7 @@ const FormView = (props: FormViewProps) => {
 }
 
 interface LoginFormProps {
-
+  history: History
 }
 
 export const LoginForm = withFormik<LoginFormProps, FormValues>({
@@ -102,8 +102,9 @@ export const LoginForm = withFormik<LoginFormProps, FormValues>({
     password: '',
     remember: true
   }),
-  handleSubmit: async (values, {setSubmitting}) => {
+  handleSubmit: async (values, {props}) => {
     await auth.login(values)
+    props.history.push('/')
   },
   validationSchema: formValuesSchema
 })(FormView)
