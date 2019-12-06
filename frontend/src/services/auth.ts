@@ -1,6 +1,6 @@
 import { apiClient } from './request';
 
-export interface LoginContext {
+export interface LoginUser {
     username: string
     password: string
     remember?: boolean
@@ -12,9 +12,11 @@ export interface LoginCredentials {
     username: string
 }
 
-export interface RegisterContext {
-
+export interface SignupUser {
+    username: string
+    password: string
 }
+
 const credentialsKey = 'credentials'
 
 /**
@@ -31,21 +33,24 @@ export class AuthService {
         }
     }
 
-    async register(user: RegisterContext) {
-        return null;
+    signup(user: SignupUser) {
+        return apiClient.post('/auth/signup', {
+            username: user.username,
+            password: user.password
+        })
     }
 
-    async login(context: LoginContext) {
+    async login(user: LoginUser) {
         const respLogin = await apiClient.post('/auth/login', {
-            username: context.username,
-            password: context.password
+            username: user.username,
+            password: user.password
         })
         const { token } = respLogin.data
         this.setCredentials({
-            username: context.username,
+            username: user.username,
             access_token: token,
             refresh_token: token
-        }, context.remember)
+        }, user.remember)
     }
 
     logout() {

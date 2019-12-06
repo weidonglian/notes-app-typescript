@@ -50,6 +50,41 @@ class AuthController {
             token: token
         })
     }
+ 
+    static signup = async (req: Request,  res: Response) => {
+        let { username, password } = req.body
+        if (!(username && password)) {
+            throw new HttpErrorBadRequest('Unkown or empty username or password')
+        }
+
+        const userRepository = getRepository(User)
+
+        const count = await userRepository.count({
+            username: username
+        })
+
+        if (count > 0) {
+            throw new HttpErrorBadRequest('Already registered')
+        }
+
+        let user = new User()
+        user.username = username
+        user.password = password
+        user.role = 'USER'
+        user.hashPassword()
+        user.notes = []
+        //Validate de model (password lenght)
+        const errors = await validate(user)
+        if (errors.length > 0) {
+            throw new HttpErrorBadRequest(errors)
+        }
+        await userRepository.save(user)
+        res.status(HttpStatusCode.Success).send({
+            id: user.id, 
+            username: user.username, 
+            role: user.role
+        })
+    }
 
     static changePassword = async (req: Request, res: Response) => {
         //Get parameters from the body

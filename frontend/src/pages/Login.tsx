@@ -1,7 +1,6 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -9,17 +8,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { LoginForm } from '../components/Login/Form';
 import { useHistory } from 'react-router';
+import { Copyright } from '../components/UI/Copyright';
 
-const Copyright: React.FC = () => (
-  <Typography variant="body2" color="textSecondary" align="center">
-    {'Copyright © '}
-      <Link color="inherit" href="https://biosave.org">
-        Biosave
-      </Link>{' '}
-    {new Date().getFullYear()}
-    {'.'}
-  </Typography>
-)
 
 const useStyles = makeStyles(theme => ({
   paper: {

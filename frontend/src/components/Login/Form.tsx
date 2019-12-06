@@ -31,13 +31,9 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-interface FormViewProps extends FormikProps<FormValues> {
-
-}
-
-const FormView = (props: FormViewProps) => {
+const FormView = (props: FormikProps<FormValues>) => {
   const classes = useStyles()
-  const { submitForm } = props
+  const { submitForm, isSubmitting } = props
   return (
     <Form className={classes.form}>
       <Field
@@ -74,6 +70,7 @@ const FormView = (props: FormViewProps) => {
         color="primary"
         className={classes.submit}
         onClick={submitForm}
+        disabled={isSubmitting}
       >
         Sign In
       </Button>
@@ -103,9 +100,13 @@ export const LoginForm = withFormik<LoginFormProps, FormValues>({
     password: '',
     remember: true
   }),
-  handleSubmit: async (values, {props}) => {
-    await auth.login(values)
-    props.history.push('/')
+  handleSubmit: (values, {props, setSubmitting}) => {
+    console.log('login submitting...')
+    auth.login(values).then(() => {
+      props.history.push('/')
+    }).finally(() => {
+      setSubmitting(false)
+    })
   },
   validationSchema: formValuesSchema
 })(FormView)

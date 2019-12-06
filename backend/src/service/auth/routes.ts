@@ -18,6 +18,13 @@ export default [
         ]
     },
     {
+        path: '/auth/signup',
+        method: 'post',
+        handler: [
+            AuthController.signup
+        ]
+    },
+    {
         path: '/auth/password',
         method: 'post',
         handler: [
