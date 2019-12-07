@@ -101,11 +101,10 @@ export const LoginForm = withFormik<LoginFormProps, FormValues>({
     remember: true
   }),
   handleSubmit: (values, {props, setSubmitting}) => {
-    console.log('login submitting...')
     auth.login(values).then(() => {
       props.history.push('/')
-    }).finally(() => {
-      setSubmitting(false)
+    }).catch(error => {
+      console.log(error)
     })
   },
   validationSchema: formValuesSchema

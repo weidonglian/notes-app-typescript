@@ -124,11 +124,10 @@ export const SignupForm =withFormik<SignupFormProps, FormValues>({
     password: ''
   }),
   handleSubmit: (values, {props, setSubmitting}) => {
-    console.log('submitting')
-    auth.signup(values).then(data => {
+    auth.signup(values).then((data) => {
       props.histroy.push('/')
-    }).finally(() => {
-      setSubmitting(false)
+    }).catch(error => {
+      console.log(error)
     })
   },
   validationSchema: formValuesSchema
