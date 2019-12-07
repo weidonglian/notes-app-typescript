@@ -6,11 +6,13 @@ import { SignupPage } from '../../pages/Signup'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import { PrivateRoute, RestrictedRoute } from '../../utils/route-utils'
 import { AppHeader } from './Header'
+import { AppMessage } from './AppMessage'
 
 export const App = () => {
     return (
         <Router>
             <AppHeader />
+            <AppMessage />
             <Switch>
                 <Route exact path='/'>
                     <Redirect to='/notes' />

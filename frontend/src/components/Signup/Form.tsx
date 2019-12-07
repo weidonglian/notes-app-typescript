@@ -9,13 +9,14 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import { Link as RouterLink} from 'react-router-dom'
-import { Copyright } from '../UI/Copyright'
+import { Link as RouterLink, useHistory} from 'react-router-dom'
+import { Copyright } from '../App/Copyright'
 import * as yup from 'yup'
 import { TextField } from 'formik-material-ui'
-import { FormikProps, Form, Field, withFormik } from 'formik'
-import { History } from 'history'
+import { FormikProps, Form, Field, Formik } from 'formik'
 import { auth } from '../../services/auth'
+import { useDispatch } from 'react-redux'
+import { messageActions } from '../../actions/message'
 
 const formValuesSchema = yup.object({
   username: yup
@@ -114,21 +115,30 @@ const FormView = (props: FormikProps<FormValues>) => {
   )
 }
 
-interface SignupFormProps {
-  histroy: History
-}
-
-export const SignupForm =withFormik<SignupFormProps, FormValues>({
-  mapPropsToValues: () => ({
+export const SignupForm = () => {
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const initialValues: FormValues = {
     username: '',
     password: ''
-  }),
-  handleSubmit: (values, {props, setSubmitting}) => {
-    auth.signup(values).then((data) => {
-      props.histroy.push('/')
+  }
+
+  const handleSubmit = (values: FormValues) => {
+    auth.signup(values).then((response) => {
+      dispatch(messageActions.showMessage(`Signup for '${response.data.username}'  succeded`, 'success'))
+      history.push('/')
     }).catch(error => {
-      console.log(error)
+      dispatch(messageActions.showMessage(error, 'error'))
     })
-  },
-  validationSchema: formValuesSchema
-})(FormView)
+  }
+
+  return (
+    <Formik
+      initialValues = {initialValues}
+      onSubmit = {handleSubmit}
+      validationSchema = {formValuesSchema}
+    >
+      {props => <FormView {...props} />}
+    </Formik>
+  )
+}

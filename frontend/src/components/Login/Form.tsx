@@ -1,11 +1,12 @@
 import React from 'react'
 import { Button, Grid, makeStyles, Link } from '@material-ui/core'
 import { TextField, CheckboxWithLabel } from 'formik-material-ui'
-import { Form, Field, FormikProps, withFormik } from 'formik'
+import { Form, Field, FormikProps, Formik } from 'formik'
 import * as yup from 'yup'
 import { auth } from '../../services/auth'
-import { History } from 'history'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { messageActions } from '../../actions/message'
 
 const formValuesSchema = yup.object({
   username: yup
@@ -90,22 +91,30 @@ const FormView = (props: FormikProps<FormValues>) => {
   )
 }
 
-interface LoginFormProps {
-  history: History
-}
-
-export const LoginForm = withFormik<LoginFormProps, FormValues>({
-  mapPropsToValues: props => ({
+export const LoginForm = () => {
+  const history = useHistory()
+  const initialValues: FormValues = {
     username: '',
     password: '',
     remember: true
-  }),
-  handleSubmit: (values, {props, setSubmitting}) => {
+  }
+  const dispatch = useDispatch()
+  const handleSubmit = (values: FormValues) => {
     auth.login(values).then(() => {
-      props.history.push('/')
+      dispatch(messageActions.showMessage('Login succeded', 'success'))
+      history.push('/')
     }).catch(error => {
-      console.log(error)
+      //dispatch(messageActions.showMessage(error, 'error'))
     })
-  },
-  validationSchema: formValuesSchema
-})(FormView)
+  }
+
+  return (
+    <Formik
+      initialValues = {initialValues}
+      onSubmit = {handleSubmit}
+      validationSchema = {formValuesSchema}
+    >
+      {props => <FormView {...props} /> }
+    </Formik>
+  )
+}
