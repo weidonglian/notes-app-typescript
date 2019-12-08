@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
 
 import { User } from '../../entity/User'
-import { HttpStatusCode } from '../../util/httpErrors'
+import { HttpStatusCode, HttpErrorBadRequest, HttpErrorNotFound } from '../../util/httpErrors'
 
 export class UsersController {
 
@@ -30,7 +30,7 @@ export class UsersController {
             })
             res.send(user)
         } catch (error) {
-            res.status(404).send('User not found')
+            throw new HttpErrorNotFound('User not found')
         }
     }
 
@@ -45,8 +45,7 @@ export class UsersController {
         //Validade if the parameters are ok
         const errors = await validate(user)
         if (errors.length > 0) {
-            res.status(400).send(errors)
-            return
+            throw new HttpErrorBadRequest(errors)
         }
 
         //Hash the password, to securely store on DB
@@ -57,12 +56,14 @@ export class UsersController {
         try {
             await userRepository.save(user)
         } catch (e) {
-            res.status(409).send('username already in use')
-            return
+            throw new HttpErrorBadRequest('username already in use')
         }
 
         //If all ok, send 201 response
-        res.status(201).send('User created')
+        res.status(HttpStatusCode.Success).send({
+            id: user.id,
+            username: user.username
+        })
     }
 
     static editUser = async (req: Request, res: Response) => {
@@ -79,8 +80,7 @@ export class UsersController {
             user = await userRepository.findOneOrFail(id)
         } catch (error) {
             //If not found, send a 404 response
-            res.status(404).send('User not found')
-            return
+            throw new HttpErrorNotFound('User not found')
         }
 
         //Validate the new values on model
@@ -88,16 +88,14 @@ export class UsersController {
         user.role = role
         const errors = await validate(user)
         if (errors.length > 0) {
-            res.status(400).send(errors)
-            return
+            throw new HttpErrorBadRequest(errors)
         }
 
         //Try to safe, if fails, that means username already in use
         try {
             await userRepository.save(user)
         } catch (e) {
-            res.status(409).send('username already in use')
-            return
+            throw new HttpErrorBadRequest('username already in use')
         }
         //After all send a 204 (no content, but accepted) response
         const { password, ...allowedUser } = user
@@ -113,11 +111,10 @@ export class UsersController {
         try {
             user = await userRepository.findOneOrFail(id)
         } catch (error) {
-            res.status(404).send('User not found')
-            return
+            throw new HttpErrorNotFound('User not found')
         }
-        userRepository.delete(id)
 
+        userRepository.delete(id)
         res.status(HttpStatusCode.Success).send()
     }
 }

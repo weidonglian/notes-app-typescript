@@ -10,9 +10,17 @@ export const notFoundError = (req: Request, res: Response) => {
 
 export const clientError = (err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof HttpClientError) {
-        res.status(err.statusCode).send(err.message)
+        res.status(err.statusCode).send({
+            message: err.message
+        })
     } else if (err instanceof ValidationError) {
-        res.status(HttpStatusCode.BadRequest).send(err)
+        res.status(HttpStatusCode.BadRequest).send({
+            message: err.message
+        })
+    } else if (err instanceof Array) {
+        res.status(HttpStatusCode.BadRequest).send({
+            message: JSON.stringify(err)
+        })
     } else {
         next(err)
     }
