@@ -14,6 +14,11 @@ describe('App test', () => {
         const initState: AppState = {
             notes: {
                 notes: ['nx1', 'nx3', 'nx2', 'nx4'].map(name => notesActions.addNote(name).payload.note)
+            },
+            message: {
+                message: 'hello',
+                variant: 'success',
+                visible: 'true'
             }
         }
         const t = renderWithState(<App/>, initState)

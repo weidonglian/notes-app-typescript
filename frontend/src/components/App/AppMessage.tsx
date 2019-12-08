@@ -10,9 +10,12 @@ import Snackbar from '@material-ui/core/Snackbar'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 import WarningIcon from '@material-ui/icons/Warning'
 import { makeStyles, Theme } from '@material-ui/core/styles'
-import { useDispatch } from 'react-redux'
-import { useSelector } from '../../utils/redux-utils'
 import { messageActions } from '../../actions/message'
+import { getMessageState } from '../../selectors/message'
+import { AppState } from '../../reducers'
+import { Dispatch } from 'redux'
+import { MessageState } from '../../reducers/message'
+import { connect } from 'react-redux'
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -48,13 +51,19 @@ const variantIcon = {
   info: InfoIcon,
 }
 
-export const AppMessage: React.FC = () => {
-  const { message, variant, open } = useSelector(s => s.message)
+interface Props {
+  messageState: MessageState
+  hideMessage: () => void
+}
+
+export const AppMessageView: React.FC<Props> = (props) => {
   const classes = useStyles()
+  const { message, variant, visible: open } = props.messageState
+  if (!variant)return null
+  console.log(props.messageState)
   const Icon = variantIcon[variant]
-  const dispatch = useDispatch()
   const handleClose = (event?: SyntheticEvent, reason?: string) => {
-    dispatch(messageActions.hideMessage())
+    props.hideMessage()
   }
 
   return (
@@ -81,7 +90,21 @@ export const AppMessage: React.FC = () => {
             <CloseIcon className={classes.icon} />
           </IconButton>,
         ]}
-    />
+      />
     </Snackbar>
   )
 }
+
+
+const mapState = (appState: AppState) => ({
+  messageState: getMessageState(appState)
+})
+
+const mapAction = (dispatch: Dispatch) => ({
+  hideMessage: () => dispatch(messageActions.hideMessage())
+})
+
+export const AppMessage = connect(
+  mapState,
+  mapAction
+)(AppMessageView)

@@ -5,14 +5,14 @@ import iassign from 'immutable-assign'
 export interface MessageState {
     message: string,
     variant: 'success' | 'info' | 'warning' | 'error'
-    open: boolean
+    visible: boolean
 }
 
 /// Initial state
 export const initialMessageState: MessageState = {
     message: '',
     variant: 'success',
-    open: false
+    visible: false
 }
 
 /// Reducer
@@ -24,7 +24,7 @@ export const messageReducer = (state: MessageState = initialMessageState, action
                 s => ({
                     message: message,
                     variant: variant,
-                    open: true
+                    visible: true
                 })
             )
         }
@@ -34,7 +34,7 @@ export const messageReducer = (state: MessageState = initialMessageState, action
                 s => ({
                     message: '',
                     variant: 'success',
-                    open: false
+                    visible: false
                 })
             )
         }

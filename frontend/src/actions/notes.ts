@@ -4,13 +4,13 @@ import { NotesState } from '../reducers/notes'
 
 /// Types
 export enum NotesActionTypes {
-    REINIT_NOTES,
+    REINIT_NOTES = 'NotesAction_ReinitNotes',
 
-    ADD_NOTE,
-    CHANGE_NOTE_VISIBILITY,
+    ADD_NOTE = 'NotesAction_AddNote',
+    CHANGE_NOTE_VISIBILITY = 'NotesAction_ChangeNoteVisibility',
 
-    ADD_TODO,
-    UPDATE_TODO
+    ADD_TODO = 'NotesAction_AddTodo',
+    UPDATE_TODO = 'NotesAction_UpdateTodo'
 }
 
 /// Actions

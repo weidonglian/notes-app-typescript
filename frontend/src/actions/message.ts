@@ -4,8 +4,8 @@ export type MessageVariant = 'success' | 'info' | 'warning' | 'error'
 
 /// Types
 export enum MessageActionTypes {
-    SHOW_MESSAGE,
-    HIDE_MESSAGE
+    SHOW_MESSAGE = 'MessageAction_ShowMessage',
+    HIDE_MESSAGE = 'MessageAction_HideMessage'
 }
 
 /// Actions

@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import { AppState } from '../reducers'
 import { NotesState } from '../reducers/notes'
 
-const getNotesState = (state: AppState): NotesState => state.notes
+export const getNotesState = (state: AppState): NotesState => state.notes
 
 export const getNotes = createSelector([getNotesState], s => s.notes)
 
