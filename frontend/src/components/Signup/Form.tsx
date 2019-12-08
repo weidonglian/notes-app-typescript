@@ -13,7 +13,7 @@ import { Link as RouterLink, useHistory} from 'react-router-dom'
 import { Copyright } from '../App/Copyright'
 import * as yup from 'yup'
 import { TextField } from 'formik-material-ui'
-import { FormikProps, Form, Field, Formik } from 'formik'
+import { FormikProps, Form, Field, Formik, FormikHelpers } from 'formik'
 import { auth } from '../../services/auth'
 import { useDispatch } from 'react-redux'
 import { messageActions } from '../../actions/message'
@@ -123,12 +123,14 @@ export const SignupForm = () => {
     password: ''
   }
 
-  const handleSubmit = (values: FormValues) => {
+  const handleSubmit = (values: FormValues, helpers: FormikHelpers<FormValues>) => {
     auth.signup(values).then((response) => {
       dispatch(messageActions.showMessage(`Signup for '${response.data.username}'  succeded`, 'success'))
       history.push('/')
     }).catch(error => {
-      dispatch(messageActions.showMessage(error, 'error'))
+      helpers.setSubmitting(false)
+      if (error.response.data.message)
+        dispatch(messageActions.showMessage(error.response.data.message, 'error'))
     })
   }
 

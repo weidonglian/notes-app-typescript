@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Grid, makeStyles, Link } from '@material-ui/core'
 import { TextField, CheckboxWithLabel } from 'formik-material-ui'
-import { Form, Field, FormikProps, Formik } from 'formik'
+import { Form, Field, FormikProps, Formik, FormikHelpers } from 'formik'
 import * as yup from 'yup'
 import { auth } from '../../services/auth'
 import { Link as RouterLink, useHistory } from 'react-router-dom'
@@ -99,12 +99,14 @@ export const LoginForm = () => {
     remember: true
   }
   const dispatch = useDispatch()
-  const handleSubmit = (values: FormValues) => {
+  const handleSubmit = (values: FormValues, helpers: FormikHelpers<FormValues>) => {
     auth.login(values).then(() => {
       dispatch(messageActions.showMessage('Login succeded', 'success'))
       history.push('/')
     }).catch(error => {
-      //dispatch(messageActions.showMessage(error, 'error'))
+      helpers.setSubmitting(false)
+      if (error.response.data.message)
+        dispatch(messageActions.showMessage(error.response.data.message, 'error'))
     })
   }
 

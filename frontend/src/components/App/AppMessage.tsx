@@ -59,8 +59,6 @@ interface Props {
 export const AppMessageView: React.FC<Props> = (props) => {
   const classes = useStyles()
   const { message, variant, visible: open } = props.messageState
-  if (!variant)return null
-  console.log(props.messageState)
   const Icon = variantIcon[variant]
   const handleClose = (event?: SyntheticEvent, reason?: string) => {
     props.hideMessage()
