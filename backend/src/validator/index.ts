@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import handleChecks from '../util/handleChecks'
-import { Validator } from 'class-validator'
+import { isEmpty, Validator } from 'class-validator'
 import { HttpErrorBadRequest } from '../util/httpErrors'
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
@@ -14,6 +14,6 @@ export const checkRole = (roles: Array<string>) => {
 export const classValidator = new Validator()
 
 export const checkNotEmpty = (obj: unknown, message: string) => {
-    if (classValidator.isEmpty(obj))
+    if (isEmpty(obj))
         throw new HttpErrorBadRequest(message)
 }
