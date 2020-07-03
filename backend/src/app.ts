@@ -8,6 +8,7 @@ import { errorHandlers, middlewares } from './middleware'
 import routes from './service'
 import { applyMiddleware, applyRoutes } from './util'
 import { resolve } from 'dns'
+import { ApolloServer, gql } from 'apollo-server-express';
 
 process.on('uncaughtException', e => {
     console.log(e)
@@ -27,18 +28,39 @@ export interface App {
     db: Connection
 }
 
+const createGraphqlServer = (): ApolloServer => {
+    // Construct a schema, using GraphQL schema language
+    const typeDefs =
+        `type Query {
+    hello: String
+  }`
+
+    // Provide resolver functions for your schema fields
+    const resolvers = {
+        Query: {
+            hello: () => 'Hello world!',
+        },
+    }
+
+    return new ApolloServer({ typeDefs, resolvers, playground: true })
+}
+
 export const createApp = async (): Promise<App> => {
     const dbConnection = await createConnection(ormConfig)
     const appExpress = express()
+    const appGraphql = createGraphqlServer()
     applyMiddleware(middlewares, appExpress)
     applyRoutes(routes, appExpress, appConfig.routeBasePath)
+    appGraphql.applyMiddleware({ app: appExpress })
     applyMiddleware(errorHandlers, appExpress)
+
+
     const { port, appMode } = appConfig
     const server = http.createServer(appExpress)
     return new Promise<App>((resolve: any, reject: any) => {
         try {
             server.listen(port, () => {
-                console.log(`Server is running in '${appMode}' mode http://localhost:${port}...`)
+                console.log(`Server is running in '${appMode}' mode http://localhost:${port}${appGraphql.graphqlPath}...`)
                 resolve({
                     router: appExpress,
                     express: appExpress,
@@ -46,7 +68,7 @@ export const createApp = async (): Promise<App> => {
                     db: dbConnection
                 })
             })
-        } catch(error) {
+        } catch (error) {
             reject(error)
         }
     })

@@ -29,7 +29,7 @@ describe('service /auth', () => {
                 username: 'test', password: 'invalidtest'
             })
             expect(response.status).toEqual(HttpStatusCode.BadRequest)
-            expect(response.data).toEqual('Bad password')
+            expect(response.data.message).toEqual('Bad password')
         })
 
         test('login with invalid user and valid password', async () => {
@@ -51,9 +51,9 @@ describe('service /auth', () => {
             const app = await testAppWithTestUser()
             // first need to login
             let response = await axiosist(app.express).post('/api/v1/auth/login', {
-                    username: 'test',
-                    password: 'test'
-                })
+                username: 'test',
+                password: 'test'
+            })
 
             expect(response.status).toBe(HttpStatusCode.Success)
             const { token } = response.data
