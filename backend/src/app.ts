@@ -30,29 +30,28 @@ export interface App {
 
 const createGraphqlServer = (): ApolloServer => {
     // Construct a schema, using GraphQL schema language
-    const typeDefs = gql`
-  type Query {
+    const typeDefs =
+        `type Query {
     hello: String
-  }
-`;
+  }`
 
     // Provide resolver functions for your schema fields
     const resolvers = {
         Query: {
             hello: () => 'Hello world!',
         },
-    };
+    }
 
-    return new ApolloServer({ typeDefs, resolvers, playground: true });
+    return new ApolloServer({ typeDefs, resolvers, playground: true })
 }
 
 export const createApp = async (): Promise<App> => {
     const dbConnection = await createConnection(ormConfig)
     const appExpress = express()
-    const appGraphql = createGraphqlServer();
+    const appGraphql = createGraphqlServer()
     applyMiddleware(middlewares, appExpress)
     applyRoutes(routes, appExpress, appConfig.routeBasePath)
-    appGraphql.applyMiddleware({ app: appExpress });
+    appGraphql.applyMiddleware({ app: appExpress })
     applyMiddleware(errorHandlers, appExpress)
 
 
