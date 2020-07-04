@@ -69,13 +69,13 @@
     "jest": "^24.9.0",
     "jsonwebtoken": "^8.5.1",
     "moxios": "^0.4.0",
+    "pg-promise": "^10.5.7",
     "reflect-metadata": "^0.1.13",
     "request": "^2.88.0",
     "sqlite3": "^4.1.0",
     "swagger-ui-express": "^4.0.2",
     "ts-jest": "^24.1.0",
     "tsc-watch": "^4.2.9",
-    "typeorm": "^0.2.20",
     "typescript": "^3.9.6"
   },
   "devDependencies": {}
