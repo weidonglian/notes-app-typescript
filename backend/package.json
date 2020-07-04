@@ -74,9 +74,9 @@
     "sqlite3": "^4.1.0",
     "swagger-ui-express": "^4.0.2",
     "ts-jest": "^24.1.0",
-    "tsc-watch": "^1.0.31",
+    "tsc-watch": "^4.2.9",
     "typeorm": "^0.2.20",
-    "typescript": "^3.2.2"
+    "typescript": "^3.9.6"
   },
   "devDependencies": {}
 }
