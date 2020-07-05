@@ -1,5 +1,3 @@
-import * as bcrypt from 'bcryptjs'
-import { IsNotEmpty, Length } from 'class-validator'
 
 export interface BaseModel {
     createdAt: Date
@@ -12,14 +10,6 @@ export interface User {
     password: string
     role: string
     notes: Note[]
-}
-
-export const hashPassword = (password: string) => {
-    return bcrypt.hashSync(password, 8)
-}
-
-export const checkIfUnencryptedPasswordIsValid = (unencryptedPassword: string, password: string) => {
-    return bcrypt.compareSync(unencryptedPassword, password)
 }
 
 export interface Note {

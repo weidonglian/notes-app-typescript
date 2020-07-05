@@ -1,11 +1,17 @@
-import { UsersRepository } from './users';
+import { UserRepository } from './user';
+import { NoteRepository } from './note';
+import { TodoRepository } from './todo';
 
 // Database Interface Extensions:
 interface IExtensions {
-    users: UsersRepository
+    users: UserRepository
+    notes: NoteRepository
+    todos: TodoRepository
 }
 
 export {
     IExtensions,
-    UsersRepository
-};
+    UserRepository,
+    NoteRepository,
+    TodoRepository
+}

@@ -1,12 +1,15 @@
 import { IDatabase, IMain } from 'pg-promise';
 import { IResult } from 'pg-promise/typescript/pg-subset';
 import { User } from '../model';
+import * as bcrypt from 'bcryptjs'
+import { IsNotEmpty, Length } from 'class-validator'
+
 
 /*
  This repository mixes hard-coded and dynamic SQL, just to show how to use both.
 */
 
-export class UsersRepository {
+export class UserRepository {
 
     /**
      * @param db
@@ -39,6 +42,24 @@ export class UsersRepository {
 
     // Initializes the table with some user records, and return their id-s;
     async init(): Promise<number[]> {
+        // #todo
+        const users = [
+            {
+                username: 'admin',
+                password: 'admin',
+                role: "ADMIN",
+            },
+            {
+                username: 'dev',
+                password: 'dev',
+                role: "USER"
+            },
+            {
+                username: 'test',
+                password: 'test',
+                role: "USER"
+            }
+        ]
         return this.db.map(`
             INSERT INTO user(name) VALUES
             ('Demo User 1'), -- user 1;
@@ -48,6 +69,14 @@ export class UsersRepository {
             ('Demo User 5') -- user 5;
             RETURNING id
         `, [], (row: { id: number }) => row.id);
+    }
+
+    hashPassword(user: User) {
+        user.password = bcrypt.hashSync(user.password, 8)
+    }
+
+    checkIfUnencryptedPasswordIsValid(unencryptedPassword: string, user: User): boolean {
+        return bcrypt.compareSync(unencryptedPassword, user.password)
     }
 
     // Drops the table;
