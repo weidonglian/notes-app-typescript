@@ -1,0 +1,27 @@
+{
+    "dev": {
+        "driver": "pg",
+        "user": "dev",
+        "password": "dev",
+        "host": "localhost",
+        "database": "notes-app-dev",
+        "port": "5432"
+    },
+    "test": {
+        "driver": "pg",
+        "user": "test",
+        "password": "test",
+        "host": "localhost",
+        "database": "notes-app-test",
+        "port": "5432"
+    },
+    "prod": {
+        "driver": "pg",
+        "user": "prod",
+        "password": "prod",
+        "host": "localhost",
+        "database": "notes-app-prod",
+        "port": "5432",
+        "ssl": "true"
+    }
+}

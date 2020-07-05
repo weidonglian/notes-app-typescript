@@ -66,14 +66,16 @@ const dbDevConfig: IConnectionParameters = {
     host: 'localhost',
     port: 5432,
     database: "notes-app-dev",
-    user: 'postgres-dev'
+    user: 'dev',
+    password: 'dev'
 }
 
 const dbProdConfig: IConnectionParameters = {
     host: 'localhost',
     port: 5432,
     database: "notes-app-prod",
-    user: 'postgres-prod'
+    user: 'prod',
+    password: 'prod'
 }
 
 const dbTestConfig: IConnectionParameters = {
@@ -82,7 +84,8 @@ const dbTestConfig: IConnectionParameters = {
     host: 'localhost',
     port: 5432,
     database: "notes-app-test",
-    user: 'postgres-test'
+    user: 'test',
+    password: 'test'
 }
 
 const getDbConfigFromAppMode = (appMode: AppMode): IConnectionParameters => {
