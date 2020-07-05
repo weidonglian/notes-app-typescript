@@ -2,19 +2,19 @@ import { NextFunction, Request, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
 import { getRepository } from 'typeorm'
 import { appConfig } from '../config/config'
-import { User } from '../entity/User'
+import { User } from '../model'
 import { HttpErrorBadRequest, HttpErrorForbidden, HttpErrorUnauthorized } from './httpErrors'
 import { ValidatorOptions } from 'class-validator'
 import { transformAndValidateSync } from 'class-transformer-validator'
 
 function checkBody<T>(t: T, validatorOptions?: ValidatorOptions) {
-    return function(req: Request, res: Response, next: NextFunction) {
+    return function (req: Request, res: Response, next: NextFunction) {
         if (!req.body)
             throw new HttpErrorBadRequest('checkBody: No request body found')
         try {
             req.body = transformAndValidateSync(t as any, req.body, { validator: validatorOptions })
             next()
-        } catch(error) {
+        } catch (error) {
             throw new HttpErrorBadRequest(`checkBody: ${error}`)
         }
     }

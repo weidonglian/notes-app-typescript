@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken'
 import { getRepository } from 'typeorm'
 import { appConfig } from '../../config/config'
 
-import { User } from '../../entity/User'
+import { User } from '../../model'
 import { HttpErrorBadRequest, HttpStatusCode } from '../../util/httpErrors'
 import { getUserFromRequest } from '../../util/user'
 
@@ -50,8 +50,8 @@ class AuthController {
             token: token
         })
     }
- 
-    static signup = async (req: Request,  res: Response) => {
+
+    static signup = async (req: Request, res: Response) => {
         let { username, password } = req.body
         if (!(username && password)) {
             throw new HttpErrorBadRequest('Unkown or empty username or password')
@@ -80,8 +80,8 @@ class AuthController {
         }
         await userRepository.save(user)
         res.status(HttpStatusCode.Success).send({
-            id: user.id, 
-            username: user.username, 
+            id: user.id,
+            username: user.username,
             role: user.role
         })
     }

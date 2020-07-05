@@ -3,7 +3,7 @@ import axiosist from 'axiosist'
 import { getRepository } from 'typeorm'
 import { App, createApp, shutdownApp } from '../app'
 import appConfig, { AppMode } from '../config/config'
-import { User } from '../entity/User'
+import { User } from '../model'
 import { HttpStatusCode } from '../util/httpErrors'
 
 const addUser = async (name: string, password: string, role: string) => {
@@ -18,9 +18,9 @@ const addUser = async (name: string, password: string, role: string) => {
 
 const loginUser = async (username: string, password: string, app: App) => {
     const resp = await axiosist(app.express).post('/api/v1/auth/login', {
-            username: username,
-            password: password
-        })
+        username: username,
+        password: password
+    })
     expect(resp.status).toBe(HttpStatusCode.Success)
     expect(resp.data.token).toBeDefined()
     return resp.data.token as string

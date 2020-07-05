@@ -2,7 +2,7 @@ import { validate } from 'class-validator'
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
 
-import { User } from '../../entity/User'
+import { User } from '../../model'
 import { HttpStatusCode, HttpErrorBadRequest, HttpErrorNotFound } from '../../util/httpErrors'
 
 export class UsersController {

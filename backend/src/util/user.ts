@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { HttpClientError } from './httpErrors'
 import { getRepository } from 'typeorm'
-import { User } from '../entity/User'
+import { User } from '../model'
 
 export const getUserFromRequest = async (req: Request, res: Response) => {
     //Get ID from JWT

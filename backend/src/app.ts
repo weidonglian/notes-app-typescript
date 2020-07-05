@@ -1,14 +1,12 @@
 import express, { Application, Router } from 'express'
 import http, { Server } from 'http'
 import 'reflect-metadata'
-import { Connection, createConnection } from 'typeorm'
 import appConfig from './config/config'
-import ormConfig from './config/ormconfig'
 import { errorHandlers, middlewares } from './middleware'
 import routes from './service'
 import { applyMiddleware, applyRoutes } from './util'
-import { resolve } from 'dns'
 import { ApolloServer, gql } from 'apollo-server-express';
+import { db, ExtendedProtocol } from './db'
 
 process.on('uncaughtException', e => {
     console.log(e)
@@ -25,7 +23,7 @@ export interface App {
     router: Router
     express: Application
     server: Server
-    db: Connection
+    db: ExtendedProtocol
 }
 
 const createGraphqlServer = (): ApolloServer => {
@@ -46,7 +44,6 @@ const createGraphqlServer = (): ApolloServer => {
 }
 
 export const createApp = async (): Promise<App> => {
-    const dbConnection = await createConnection(ormConfig)
     const appExpress = express()
     const appGraphql = createGraphqlServer()
     applyMiddleware(middlewares, appExpress)
@@ -65,7 +62,7 @@ export const createApp = async (): Promise<App> => {
                     router: appExpress,
                     express: appExpress,
                     server: server,
-                    db: dbConnection
+                    db: db
                 })
             })
         } catch (error) {
@@ -75,7 +72,6 @@ export const createApp = async (): Promise<App> => {
 }
 
 export const shutdownApp = async (app: App) => {
-    await app.db.close()
     let closePromise = new Promise((resolve, reject) => {
         app.server.close(err => {
             if (err)

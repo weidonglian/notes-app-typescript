@@ -1,5 +1,5 @@
-import {MigrationInterface, QueryRunner, getRepository} from "typeorm";
-import { User } from '../entity/User';
+import { MigrationInterface, QueryRunner, getRepository } from "typeorm";
+import { User } from '../model';
 
 export class AddDevUsers1575491804293 implements MigrationInterface {
 

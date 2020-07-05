@@ -1,3 +1,5 @@
+import { IConnectionParameters } from 'pg-promise/typescript/pg-subset'
+
 export enum AppMode {
     Dev = 'dev',
     Prod = 'prod',
@@ -59,5 +61,40 @@ const getAppConfig = (appMode: AppMode) => {
 }
 
 export const appConfig = getAppConfig(currentAppMode)
+
+const dbDevConfig: IConnectionParameters = {
+    host: 'localhost',
+    port: 5432,
+    database: "notes-app-dev",
+    user: 'postgres-dev'
+}
+
+const dbProdConfig: IConnectionParameters = {
+    host: 'localhost',
+    port: 5432,
+    database: "notes-app-prod",
+    user: 'postgres-prod'
+}
+
+const dbTestConfig: IConnectionParameters = {
+    //driver: 'sqlite3',
+    //filename: ':memory:'
+    host: 'localhost',
+    port: 5432,
+    database: "notes-app-test",
+    user: 'postgres-test'
+}
+
+const getDbConfigFromAppMode = (appMode: AppMode): IConnectionParameters => {
+    if (appMode === AppMode.Prod) {
+        return dbProdConfig
+    } else if (appMode === AppMode.Test) {
+        return dbTestConfig
+    } else {
+        return dbDevConfig
+    }
+}
+
+export const dbConfig: IConnectionParameters = getDbConfigFromAppMode(currentAppMode)
 
 export default appConfig
