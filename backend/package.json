@@ -7,9 +7,6 @@
   "license": "ISC",
   "main": "index.js",
   "scripts": {
-    "db-mg-create": "node node_modules/db-migrate/bin/db-migrate create -m ./src/migration --verbose --sql-file",
-    "db-mg-dev": "node node_modules/db-migrate/bin/db-migrate --config ./src/config/db-migrate.json -e dev -m ./src/migration --verbose",
-    "db-mg-prod": "node node_modules/db-migrate/bin/db-migrate --config ./src/config/db-migrate.json -e prod -m ./src/migration --verbose",
     "start-dev": "tsc-watch --onSuccess \"node ./dist/server.js\"",
     "start-prod": "tsc && APP_MODE=prod node ./dist/server.js",
     "start": "npm run start-dev",
