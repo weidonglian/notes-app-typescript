@@ -9,7 +9,7 @@ import { IsNotEmpty, Length } from 'class-validator'
  This repository mixes hard-coded and dynamic SQL, just to show how to use both.
 */
 
-export class UserRepository {
+export class UsersRepository {
 
     /**
      * @param db

@@ -1,12 +1,12 @@
 import { IDatabase, IMain } from 'pg-promise';
 import { IResult } from 'pg-promise/typescript/pg-subset';
-import { Note } from '../model';
+import { Todo } from '../model';
 
 /*
  This repository mixes hard-coded and dynamic SQL, just to show how to use both.
 */
 
-export class NoteRepository {
+export class TodosRepository {
 
     /**
      * @param db
@@ -30,67 +30,67 @@ export class NoteRepository {
     // Creates the table;
     async create(): Promise<null> {
         return this.db.none(`
-            CREATE TABLE note(
+            CREATE TABLE todo(
                 id serial PRIMARY KEY,
                 name text NOT NULL
             )
         `)
     }
 
-    // Initializes the table with some note records, and return their id-s;
+    // Initializes the table with some todo records, and return their id-s;
     async init(): Promise<number[]> {
         return this.db.map(`
-            INSERT INTO note(name) VALUES
-            ('Demo note 1'), -- note 1;
-            ('Demo note 2'), -- note 2;
-            ('Demo note 3'), -- note 3;
-            ('Demo note 4'), -- note 4;
-            ('Demo note 5') -- note 5;
+            INSERT INTO todo(name) VALUES
+            ('Demo todo 1'), -- todo 1;
+            ('Demo todo 2'), -- todo 2;
+            ('Demo todo 3'), -- todo 3;
+            ('Demo todo 4'), -- todo 4;
+            ('Demo todo 5') -- todo 5;
             RETURNING id
         `, [], (row: { id: number }) => row.id);
     }
 
     // Drops the table;
     async drop(): Promise<null> {
-        return this.db.none('DROP TABLE note');
+        return this.db.none('DROP TABLE todo');
     }
 
     // Removes all records from the table;
     async clear(): Promise<null> {
-        return this.db.none('TRUNCATE TABLE note CASCADE');
+        return this.db.none('TRUNCATE TABLE todo CASCADE');
     }
 
-    // Adds a new note, and returns the new object;
-    async add(name: string): Promise<Note> {
+    // Adds a new todo, and returns the new object;
+    async add(name: string): Promise<Todo> {
         return this.db.one(`
-            INSERT INTO note(name)
+            INSERT INTO todo(name)
             VALUES($1)
             RETURNING *
         `, name);
     }
 
-    // Tries to delete a note by id, and returns the number of records deleted;
+    // Tries to delete a todo by id, and returns the number of records deleted;
     async remove(id: number): Promise<number> {
-        return this.db.result('DELETE FROM note WHERE id = $1', +id, (r: IResult) => r.rowCount);
+        return this.db.result('DELETE FROM todo WHERE id = $1', +id, (r: IResult) => r.rowCount);
     }
 
-    // Tries to find a note from id;
-    async findById(id: number): Promise<Note | null> {
-        return this.db.oneOrNone('SELECT * FROM note WHERE id = $1', +id);
+    // Tries to find a todo from id;
+    async findById(id: number): Promise<Todo | null> {
+        return this.db.oneOrNone('SELECT * FROM todo WHERE id = $1', +id);
     }
 
-    // Tries to find a note from name;
-    async findByName(name: string): Promise<Note | null> {
-        return this.db.oneOrNone('SELECT * FROM note WHERE name = $1', name);
+    // Tries to find a todo from name;
+    async findByName(name: string): Promise<Todo | null> {
+        return this.db.oneOrNone('SELECT * FROM todo WHERE name = $1', name);
     }
 
-    // Returns all note records;
-    async all(): Promise<Note[]> {
-        return this.db.any('SELECT * FROM note');
+    // Returns all todo records;
+    async all(): Promise<Todo[]> {
+        return this.db.any('SELECT * FROM todo');
     }
 
-    // Returns the total number of notes;
+    // Returns the total number of todos;
     async total(): Promise<number> {
-        return this.db.one('SELECT count(*) FROM note', [], (a: { count: string }) => +a.count);
+        return this.db.one('SELECT count(*) FROM todo', [], (a: { count: string }) => +a.count);
     }
 }

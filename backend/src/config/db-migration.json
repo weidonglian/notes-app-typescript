@@ -2,27 +2,27 @@
     "defaultEnv": "dev",
     "dev": {
         "driver": "pg",
-        "user": "dev",
-        "password": "dev",
+        "user": "postgres",
+        "password": "postgres",
         "host": "localhost",
-        "database": "notes-app-dev",
-        "port": "5432"
+        "database": "notes_app_dev",
+        "port": 5432
     },
     "test": {
         "driver": "pg",
-        "user": "test",
-        "password": "test",
+        "user": "postgres",
+        "password": "postgres",
         "host": "localhost",
-        "database": "notes-app-test",
-        "port": "5432"
+        "database": "notes_app_test",
+        "port": 5432
     },
     "prod": {
         "driver": "pg",
-        "user": "prod",
-        "password": "prod",
+        "user": "postgres",
+        "password": "postgres",
         "host": "localhost",
-        "database": "notes-app-prod",
-        "port": "5432",
-        "ssl": "true"
+        "database": "notes_app_prod",
+        "port": 5432,
+        "ssl": true
     }
 }
