@@ -1,2 +1,2 @@
-drop table notes;
 drop table todos;
+drop table notes;

@@ -10,9 +10,13 @@ describe('service /users GET', () => {
     let invalidAuthOptions: AxiosRequestConfig = makeAuthHeaderOptions('invalid token')
 
     beforeAll(async () => {
-        app = await testAppWithLoginTestUser()
-        authOptions = makeAuthHeaderOptions(app.testUserToken)
-        adminAuthOptions = makeAuthHeaderOptions(app.adminUserToken)
+        try {
+            app = await testAppWithLoginTestUser()
+            authOptions = makeAuthHeaderOptions(app.testUserToken)
+            adminAuthOptions = makeAuthHeaderOptions(app.adminUserToken)
+        } catch (error) {
+            console.log(error)
+        }
     })
 
     afterAll(async () => {
@@ -109,7 +113,7 @@ describe('service /users patch and delete', () => {
         expect(users).toBeDefined()
         expect(Array.isArray(users)).toBe(true)
         const numOfUsersAfter = users.length
-        expect(numOfUsersBefore-1).toEqual(numOfUsersAfter)
+        expect(numOfUsersBefore - 1).toEqual(numOfUsersAfter)
     })
 
 })

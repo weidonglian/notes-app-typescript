@@ -1,5 +1,7 @@
 {
     "defaultEnv": "dev",
+    "sql-file": true,
+    "verbose": true,
     "dev": {
         "driver": "pg",
         "user": "postgres",

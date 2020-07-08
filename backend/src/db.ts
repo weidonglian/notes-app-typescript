@@ -1,8 +1,19 @@
 import promise from 'bluebird' // best promise library today
-import { dbConfig } from './config/config'
+import { dbConfig, appConfig } from './config/config'
 import pgPromise from 'pg-promise' // pg-promise core library
 import { IInitOptions, IDatabase, IMain } from 'pg-promise'
 import { IExtensions, UsersRepository, NotesRepository, TodosRepository } from './repository'
+// first require the package
+var DBMigrate = require('db-migrate');
+
+// The next step is to get a new instance of DBMigrate
+export const dbmigrate = DBMigrate.getInstance(true, {
+    config: './config/db-migration.json',
+    env: appConfig.appMode,
+    cmdOptions: {
+        'migrations-dir': './src/migration'
+    }
+});
 
 export type ExtendedProtocol = IDatabase<IExtensions> & IExtensions
 

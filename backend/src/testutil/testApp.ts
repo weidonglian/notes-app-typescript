@@ -3,7 +3,7 @@ import axiosist from 'axiosist'
 import { App, createApp, shutdownApp } from '../app'
 import appConfig, { AppMode } from '../config/config'
 import { User } from '../model'
-import { db } from '../db'
+import { db, dbmigrate } from '../db'
 import { HttpStatusCode } from '../util/httpErrors'
 
 const addUser = async (name: string, password: string, role: string) => {
@@ -12,7 +12,11 @@ const addUser = async (name: string, password: string, role: string) => {
     user.password = password
     user.hashPassword()
     user.role = role
-    await db.users.add(user)
+    try {
+        await db.users.add(user)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 const loginUser = async (username: string, password: string, app: App) => {
@@ -43,6 +47,8 @@ export const testAppWithTestUser = async (): Promise<TestApp> => {
 
     const consoleMock = spyOnConsole();
     const app = await createApp()
+    await dbmigrate.reset()
+    await dbmigrate.up()
     await addUser('test', 'test', 'USER')
     await addUser('admin', 'admin', 'ADMIN')
     return { ...app, consoleMock }

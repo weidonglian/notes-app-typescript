@@ -6,7 +6,7 @@ import { errorHandlers, middlewares } from './middleware'
 import routes from './service'
 import { applyMiddleware, applyRoutes } from './util'
 import { ApolloServer, gql } from 'apollo-server-express';
-import { db, ExtendedProtocol } from './db'
+import { db, ExtendedProtocol, dbmigrate } from './db'
 
 process.on('uncaughtException', e => {
     console.log(e)
@@ -50,14 +50,13 @@ export const createApp = async (): Promise<App> => {
     applyRoutes(routes, appExpress, appConfig.routeBasePath)
     appGraphql.applyMiddleware({ app: appExpress })
     applyMiddleware(errorHandlers, appExpress)
-
-
+    await dbmigrate.up() // dbmigration run here
     const { port, appMode } = appConfig
     const server = http.createServer(appExpress)
     return new Promise<App>((resolve: any, reject: any) => {
         try {
             server.listen(port, () => {
-                console.log(`Server is running in '${appMode}' mode http://localhost:${port}${appGraphql.graphqlPath}...`)
+                console.log(`Server is running in '${appMode}' mode http://localhost:${port}${appGraphql.graphqlPath}`)
                 resolve({
                     router: appExpress,
                     express: appExpress,
