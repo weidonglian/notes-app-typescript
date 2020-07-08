@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
-import { getRepository } from 'typeorm'
+import { db } from '../db'
 import { appConfig } from '../config/config'
 import { User } from '../model'
 import { HttpErrorBadRequest, HttpErrorForbidden, HttpErrorUnauthorized } from './httpErrors'
@@ -59,17 +59,11 @@ const checkRole = (roles: Array<string>) => {
         const id = res.locals.jwtPayload.userId
 
         //Get user role from the database
-        const userRepository = getRepository(User)
-        let user: User
-        try {
-            user = await userRepository.findOneOrFail(id)
-            //Check if array of authorized roles includes the user's role
-            if (roles.indexOf(user.role) > -1) {
-                next()
-            } else {
-                throw new HttpErrorForbidden()
-            }
-        } catch (id) {
+        const user = await db.users.findById(id)
+        //Check if array of authorized roles includes the user's role
+        if (user && roles.indexOf(user.role) >= 0) {
+            next()
+        } else {
             throw new HttpErrorForbidden()
         }
     }

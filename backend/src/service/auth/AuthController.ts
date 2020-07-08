@@ -1,9 +1,8 @@
 import { validate } from 'class-validator'
 import { Request, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
-import { getRepository } from 'typeorm'
 import { appConfig } from '../../config/config'
-
+import { db } from '../../db'
 import { User } from '../../model'
 import { HttpErrorBadRequest, HttpStatusCode } from '../../util/httpErrors'
 import { getUserFromRequest } from '../../util/user'
@@ -21,12 +20,9 @@ class AuthController {
         }
 
         //Get user from database
-        const userRepository = getRepository(User)
-        let user: User
-        try {
-            user = await userRepository.findOneOrFail({ where: { username } })
-        } catch (error) {
-            throw new HttpErrorBadRequest('Unknown user:' + username)
+        const user = await db.users.findByName(username)
+        if (!user) {
+            throw new HttpErrorBadRequest(`Unknown user: ${username}`)
         }
 
         //Check if encrypted password match
@@ -37,7 +33,7 @@ class AuthController {
         const token = jwt.sign(
             {
                 userId: user.id,
-                username: user.username
+                username: user.name
             },
             appConfig.jwtSecret,
             {
@@ -57,32 +53,25 @@ class AuthController {
             throw new HttpErrorBadRequest('Unkown or empty username or password')
         }
 
-        const userRepository = getRepository(User)
-
-        const count = await userRepository.count({
-            username: username
-        })
-
-        if (count > 0) {
-            throw new HttpErrorBadRequest('Already registered')
+        if (await db.users.findByName(username)) {
+            throw new HttpErrorBadRequest(`Already registered user:${username}`)
         }
 
         let user = new User()
-        user.username = username
+        user.name = username
         user.password = password
         user.role = 'USER'
         user.hashPassword()
-        user.notes = []
         //Validate de model (password lenght)
         const errors = await validate(user)
         if (errors.length > 0) {
             throw new HttpErrorBadRequest(errors)
         }
-        await userRepository.save(user)
+        const createdUser = await db.users.add(user)
         res.status(HttpStatusCode.Success).send({
-            id: user.id,
-            username: user.username,
-            role: user.role
+            id: createdUser.id,
+            username: createdUser.name,
+            role: createdUser.role
         })
     }
 
@@ -107,9 +96,7 @@ class AuthController {
         }
         //Hash the new password and save
         user.hashPassword()
-        const userRepository = getRepository(User)
-        userRepository.save(user)
-
+        db.users.updatePassword(user)
         res.status(HttpStatusCode.Success).send()
     }
 }

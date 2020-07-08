@@ -1,25 +1,49 @@
 
-export interface BaseModel {
+import * as bcrypt from 'bcryptjs'
+import { IsNotEmpty, Length, isNotEmpty } from 'class-validator'
+
+export class BaseModel {
     createdAt: Date
     updatedAt: Date
 }
 
-export interface User {
+export class User {
     id: number
+
+    @Length(4, 20)
     name: string
+
+    @Length(4, 100)
     password: string
+
+    @IsNotEmpty()
     role: string
+
+    hashPassword() {
+        this.password = bcrypt.hashSync(this.password, 8)
+    }
+
+    checkIfUnencryptedPasswordIsValid(unencryptedPassword: string) {
+        return bcrypt.compareSync(unencryptedPassword, this.password)
+    }
 }
 
-export interface Note {
+export class Note {
     id: number
+
+    @IsNotEmpty()
     name: string
+
     userId: number
 }
 
-export interface Todo {
+export class Todo {
     id: number
+
+    @IsNotEmpty()
     name: string
+
     done: boolean
+
     noteId: number
 }

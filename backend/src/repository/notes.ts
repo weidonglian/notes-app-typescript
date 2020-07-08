@@ -33,12 +33,20 @@ export class NotesRepository {
     }
 
     // Adds a new notes, and returns the new object;
-    async add(name: string, userId: number): Promise<Note> {
+    async add(note: Note): Promise<Note> {
         return this.db.one(`
             INSERT INTO notes (note_name, user_id)
             VALUES($1)
             RETURNING *
-        `, [name, userId]);
+        `, [note.name, note.userId]);
+    }
+
+    async updateById(noteId: number, name: string): Promise<Note> {
+        return this.db.one(`UPDATE notes SET note_name=$1 WHERE note_id=$2 RETURNING *`, [name, noteId])
+    }
+
+    async findByUserId(userId: number): Promise<any> {
+        return this.db.any(`SELECT * FROM notes NATURAL JOIN todos WHERE notes.user_id = $1`, userId)
     }
 
     // Tries to delete a notes by id, and returns the number of records deleted;

@@ -23,15 +23,6 @@ const routes: Route[] = [
     },
     {
         path: '/users/:id([0-9]+)',
-        method: 'patch',
-        handler: [
-            checkJwt,
-            checkRole(['ADMIN']),
-            UsersController.editUser
-        ]
-    },
-    {
-        path: '/users/:id([0-9]+)',
         method: 'delete',
         handler: [
             checkJwt,

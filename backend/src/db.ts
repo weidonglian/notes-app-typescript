@@ -2,7 +2,7 @@ import promise from 'bluebird' // best promise library today
 import { dbConfig } from './config/config'
 import pgPromise from 'pg-promise' // pg-promise core library
 import { IInitOptions, IDatabase, IMain } from 'pg-promise'
-import { IExtensions, UserRepository, NoteRepository, TodoRepository } from './repository'
+import { IExtensions, UsersRepository, NotesRepository, TodosRepository } from './repository'
 
 export type ExtendedProtocol = IDatabase<IExtensions> & IExtensions
 
@@ -19,9 +19,9 @@ const initOptions: IInitOptions<IExtensions> = {
 
         // Do not use 'require()' here, because this event occurs for every task and transaction being executed,
         // which should be as fast as possible.
-        obj.users = new UserRepository(obj, pgp)
-        obj.notes = new NoteRepository(obj, pgp)
-        obj.todos = new TodoRepository(obj, pgp)
+        obj.users = new UsersRepository(obj, pgp)
+        obj.notes = new NotesRepository(obj, pgp)
+        obj.todos = new TodosRepository(obj, pgp)
     }
 }
 

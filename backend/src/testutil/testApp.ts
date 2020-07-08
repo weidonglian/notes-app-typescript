@@ -1,19 +1,18 @@
 import { spyOnConsole, restoreConsole } from './mockConsole'
 import axiosist from 'axiosist'
-import { getRepository } from 'typeorm'
 import { App, createApp, shutdownApp } from '../app'
 import appConfig, { AppMode } from '../config/config'
 import { User } from '../model'
+import { db } from '../db'
 import { HttpStatusCode } from '../util/httpErrors'
 
 const addUser = async (name: string, password: string, role: string) => {
     let user = new User
-    user.username = name
+    user.name = name
     user.password = password
     user.hashPassword()
     user.role = role
-    const userRepository = getRepository(User)
-    await userRepository.save(user)
+    await db.users.add(user)
 }
 
 const loginUser = async (username: string, password: string, app: App) => {

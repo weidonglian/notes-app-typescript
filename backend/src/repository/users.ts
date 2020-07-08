@@ -44,17 +44,25 @@ export class UsersRepository {
     }
 
     // Adds a new user, and returns the new object;
-    async add(username: string, password: string, role: string): Promise<User> {
+    async add(user: User): Promise<User> {
         return this.db.one(`
             INSERT INTO users (user_name, user_password, user_role)
             VALUES($1, $2, $3)
             RETURNING *
-        `, [username, password, role]);
+        `, [user.name, user.password, user.role]);
     }
 
+    async updatePassword(user: User): Promise<number> {
+        return this.db.one(`
+            UPDATE users
+            SET password=$1
+            WHERE user_id=$2
+            RETURNING user_id
+        `, [user.password, user.id]);
+    }
     // Tries to delete a user by id, and returns the number of records deleted;
     async remove(id: number): Promise<number> {
-        return this.db.result('DELETE FROM users WHERE user_id = $1', +id, (r: IResult) => r.rowCount);
+        return this.db.one('DELETE FROM users WHERE user_id = $1 RETURNING user_id', +id);
     }
 
     // Tries to find a user from id;

@@ -33,12 +33,20 @@ export class TodosRepository {
     }
 
     // Adds a new todo, and returns the new object;
-    async add(name: string, done: boolean, noteId: number): Promise<Todo> {
+    async add(todo: Todo): Promise<Todo> {
         return this.db.one(`
             INSERT INTO todos (todo_name, todo_done, note_id)
             VALUES($1, $2, $3)
             RETURNING *
-        `, [name, done, noteId]);
+        `, [todo.name, todo.done, todo.noteId]);
+    }
+
+    async update(todoId: number, name: string, done: boolean): Promise<Todo> {
+        return this.db.one(`UPDATE todos SET todo_name=$1 todo_done=$2 WHERE todo_id=$3`, [name, done, todoId])
+    }
+
+    async toggle_done(todoId: number): Promise<Todo> {
+        return this.db.one(`UPDATE todos SET todo_done=!todo_done WHERE todo_id=$1`, [todoId])
     }
 
     // Tries to delete a todo by id, and returns the number of records deleted;
