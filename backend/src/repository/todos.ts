@@ -27,70 +27,47 @@ export class TodosRepository {
         */
     }
 
-    // Creates the table;
-    async create(): Promise<null> {
-        return this.db.none(`
-            CREATE TABLE todo(
-                id serial PRIMARY KEY,
-                name text NOT NULL
-            )
-        `)
-    }
-
-    // Initializes the table with some todo records, and return their id-s;
-    async init(): Promise<number[]> {
-        return this.db.map(`
-            INSERT INTO todo(name) VALUES
-            ('Demo todo 1'), -- todo 1;
-            ('Demo todo 2'), -- todo 2;
-            ('Demo todo 3'), -- todo 3;
-            ('Demo todo 4'), -- todo 4;
-            ('Demo todo 5') -- todo 5;
-            RETURNING id
-        `, [], (row: { id: number }) => row.id);
-    }
-
-    // Drops the table;
-    async drop(): Promise<null> {
-        return this.db.none('DROP TABLE todo');
-    }
-
     // Removes all records from the table;
     async clear(): Promise<null> {
-        return this.db.none('TRUNCATE TABLE todo CASCADE');
+        return this.db.none('TRUNCATE TABLE todos CASCADE');
     }
 
     // Adds a new todo, and returns the new object;
-    async add(name: string): Promise<Todo> {
+    async add(name: string, done: boolean, noteId: number): Promise<Todo> {
         return this.db.one(`
-            INSERT INTO todo(name)
-            VALUES($1)
+            INSERT INTO todos (todo_name, todo_done, note_id)
+            VALUES($1, $2, $3)
             RETURNING *
-        `, name);
+        `, [name, done, noteId]);
     }
 
     // Tries to delete a todo by id, and returns the number of records deleted;
     async remove(id: number): Promise<number> {
-        return this.db.result('DELETE FROM todo WHERE id = $1', +id, (r: IResult) => r.rowCount);
+        return this.db.result('DELETE FROM todos WHERE todo_id = $1', +id, (r: IResult) => r.rowCount);
     }
 
     // Tries to find a todo from id;
     async findById(id: number): Promise<Todo | null> {
-        return this.db.oneOrNone('SELECT * FROM todo WHERE id = $1', +id);
+        return this.db.oneOrNone('SELECT * FROM todos WHERE todo_id = $1', +id);
+    }
+
+    // Tries to find a todo from id;
+    async findByNoteId(noteId: number): Promise<Todo[]> {
+        return this.db.any('SELECT * FROM todos WHERE note_id = $1', +noteId);
     }
 
     // Tries to find a todo from name;
     async findByName(name: string): Promise<Todo | null> {
-        return this.db.oneOrNone('SELECT * FROM todo WHERE name = $1', name);
+        return this.db.oneOrNone('SELECT * FROM todos WHERE todo_name = $1', name);
     }
 
     // Returns all todo records;
     async all(): Promise<Todo[]> {
-        return this.db.any('SELECT * FROM todo');
+        return this.db.any('SELECT * FROM todos');
     }
 
     // Returns the total number of todos;
     async total(): Promise<number> {
-        return this.db.one('SELECT count(*) FROM todo', [], (a: { count: string }) => +a.count);
+        return this.db.one('SELECT count(*) FROM todos', [], (a: { count: string }) => +a.count);
     }
 }

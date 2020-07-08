@@ -6,22 +6,20 @@ export interface BaseModel {
 
 export interface User {
     id: number
-    username: string
+    name: string
     password: string
     role: string
-    notes: Note[]
 }
 
 export interface Note {
     id: number
     name: string
-    user: User
-    todos: Todo[]
+    userId: number
 }
 
 export interface Todo {
     id: number
     name: string
     done: boolean
-    note: Note
+    noteId: number
 }

@@ -46,7 +46,7 @@ export class UsersRepository {
     // Adds a new user, and returns the new object;
     async add(username: string, password: string, role: string): Promise<User> {
         return this.db.one(`
-            INSERT INTO users (username, password, role)
+            INSERT INTO users (user_name, user_password, user_role)
             VALUES($1, $2, $3)
             RETURNING *
         `, [username, password, role]);
@@ -54,17 +54,17 @@ export class UsersRepository {
 
     // Tries to delete a user by id, and returns the number of records deleted;
     async remove(id: number): Promise<number> {
-        return this.db.result('DELETE FROM users WHERE id = $1', +id, (r: IResult) => r.rowCount);
+        return this.db.result('DELETE FROM users WHERE user_id = $1', +id, (r: IResult) => r.rowCount);
     }
 
     // Tries to find a user from id;
     async findById(id: number): Promise<User | null> {
-        return this.db.oneOrNone('SELECT * FROM users WHERE id = $1', +id);
+        return this.db.oneOrNone('SELECT * FROM users WHERE user_id = $1', +id);
     }
 
     // Tries to find a user from name;
     async findByName(name: string): Promise<User | null> {
-        return this.db.oneOrNone('SELECT * FROM users WHERE name = $1', name);
+        return this.db.oneOrNone('SELECT * FROM users WHERE user_name = $1', name);
     }
 
     // Returns all user records;

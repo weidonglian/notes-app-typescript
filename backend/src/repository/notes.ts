@@ -27,70 +27,37 @@ export class NotesRepository {
         */
     }
 
-    // Creates the table;
-    async create(): Promise<null> {
-        return this.db.none(`
-            CREATE TABLE note(
-                id serial PRIMARY KEY,
-                name text NOT NULL
-            )
-        `)
-    }
-
-    // Initializes the table with some note records, and return their id-s;
-    async init(): Promise<number[]> {
-        return this.db.map(`
-            INSERT INTO note(name) VALUES
-            ('Demo note 1'), -- note 1;
-            ('Demo note 2'), -- note 2;
-            ('Demo note 3'), -- note 3;
-            ('Demo note 4'), -- note 4;
-            ('Demo note 5') -- note 5;
-            RETURNING id
-        `, [], (row: { id: number }) => row.id);
-    }
-
-    // Drops the table;
-    async drop(): Promise<null> {
-        return this.db.none('DROP TABLE note');
-    }
-
     // Removes all records from the table;
     async clear(): Promise<null> {
-        return this.db.none('TRUNCATE TABLE note CASCADE');
+        return this.db.none('TRUNCATE TABLE notes CASCADE');
     }
 
-    // Adds a new note, and returns the new object;
-    async add(name: string): Promise<Note> {
+    // Adds a new notes, and returns the new object;
+    async add(name: string, userId: number): Promise<Note> {
         return this.db.one(`
-            INSERT INTO note(name)
+            INSERT INTO notes (note_name, user_id)
             VALUES($1)
             RETURNING *
-        `, name);
+        `, [name, userId]);
     }
 
-    // Tries to delete a note by id, and returns the number of records deleted;
+    // Tries to delete a notes by id, and returns the number of records deleted;
     async remove(id: number): Promise<number> {
-        return this.db.result('DELETE FROM note WHERE id = $1', +id, (r: IResult) => r.rowCount);
+        return this.db.result('DELETE FROM notes WHERE note_id = $1', +id, (r: IResult) => r.rowCount);
     }
 
-    // Tries to find a note from id;
+    // Tries to find a notes from id;
     async findById(id: number): Promise<Note | null> {
-        return this.db.oneOrNone('SELECT * FROM note WHERE id = $1', +id);
+        return this.db.oneOrNone('SELECT * FROM notes WHERE note_id = $1', +id);
     }
 
-    // Tries to find a note from name;
-    async findByName(name: string): Promise<Note | null> {
-        return this.db.oneOrNone('SELECT * FROM note WHERE name = $1', name);
-    }
-
-    // Returns all note records;
+    // Returns all notes records;
     async all(): Promise<Note[]> {
-        return this.db.any('SELECT * FROM note');
+        return this.db.any('SELECT * FROM notes');
     }
 
-    // Returns the total number of notes;
+    // Returns the total number of notess;
     async total(): Promise<number> {
-        return this.db.one('SELECT count(*) FROM note', [], (a: { count: string }) => +a.count);
+        return this.db.one('SELECT count(*) FROM notes', [], (a: { count: string }) => +a.count);
     }
 }
