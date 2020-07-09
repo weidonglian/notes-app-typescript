@@ -1,12 +1,12 @@
 import express, { Application, Router } from 'express'
 import http, { Server } from 'http'
 import 'reflect-metadata'
-import appConfig from './config/config'
+import appConfig, { AppMode } from './config/config'
 import { errorHandlers, middlewares } from './middleware'
 import routes from './service'
 import { applyMiddleware, applyRoutes } from './util'
 import { ApolloServer, gql } from 'apollo-server-express';
-import { db, ExtendedProtocol, dbmigrate } from './db'
+import { dbmigrate } from './db'
 
 process.on('uncaughtException', e => {
     console.log(e)
@@ -23,7 +23,6 @@ export interface App {
     router: Router
     express: Application
     server: Server
-    db: ExtendedProtocol
 }
 
 const createGraphqlServer = (): ApolloServer => {
@@ -60,8 +59,7 @@ export const createApp = async (): Promise<App> => {
                 resolve({
                     router: appExpress,
                     express: appExpress,
-                    server: server,
-                    db: db
+                    server: server
                 })
             })
         } catch (error) {
