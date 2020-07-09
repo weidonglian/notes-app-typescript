@@ -60,9 +60,13 @@ export interface TestAppWithTokens extends TestApp {
 }
 
 export const testAppWithLoginTestUser = async (): Promise<TestAppWithTokens> => {
+    console.log('+++++=testAppWithTestUser is running step1')
     const app = await testAppWithTestUser()
+    console.log('+++++=testAppWithTestUser is running step2')
     const testUserToken = await loginUser('test', 'test', app)
+    console.log('+++++=testAppWithTestUser is running step3')
     const adminUserToken = await loginUser('admin', 'admin', app)
+    console.log('+++++=testAppWithTestUser is running step4')
     return { ...app, testUserToken, adminUserToken }
 }
 

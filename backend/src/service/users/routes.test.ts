@@ -10,13 +10,9 @@ describe('service /users GET', () => {
     let invalidAuthOptions: AxiosRequestConfig = makeAuthHeaderOptions('invalid token')
 
     beforeAll(async () => {
-        try {
-            app = await testAppWithLoginTestUser()
-            authOptions = makeAuthHeaderOptions(app.testUserToken)
-            adminAuthOptions = makeAuthHeaderOptions(app.adminUserToken)
-        } catch (error) {
-            console.log(error)
-        }
+        app = await testAppWithLoginTestUser()
+        authOptions = makeAuthHeaderOptions(app.testUserToken)
+        adminAuthOptions = makeAuthHeaderOptions(app.adminUserToken)
     })
 
     afterAll(async () => {
