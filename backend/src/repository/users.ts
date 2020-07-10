@@ -4,11 +4,25 @@ import { User } from '../model';
 import * as bcrypt from 'bcryptjs'
 import { IsNotEmpty, Length } from 'class-validator'
 
+interface DbUser {
+    user_id: number
+    user_name: string
+    user_password: string
+    user_role: string
+}
+
+const tfUser = (e: DbUser): User => {
+    let user = new User()
+    user.id = e.user_id
+    user.name = e.user_name
+    user.password = e.user_password
+    user.role = e.user_role
+    return user
+}
 
 /*
  This repository mixes hard-coded and dynamic SQL, just to show how to use both.
 */
-
 export class UsersRepository {
 
     /**
@@ -49,7 +63,7 @@ export class UsersRepository {
             INSERT INTO users (user_name, user_password, user_role)
             VALUES($1, $2, $3)
             RETURNING *
-        `, [user.name, user.password, user.role]);
+        `, [user.name, user.password, user.role], tfUser);
     }
 
     async updatePassword(user: User): Promise<number> {
@@ -67,12 +81,12 @@ export class UsersRepository {
 
     // Tries to find a user from id;
     async findById(id: number): Promise<User | null> {
-        return this.db.oneOrNone('SELECT * FROM users WHERE user_id = $1', +id);
+        return this.db.oneOrNone('SELECT * FROM users WHERE user_id = $1', +id, tfUser);
     }
 
     // Tries to find a user from name;
     async findByName(name: string): Promise<User | null> {
-        return this.db.oneOrNone('SELECT * FROM users WHERE user_name = $1', name);
+        return this.db.oneOrNone('SELECT * FROM users WHERE user_name = $1', name, tfUser);
     }
 
     // Returns all user records;

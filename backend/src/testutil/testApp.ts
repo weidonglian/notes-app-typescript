@@ -15,7 +15,7 @@ const addUser = async (name: string, password: string, role: string) => {
     try {
         await db.users.add(user)
     } catch (error) {
-        console.log(error)
+        console.log(`+++++===catching ${error}`)
     }
 }
 

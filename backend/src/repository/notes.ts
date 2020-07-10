@@ -2,10 +2,23 @@ import { IDatabase, IMain } from 'pg-promise';
 import { IResult } from 'pg-promise/typescript/pg-subset';
 import { Note } from '../model';
 
+interface DbNote {
+    note_id: number
+    note_name: string
+    user_id: number
+}
+
+const tfNote = (e: DbNote): Note => {
+    let t = new Note()
+    t.id = e.note_id
+    t.name = e.note_name
+    t.userId = e.user_id
+    return t
+}
+
 /*
  This repository mixes hard-coded and dynamic SQL, just to show how to use both.
 */
-
 export class NotesRepository {
 
     /**
@@ -38,11 +51,11 @@ export class NotesRepository {
             INSERT INTO notes (note_name, user_id)
             VALUES($1)
             RETURNING *
-        `, [note.name, note.userId]);
+        `, [note.name, note.userId], tfNote);
     }
 
     async updateById(noteId: number, name: string): Promise<Note> {
-        return this.db.one(`UPDATE notes SET note_name=$1 WHERE note_id=$2 RETURNING *`, [name, noteId])
+        return this.db.one(`UPDATE notes SET note_name=$1 WHERE note_id=$2 RETURNING *`, [name, noteId], tfNote)
     }
 
     async findByUserId(userId: number): Promise<any> {
@@ -56,7 +69,7 @@ export class NotesRepository {
 
     // Tries to find a notes from id;
     async findById(id: number): Promise<Note | null> {
-        return this.db.oneOrNone('SELECT * FROM notes WHERE note_id = $1', +id);
+        return this.db.oneOrNone('SELECT * FROM notes WHERE note_id = $1', +id, tfNote);
     }
 
     // Returns all notes records;
