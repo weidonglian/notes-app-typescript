@@ -9,13 +9,21 @@ interface DbTodo {
     note_id: number
 }
 
-const tfTodo = (e: DbTodo): Todo => {
+const tfTodo = (e: DbTodo) => {
     let t = new Todo()
     t.id = e.todo_id
     t.name = e.todo_name
     t.done = e.todo_done
     t.noteId = e.note_id
     return t
+}
+
+const tfTodoNullable = (e: DbTodo) => {
+    return e ? tfTodo(e) : null
+}
+
+const mapTodo = (row: any, index: number, data: DbTodo[]) => {
+    return tfTodo(data[index])
 }
 
 /*
@@ -71,22 +79,22 @@ export class TodosRepository {
 
     // Tries to find a todo from id;
     async findById(id: number): Promise<Todo | null> {
-        return this.db.oneOrNone('SELECT * FROM todos WHERE todo_id = $1', +id, tfTodo);
+        return this.db.oneOrNone('SELECT * FROM todos WHERE todo_id = $1', +id, tfTodoNullable);
     }
 
     // Tries to find a todo from id;
     async findByNoteId(noteId: number): Promise<Todo[]> {
-        return this.db.any('SELECT * FROM todos WHERE note_id = $1', +noteId);
+        return this.db.map('SELECT * FROM todos WHERE note_id = $1', +noteId, mapTodo);
     }
 
     // Tries to find a todo from name;
     async findByName(name: string): Promise<Todo | null> {
-        return this.db.oneOrNone('SELECT * FROM todos WHERE todo_name = $1', name, tfTodo);
+        return this.db.oneOrNone('SELECT * FROM todos WHERE todo_name = $1', name, tfTodoNullable);
     }
 
     // Returns all todo records;
     async all(): Promise<Todo[]> {
-        return this.db.any('SELECT * FROM todos');
+        return this.db.map('SELECT * FROM todos', [], mapTodo);
     }
 
     // Returns the total number of todos;

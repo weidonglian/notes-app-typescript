@@ -17,7 +17,7 @@ export class NotesController {
 
     static getNotes = async (req: Request, res: Response) => {
         const userId = getUserIdFromRequest(req, res)
-        res.send(await db.notes.findByUserId(userId))
+        res.send(await db.notes.getNoteTodoMap(userId))
     }
 
     static putNotes = async (req: Request, res: Response) => {

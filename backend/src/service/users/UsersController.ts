@@ -26,7 +26,7 @@ export class UsersController {
         //Get parameters from the body
         let { username, password, role } = req.body
         let user = new User()
-        user.name = username
+        user.username = username
         user.password = password
         user.role = role
 
@@ -40,7 +40,7 @@ export class UsersController {
         user.hashPassword()
 
         //Try to save. If fails, the username is already in use
-        if (await db.users.findByName(user.name)) {
+        if (await db.users.findByName(user.username)) {
             throw new HttpErrorBadRequest('username already in use')
         }
 
@@ -48,7 +48,7 @@ export class UsersController {
         //If all ok, send 201 response
         res.status(HttpStatusCode.Success).send({
             id: savedUser.id,
-            username: savedUser.name
+            username: savedUser.username
         })
     }
 

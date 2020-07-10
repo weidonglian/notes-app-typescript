@@ -11,13 +11,21 @@ interface DbUser {
     user_role: string
 }
 
-const tfUser = (e: DbUser): User => {
+const tfUser = (e: DbUser) => {
     let user = new User()
     user.id = e.user_id
-    user.name = e.user_name
+    user.username = e.user_name
     user.password = e.user_password
     user.role = e.user_role
     return user
+}
+
+const tfUserNullable = (e: DbUser) => {
+    return e ? tfUser(e) : null
+}
+
+const mapUser = (row: any, index: number, data: DbUser[]) => {
+    return tfUser(data[index])
 }
 
 /*
@@ -63,13 +71,13 @@ export class UsersRepository {
             INSERT INTO users (user_name, user_password, user_role)
             VALUES($1, $2, $3)
             RETURNING *
-        `, [user.name, user.password, user.role], tfUser);
+        `, [user.username, user.password, user.role], tfUser);
     }
 
     async updatePassword(user: User): Promise<number> {
         return this.db.one(`
             UPDATE users
-            SET password=$1
+            SET user_password=$1
             WHERE user_id=$2
             RETURNING user_id
         `, [user.password, user.id]);
@@ -81,17 +89,17 @@ export class UsersRepository {
 
     // Tries to find a user from id;
     async findById(id: number): Promise<User | null> {
-        return this.db.oneOrNone('SELECT * FROM users WHERE user_id = $1', +id, tfUser);
+        return this.db.oneOrNone('SELECT * FROM users WHERE user_id = $1', +id, tfUserNullable);
     }
 
     // Tries to find a user from name;
     async findByName(name: string): Promise<User | null> {
-        return this.db.oneOrNone('SELECT * FROM users WHERE user_name = $1', name, tfUser);
+        return this.db.oneOrNone('SELECT * FROM users WHERE user_name = $1', name, tfUserNullable);
     }
 
     // Returns all user records;
     async all(): Promise<User[]> {
-        return this.db.any('SELECT * FROM users');
+        return this.db.map('SELECT * FROM users', [], mapUser);
     }
 
     // Returns the total number of users;

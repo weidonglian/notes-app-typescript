@@ -33,7 +33,7 @@ class AuthController {
         const token = jwt.sign(
             {
                 userId: user.id,
-                username: user.name
+                username: user.username
             },
             appConfig.jwtSecret,
             {
@@ -58,7 +58,7 @@ class AuthController {
         }
 
         let user = new User()
-        user.name = username
+        user.username = username
         user.password = password
         user.role = 'USER'
         user.hashPassword()
@@ -70,7 +70,7 @@ class AuthController {
         const createdUser = await db.users.add(user)
         res.status(HttpStatusCode.Success).send({
             id: createdUser.id,
-            username: createdUser.name,
+            username: createdUser.username,
             role: createdUser.role
         })
     }

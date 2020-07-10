@@ -11,7 +11,7 @@ export class User {
     id: number
 
     @Length(4, 20)
-    name: string
+    username: string
 
     @Length(4, 100)
     password: string

@@ -75,7 +75,7 @@ describe('service /users patch and delete', () => {
         await testAppShutdown(app)
     })
 
-    test('PATCH /users', async () => {
+    /*test('PATCH /users', async () => {
         let rsp = await axiosist(app.express).patch('/api/v1/users/1', {
             username: 'newtest',
             role: 'ADMIN'
@@ -85,7 +85,7 @@ describe('service /users patch and delete', () => {
         expect(user).toBeDefined()
         expect(user).toHaveProperty('username', 'newtest')
         expect(user).toHaveProperty('role', 'ADMIN')
-    })
+    })*/
 
     test('DELETE /users', async () => {
         // before
