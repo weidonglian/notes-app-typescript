@@ -10,8 +10,8 @@
     "start-dev": "tsc-watch --onSuccess \"node ./dist/server.js\"",
     "start-prod": "tsc && APP_MODE=prod node ./dist/server.js",
     "start": "npm run start-dev",
-    "test": "APP_MODE=test jest --runInBand",
-    "test-watch": "APP_MODE=test jest --runInBand --watchAll",
+    "test": "APP_MODE=test jest --runInBand --detectOpenHandles",
+    "test-watch": "APP_MODE=test jest --runInBand --detectOpenHandles --watchAll",
     "postinstall": "npx tsc"
   },
   "jest": {
