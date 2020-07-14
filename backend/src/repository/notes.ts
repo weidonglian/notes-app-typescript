@@ -1,6 +1,7 @@
 import { IDatabase, IMain } from 'pg-promise';
 import { IResult } from 'pg-promise/typescript/pg-subset';
 import { Note } from '../model';
+import { tfTodo, tfTodos } from './todos'
 
 interface DbNote {
     note_id: number
@@ -58,7 +59,7 @@ export class NotesRepository {
     async add(note: Note): Promise<Note> {
         return this.db.one(`
             INSERT INTO notes (note_name, user_id)
-            VALUES($1)
+            VALUES($1, $2)
             RETURNING *
         `, [note.name, note.userId], tfNote);
     }
@@ -75,12 +76,13 @@ export class NotesRepository {
             }
             const fillTodos = (note: Note) => ({
                 query: 'SELECT * FROM todos WHERE note_id = ${id}',
-                values: note
+                values: note,
+
             })
             const queries = this.pgp.helpers.concat(notes.map(fillTodos));
             const multiTodos = await t.multi(queries)
             notes.forEach((note: any, index: number) => {
-                note.todos = multiTodos[index]
+                note.todos = tfTodos(multiTodos[index])
             })
             return notes;
         })

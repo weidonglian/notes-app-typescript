@@ -9,13 +9,17 @@ interface DbTodo {
     note_id: number
 }
 
-const tfTodo = (e: DbTodo) => {
+export const tfTodo = (e: DbTodo) => {
     let t = new Todo()
     t.id = e.todo_id
     t.name = e.todo_name
     t.done = e.todo_done
     t.noteId = e.note_id
     return t
+}
+
+export const tfTodos = (todos: DbTodo[]) => {
+    return todos.map(t => { return tfTodo(t) })
 }
 
 const tfTodoNullable = (e: DbTodo) => {
