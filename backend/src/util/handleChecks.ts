@@ -20,7 +20,7 @@ function checkBody<T>(t: T, validatorOptions?: ValidatorOptions) {
     }
 }
 
-const checkJwt = (req: Request, res: Response, next: NextFunction) => {
+const checkJwt = (req: Request, res: Response) => {
     //Get the jwt token from the head and Express headers are auto converted to lowercase
     let token = (req.headers['x-access-token'] || req.headers['authorization']) as string
     if (token && token.startsWith('Bearer ')) {
@@ -47,9 +47,6 @@ const checkJwt = (req: Request, res: Response, next: NextFunction) => {
         expiresIn: '1h'
     })
     res.setHeader('auth-token', newToken)
-
-    //Call the next middleware or controller
-    next()
 }
 
 // we must have done the checkJwt first and then check the role

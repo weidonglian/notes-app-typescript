@@ -1,3 +1,17 @@
+type Todo {
+    id: Int!
+    name: String!
+    done: Boolean
+    note: Note!
+}
+
+type Note {
+    id: Int!
+    name: String!
+    userId: Int!
+    todos: [Todo]
+}
+
 type Query {
-    hello: String
+    notes: [Note]
 }

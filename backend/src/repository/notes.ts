@@ -69,7 +69,10 @@ export class NotesRepository {
 
     async getNoteTodoMap(userId: number): Promise<any> {
         return this.db.task(async t => {
-            const notes = t.map('SELECT * FROM notes WHERE user_id = $1', userId, mapNote)
+            const notes = await t.map('SELECT * FROM notes WHERE user_id = $1', userId, mapNote)
+            if (!notes || notes.length == 0) {
+                return []
+            }
             const fillTodos = (note: Note) => ({
                 query: 'SELECT * FROM todos WHERE note_id = ${id}',
                 values: note

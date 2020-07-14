@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { HttpClientError } from './httpErrors'
 import { db } from '../db'
 import { User } from '../model'
+import { GraphQLContext } from '../graphql'
 
 export const getUserFromRequest = async (req: Request, res: Response): Promise<User> => {
     const userId = getUserIdFromRequest(req, res);
@@ -19,4 +20,8 @@ export const getUserIdFromRequest = (req: Request, res: Response): number => {
         throw new Error('undefined res.locals.jwtPayload.userId')
     }
     return id;
+}
+
+export const getUserIdFromRequestQL = (ctx: GraphQLContext): number => {
+    return getUserIdFromRequest(ctx.req, ctx.res)
 }

@@ -3,6 +3,7 @@ import { IResult } from 'pg-promise/typescript/pg-subset';
 import { User } from '../model';
 import * as bcrypt from 'bcryptjs'
 import { IsNotEmpty, Length } from 'class-validator'
+import appConfig, { AppMode } from '../config/config';
 
 interface DbUser {
     user_id: number
@@ -50,6 +51,30 @@ export class UsersRepository {
           you should create it conditionally, inside the constructor,
           i.e. only once, as a singleton.
         */
+    }
+
+    async init() {
+        if (appConfig.appMode === AppMode.Dev) {
+            const initUsers = [
+                { username: 'admin', password: 'admin', isAdmin: true },
+                { username: 'dev', password: 'dev', isAdmin: false },
+                { username: 'test', password: 'test', isAdmin: false }
+            ]
+            for (const user of initUsers) {
+                if (!await this.findByName(user.username)) {
+                    this.addUser(user.username, user.password, user.isAdmin)
+                }
+            }
+        }
+    }
+
+    async addUser(username: string, password: string, isAdmin: boolean) {
+        let user = new User
+        user.username = username
+        user.password = password
+        user.hashPassword()
+        user.role = isAdmin ? "ADMIN" : "USER"
+        return this.add(user)
     }
 
     hashPassword(user: User) {
