@@ -5,8 +5,8 @@ import appConfig, { AppMode } from './config/config'
 import { errorHandlers, middlewares } from './middleware'
 import routes from './service'
 import { applyMiddleware, applyRoutes } from './util'
-import { ApolloServer, gql } from 'apollo-server-express';
 import { dbmigrate } from './db'
+import { createGraphqlServer } from './graphql'
 
 process.on('uncaughtException', e => {
     console.log(e)
@@ -23,23 +23,6 @@ export interface App {
     router: Router
     express: Application
     server: Server
-}
-
-const createGraphqlServer = (): ApolloServer => {
-    // Construct a schema, using GraphQL schema language
-    const typeDefs =
-        `type Query {
-    hello: String
-  }`
-
-    // Provide resolver functions for your schema fields
-    const resolvers = {
-        Query: {
-            hello: () => 'Hello world!',
-        },
-    }
-
-    return new ApolloServer({ typeDefs, resolvers, playground: true })
 }
 
 export const createApp = async (): Promise<App> => {

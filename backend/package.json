@@ -7,12 +7,13 @@
   "license": "ISC",
   "main": "index.js",
   "scripts": {
-    "start-dev": "tsc-watch --onSuccess \"node ./dist/server.js\"",
-    "start-prod": "tsc && APP_MODE=prod node ./dist/server.js",
+    "copyfiles-to-dist": "./node_modules/copyfiles/copyfiles -f './src/graphql/*.graphql' ./dist/graphql/",
+    "start-dev": "npm run copyfiles-to-dist && tsc-watch --onSuccess \"node ./dist/server.js\"",
+    "start-prod": "npm run copyfiles-to-dist && tsc && APP_MODE=prod node ./dist/server.js",
     "start": "npm run start-dev",
     "test": "APP_MODE=test jest --runInBand --detectOpenHandles",
     "test-watch": "APP_MODE=test jest --runInBand --detectOpenHandles --watchAll",
-    "postinstall": "npx tsc"
+    "postinstall": "npx tsc && npm run copyfiles-to-dist"
   },
   "jest": {
     "verbose": true,
@@ -62,6 +63,7 @@
     "class-transformer-validator": "^0.9.0",
     "class-validator": "^0.12.2",
     "compression": "^1.7.3",
+    "copyfiles": "^2.3.0",
     "cors": "^2.8.5",
     "db-migrate": "^0.11.11",
     "db-migrate-pg": "^1.2.2",
