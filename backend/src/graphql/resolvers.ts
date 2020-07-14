@@ -2,14 +2,31 @@ import { IResolvers } from 'apollo-server-express'
 import { checkJwtQL } from '../validator'
 import { getUserIdFromRequestQL } from '../util/user'
 import { GraphQLContext } from '.'
+import { Note } from '../model'
 
 export const resolvers: IResolvers | Array<IResolvers> = {
     Query: {
-        notes: async (parent, args, ctx: GraphQLContext) => {
+        notes: async (_, __, ctx: GraphQLContext) => {
             checkJwtQL(ctx)
             const userId = getUserIdFromRequestQL(ctx)
-            const notes = await ctx.db.notes.getNoteTodoMap(userId)
-            return notes
+            return await ctx.db.notes.getNoteTodoMap(userId)
+        }
+    },
+    Mutation: {
+        createNote: async (_, { name }, ctx: GraphQLContext) => {
+            checkJwtQL(ctx)
+            const input = new Note
+            input.name = name
+            input.userId = getUserIdFromRequestQL(ctx)
+            return await ctx.db.notes.add(input)
+        },
+        updateNote: async (_, { id, name }, ctx: GraphQLContext) => {
+            checkJwtQL(ctx)
+            return await ctx.db.notes.updateById(id, name)
+        },
+        deleteNote: async (_, { id }, ctx: GraphQLContext) => {
+            checkJwtQL(ctx)
+            return await ctx.db.notes.remove(id)
         }
     }
 }

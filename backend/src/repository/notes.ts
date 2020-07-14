@@ -93,8 +93,8 @@ export class NotesRepository {
     }
 
     // Tries to delete a notes by id, and returns the number of records deleted;
-    async remove(id: number): Promise<number> {
-        return this.db.result('DELETE FROM notes WHERE note_id = $1', +id, (r: IResult) => r.rowCount)
+    async remove(id: number): Promise<Note | null> {
+        return this.db.oneOrNone('DELETE FROM notes WHERE note_id = $1 RETURNING *', +id, tfNoteNullable)
     }
 
     // Tries to find a notes from id;

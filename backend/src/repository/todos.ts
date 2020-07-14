@@ -69,11 +69,11 @@ export class TodosRepository {
     }
 
     async update(todoId: number, name: string, done: boolean): Promise<Todo> {
-        return this.db.one(`UPDATE todos SET todo_name=$1 todo_done=$2 WHERE todo_id=$3`, [name, done, todoId], tfTodo)
+        return this.db.one(`UPDATE todos SET todo_name = $1 todo_done=$2 WHERE todo_id=$3`, [name, done, todoId], tfTodo)
     }
 
     async toggle_done(todoId: number): Promise<Todo> {
-        return this.db.one(`UPDATE todos SET todo_done=!todo_done WHERE todo_id=$1`, [todoId], tfTodo)
+        return this.db.one(`UPDATE todos SET todo_done = !todo_done WHERE todo_id=$1`, [todoId], tfTodo)
     }
 
     // Tries to delete a todo by id, and returns the number of records deleted;
