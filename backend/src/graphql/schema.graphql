@@ -1,15 +1,6 @@
-type Todo {
-    id: Int!
-    name: String!
-    done: Boolean
-    note: Note!
-}
-
-type Note {
-    id: Int!
-    name: String!
-    userId: Int!
-    todos: [Todo]
+schema {
+  query: Query,
+  mutation: Mutation
 }
 
 type Query {
@@ -20,4 +11,20 @@ type Mutation {
     createNote(title: String!): Note
     updateNote(id: Int!, title: String!): Note
     deleteNote(id: Int!): Note
+}
+
+interface Node {
+    id: Int!
+}
+
+type Todo implements Node {
+    name: String!
+    done: Boolean
+    note: Note!
+}
+
+type Note implements Node {
+    name: String!
+    userId: Int!
+    todos: [Todo]
 }
