@@ -18,12 +18,14 @@ interface Node {
 }
 
 type Todo implements Node {
+    id: Int!
     name: String!
     done: Boolean
     note: Note!
 }
 
 type Note implements Node {
+    id: Int!
     name: String!
     userId: Int!
     todos: [Todo]
