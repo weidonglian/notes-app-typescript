@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "copyfiles-to-dist": "./node_modules/copyfiles/copyfiles -f './src/graphql/*.graphql' ./dist/graphql/",
+    "graphql-gen": "graphql-codegen --config codegen.yml",
     "start-dev": "npm run copyfiles-to-dist && tsc-watch --onSuccess \"node ./dist/server.js\"",
     "start-prod": "npm run copyfiles-to-dist && tsc && APP_MODE=prod node ./dist/server.js",
     "start": "npm run start-dev",
@@ -42,6 +43,7 @@
     ]
   },
   "dependencies": {
+    "@graphql-codegen/cli": "^1.17.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/bluebird": "^3.5.32",
     "@types/compression": "0.0.36",
@@ -82,5 +84,11 @@
     "tsc-watch": "^4.2.9",
     "typescript": "^3.9.6"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@graphql-codegen/cli": "1.17.0",
+    "@graphql-codegen/introspection": "1.17.0",
+    "@graphql-codegen/typescript": "^1.17.0",
+    "@graphql-codegen/typescript-document-nodes": "1.17.0",
+    "@graphql-codegen/typescript-resolvers": "1.17.0"
+  }
 }
