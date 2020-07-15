@@ -1,6 +1,6 @@
 {
     "jest.autoEnable": false,
-    "debug.node.autoAttach": "on",
+    "debug.node.autoAttach": "off",
     "trailing-spaces.highlightCurrentLine": false,
     "trailing-spaces.includeEmptyLines": false,
     "trailing-spaces.liveMatching": false
