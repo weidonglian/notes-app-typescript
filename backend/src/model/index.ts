@@ -7,7 +7,7 @@ export class BaseModel {
     updatedAt: Date
 }
 
-export class User {
+export class UserModel {
     id: number
 
     @Length(4, 20)
@@ -28,7 +28,7 @@ export class User {
     }
 }
 
-export class Note {
+export class NoteModel {
     id: number
 
     @IsNotEmpty()
@@ -37,7 +37,7 @@ export class Note {
     userId: number
 }
 
-export class Todo {
+export class TodoModel {
     id: number
 
     @IsNotEmpty()

@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import { HttpClientError } from './httpErrors'
 import { db } from '../db'
-import { User } from '../model'
+import { UserModel } from '../model'
 import { GraphQLContext } from '../graphql'
 
-export const getUserFromRequest = async (req: Request, res: Response): Promise<User> => {
+export const getUserFromRequest = async (req: Request, res: Response): Promise<UserModel> => {
     const userId = getUserIdFromRequest(req, res);
     const user = await db.users.findById(userId)
     if (!user) {

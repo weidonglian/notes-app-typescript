@@ -1,6 +1,6 @@
 import { IDatabase, IMain } from 'pg-promise';
 import { IResult } from 'pg-promise/typescript/pg-subset';
-import { Todo } from '../model';
+import { TodoModel } from '../model';
 
 interface DbTodo {
     todo_id: number
@@ -10,7 +10,7 @@ interface DbTodo {
 }
 
 export const tfTodo = (e: DbTodo) => {
-    let t = new Todo()
+    let t = new TodoModel()
     t.id = e.todo_id
     t.name = e.todo_name
     t.done = e.todo_done
@@ -60,7 +60,7 @@ export class TodosRepository {
     }
 
     // Adds a new todo, and returns the new object;
-    async add(todo: Todo): Promise<Todo> {
+    async add(todo: TodoModel): Promise<TodoModel> {
         return this.db.one(`
             INSERT INTO todos (todo_name, todo_done, note_id)
             VALUES($1, $2, $3)
@@ -68,11 +68,11 @@ export class TodosRepository {
         `, [todo.name, todo.done, todo.noteId], tfTodo);
     }
 
-    async update(todoId: number, name: string, done: boolean): Promise<Todo> {
+    async update(todoId: number, name: string, done: boolean): Promise<TodoModel> {
         return this.db.one(`UPDATE todos SET todo_name = $1 todo_done=$2 WHERE todo_id=$3`, [name, done, todoId], tfTodo)
     }
 
-    async toggle_done(todoId: number): Promise<Todo> {
+    async toggle_done(todoId: number): Promise<TodoModel> {
         return this.db.one(`UPDATE todos SET todo_done = !todo_done WHERE todo_id=$1`, [todoId], tfTodo)
     }
 
@@ -82,22 +82,22 @@ export class TodosRepository {
     }
 
     // Tries to find a todo from id;
-    async findById(id: number): Promise<Todo | null> {
+    async findById(id: number): Promise<TodoModel | null> {
         return this.db.oneOrNone('SELECT * FROM todos WHERE todo_id = $1', +id, tfTodoNullable);
     }
 
     // Tries to find a todo from id;
-    async findByNoteId(noteId: number): Promise<Todo[]> {
+    async findByNoteId(noteId: number): Promise<TodoModel[]> {
         return this.db.map('SELECT * FROM todos WHERE note_id = $1', +noteId, mapTodo);
     }
 
     // Tries to find a todo from name;
-    async findByName(name: string): Promise<Todo | null> {
+    async findByName(name: string): Promise<TodoModel | null> {
         return this.db.oneOrNone('SELECT * FROM todos WHERE todo_name = $1', name, tfTodoNullable);
     }
 
     // Returns all todo records;
-    async all(): Promise<Todo[]> {
+    async all(): Promise<TodoModel[]> {
         return this.db.map('SELECT * FROM todos', [], mapTodo);
     }
 

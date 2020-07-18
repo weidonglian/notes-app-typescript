@@ -1,6 +1,6 @@
 import { IDatabase, IMain } from 'pg-promise';
 import { IResult } from 'pg-promise/typescript/pg-subset';
-import { User } from '../model';
+import { UserModel } from '../model';
 import * as bcrypt from 'bcryptjs'
 import { IsNotEmpty, Length } from 'class-validator'
 import appConfig, { AppMode } from '../config/config';
@@ -13,7 +13,7 @@ interface DbUser {
 }
 
 const tfUser = (e: DbUser) => {
-    let user = new User()
+    let user = new UserModel()
     user.id = e.user_id
     user.username = e.user_name
     user.password = e.user_password
@@ -69,7 +69,7 @@ export class UsersRepository {
     }
 
     async addUser(username: string, password: string, isAdmin: boolean) {
-        let user = new User
+        let user = new UserModel
         user.username = username
         user.password = password
         user.hashPassword()
@@ -77,11 +77,11 @@ export class UsersRepository {
         return this.add(user)
     }
 
-    hashPassword(user: User) {
+    hashPassword(user: UserModel) {
         user.password = bcrypt.hashSync(user.password, 8)
     }
 
-    checkIfUnencryptedPasswordIsValid(unencryptedPassword: string, user: User): boolean {
+    checkIfUnencryptedPasswordIsValid(unencryptedPassword: string, user: UserModel): boolean {
         return bcrypt.compareSync(unencryptedPassword, user.password)
     }
 
@@ -91,7 +91,7 @@ export class UsersRepository {
     }
 
     // Adds a new user, and returns the new object;
-    async add(user: User): Promise<User> {
+    async add(user: UserModel): Promise<UserModel> {
         return this.db.one(`
             INSERT INTO users (user_name, user_password, user_role)
             VALUES($1, $2, $3)
@@ -99,7 +99,7 @@ export class UsersRepository {
         `, [user.username, user.password, user.role], tfUser);
     }
 
-    async updatePassword(user: User): Promise<number> {
+    async updatePassword(user: UserModel): Promise<number> {
         return this.db.one(`
             UPDATE users
             SET user_password=$1
@@ -113,17 +113,17 @@ export class UsersRepository {
     }
 
     // Tries to find a user from id;
-    async findById(id: number): Promise<User | null> {
+    async findById(id: number): Promise<UserModel | null> {
         return this.db.oneOrNone('SELECT * FROM users WHERE user_id = $1', +id, tfUserNullable);
     }
 
     // Tries to find a user from name;
-    async findByName(name: string): Promise<User | null> {
+    async findByName(name: string): Promise<UserModel | null> {
         return this.db.oneOrNone('SELECT * FROM users WHERE user_name = $1', name, tfUserNullable);
     }
 
     // Returns all user records;
-    async all(): Promise<User[]> {
+    async all(): Promise<UserModel[]> {
         return this.db.map('SELECT * FROM users', [], mapUser);
     }
 

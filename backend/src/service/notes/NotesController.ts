@@ -3,14 +3,14 @@ import { getUserFromRequest, getUserIdFromRequest } from '../../util/user'
 import { checkNotEmpty } from '../../validator'
 import { HttpStatusCode } from '../../util/httpErrors'
 import { transformAndValidate } from 'class-transformer-validator'
-import { Note } from '../../model'
+import { NoteModel } from '../../model'
 import { db } from '../../db'
 
 export class NotesController {
 
     static postNotes = async (req: Request, res: Response) => {
         const userId = getUserIdFromRequest(req, res)
-        const note = await transformAndValidate(Note, req.body as object)
+        const note = await transformAndValidate(NoteModel, req.body as object)
         note.userId = userId
         res.send(await db.notes.add(note))
     }

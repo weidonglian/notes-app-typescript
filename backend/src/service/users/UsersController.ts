@@ -1,7 +1,7 @@
 import { validate } from 'class-validator'
 import { Request, Response } from 'express'
 import { db } from '../../db'
-import { User } from '../../model'
+import { UserModel } from '../../model'
 import { HttpStatusCode, HttpErrorBadRequest, HttpErrorNotFound, HttpErrorForbidden } from '../../util/httpErrors'
 
 export class UsersController {
@@ -25,7 +25,7 @@ export class UsersController {
     static newUser = async (req: Request, res: Response) => {
         //Get parameters from the body
         let { username, password, role } = req.body
-        let user = new User()
+        let user = new UserModel()
         user.username = username
         user.password = password
         user.role = role

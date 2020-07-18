@@ -2,7 +2,7 @@ import { IResolvers } from 'apollo-server-express'
 import { checkJwtQL } from '../validator'
 import { getUserIdFromRequestQL } from '../util/user'
 import { GraphQLContext } from '.'
-import { Note } from '../model'
+import { NoteModel } from '../model'
 
 export const resolvers: IResolvers | Array<IResolvers> = {
     Query: {
@@ -15,7 +15,7 @@ export const resolvers: IResolvers | Array<IResolvers> = {
     Mutation: {
         createNote: async (_, { name }, ctx: GraphQLContext) => {
             checkJwtQL(ctx)
-            const input = new Note
+            const input = new NoteModel
             input.name = name
             input.userId = getUserIdFromRequestQL(ctx)
             return await ctx.db.notes.add(input)

@@ -2,12 +2,12 @@ import { spyOnConsole, restoreConsole } from './mockConsole'
 import axiosist from 'axiosist'
 import { App, createApp, shutdownApp } from '../app'
 import appConfig, { AppMode } from '../config/config'
-import { User } from '../model'
+import { UserModel } from '../model'
 import { db, dbmigrate } from '../db'
 import { HttpStatusCode } from '../util/httpErrors'
 
 const addUser = async (name: string, password: string, role: string) => {
-    let user = new User
+    let user = new UserModel
     user.username = name
     user.password = password
     user.hashPassword()

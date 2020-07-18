@@ -1,6 +1,6 @@
 import { IDatabase, IMain } from 'pg-promise';
 import { IResult } from 'pg-promise/typescript/pg-subset';
-import { Note } from '../model';
+import { NoteModel } from '../model';
 import { tfTodo, tfTodos } from './todos'
 
 interface DbNote {
@@ -10,7 +10,7 @@ interface DbNote {
 }
 
 const tfNote = (e: DbNote) => {
-    let t = new Note()
+    let t = new NoteModel()
     t.id = e.note_id
     t.name = e.note_name
     t.userId = e.user_id
@@ -56,7 +56,7 @@ export class NotesRepository {
     }
 
     // Adds a new notes, and returns the new object;
-    async add(note: Note): Promise<Note> {
+    async add(note: NoteModel): Promise<NoteModel> {
         return this.db.one(`
             INSERT INTO notes (note_name, user_id)
             VALUES($1, $2)
@@ -64,7 +64,7 @@ export class NotesRepository {
         `, [note.name, note.userId], tfNote);
     }
 
-    async updateById(noteId: number, name: string): Promise<Note> {
+    async updateById(noteId: number, name: string): Promise<NoteModel> {
         return this.db.one(`UPDATE notes SET note_name=$1 WHERE note_id=$2 RETURNING *`, [name, noteId], tfNote)
     }
 
@@ -74,7 +74,7 @@ export class NotesRepository {
             if (!notes || notes.length == 0) {
                 return []
             }
-            const fillTodos = (note: Note) => ({
+            const fillTodos = (note: NoteModel) => ({
                 query: 'SELECT * FROM todos WHERE note_id = ${id}',
                 values: note,
 
@@ -88,22 +88,22 @@ export class NotesRepository {
         })
     }
 
-    async findByUserId(userId: number): Promise<Note[]> {
+    async findByUserId(userId: number): Promise<NoteModel[]> {
         return this.db.map('SELECT * FROM notes WHERE user_id = $1', userId, mapNote)
     }
 
     // Tries to delete a notes by id, and returns the number of records deleted;
-    async remove(id: number): Promise<Note | null> {
+    async remove(id: number): Promise<NoteModel | null> {
         return this.db.oneOrNone('DELETE FROM notes WHERE note_id = $1 RETURNING *', +id, tfNoteNullable)
     }
 
     // Tries to find a notes from id;
-    async findById(id: number): Promise<Note | null> {
+    async findById(id: number): Promise<NoteModel | null> {
         return this.db.oneOrNone('SELECT * FROM notes WHERE note_id = $1', +id, tfNoteNullable)
     }
 
     // Returns all notes records;
-    async all(): Promise<Note[]> {
+    async all(): Promise<NoteModel[]> {
         return this.db.map('SELECT * FROM notes', [], mapNote)
     }
 

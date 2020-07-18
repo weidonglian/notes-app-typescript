@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
 import { appConfig } from '../../config/config'
 import { db } from '../../db'
-import { User } from '../../model'
+import { UserModel } from '../../model'
 import { HttpErrorBadRequest, HttpStatusCode } from '../../util/httpErrors'
 import { getUserFromRequest } from '../../util/user'
 
@@ -57,7 +57,7 @@ class AuthController {
             throw new HttpErrorBadRequest(`Already registered user:${username}`)
         }
 
-        let user = new User()
+        let user = new UserModel()
         user.username = username
         user.password = password
         user.role = 'USER'

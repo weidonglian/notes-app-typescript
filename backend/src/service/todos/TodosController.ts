@@ -3,7 +3,7 @@ import { checkNotEmpty } from '../../validator'
 import { HttpStatusCode } from '../../util/httpErrors'
 import { transformAndValidate } from 'class-transformer-validator'
 import { IsNotEmpty, IsInt } from 'class-validator'
-import { Todo } from '../../model'
+import { TodoModel } from '../../model'
 import { db } from '../../db'
 
 
@@ -16,7 +16,7 @@ export class TodosController {
             name: string
         }
         const postInput = await transformAndValidate(PostInput, req.body as object)
-        const todo = new Todo()
+        const todo = new TodoModel()
         todo.name = postInput.name
         todo.done = false
         todo.noteId = postInput.noteId
