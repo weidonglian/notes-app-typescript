@@ -21,13 +21,13 @@ export type Mutation = {
 
 
 export type MutationCreateNoteArgs = {
-  title: Scalars['String'];
+  name: Scalars['String'];
 };
 
 
 export type MutationUpdateNoteArgs = {
   id: Scalars['Int'];
-  title: Scalars['String'];
+  name: Scalars['String'];
 };
 
 
@@ -161,8 +161,8 @@ export type ResolversParentTypes = {
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createNote?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, RequireFields<MutationCreateNoteArgs, 'title'>>;
-  updateNote?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, RequireFields<MutationUpdateNoteArgs, 'id' | 'title'>>;
+  createNote?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, RequireFields<MutationCreateNoteArgs, 'name'>>;
+  updateNote?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, RequireFields<MutationUpdateNoteArgs, 'id' | 'name'>>;
   deleteNote?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, RequireFields<MutationDeleteNoteArgs, 'id'>>;
 };
 

@@ -3,8 +3,9 @@ import { checkJwtQL } from '../validator'
 import { getUserIdFromRequestQL } from '../util/user'
 import { GraphQLContext } from '.'
 import { NoteModel } from '../model'
+import { Resolvers } from './types'
 
-export const resolvers: IResolvers | Array<IResolvers> = {
+export const resolvers: Resolvers<GraphQLContext> = {
     Query: {
         notes: async (_, __, ctx: GraphQLContext) => {
             checkJwtQL(ctx)

@@ -271,7 +271,7 @@
             "description": null,
             "args": [
               {
-                "name": "title",
+                "name": "name",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -312,7 +312,7 @@
                 "defaultValue": null
               },
               {
-                "name": "title",
+                "name": "name",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
