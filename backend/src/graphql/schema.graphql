@@ -21,7 +21,7 @@ type Todo implements Node {
     id: Int!
     name: String!
     done: Boolean
-    note: Note!
+    noteId: Int!
 }
 
 type Note implements Node {

@@ -224,15 +224,15 @@
             "deprecationReason": null
           },
           {
-            "name": "note",
+            "name": "noteId",
             "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Note",
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               }
             },

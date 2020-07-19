@@ -3,6 +3,12 @@ schema: "./src/graphql/*.graphql"
 documents: null
 generates:
   ./src/graphql/types.ts:
+    config:
+      useIndexSignature: true
+      contextType: ../graphql#GraphQLContext
+      mappers:
+        Todo: ../model#TodoModel
+        Note: ../model#NoteModel
     plugins:
       - "typescript"
       - "typescript-resolvers"
