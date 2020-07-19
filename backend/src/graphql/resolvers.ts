@@ -12,6 +12,11 @@ export const resolvers: Resolvers = {
             return await ctx.db.notes.findByUserId(userId)
         }
     },
+    Node: {
+        __resolveType() {
+            return null
+        }
+    },
     Note: {
         id: n => n.id,
         name: n => n.name,
