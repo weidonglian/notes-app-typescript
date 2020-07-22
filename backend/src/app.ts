@@ -7,7 +7,7 @@ import routes from './service'
 import { applyMiddleware, applyRoutes } from './util'
 import { dbmigrate, db } from './db'
 import { createGraphqlServer } from './graphql'
-import { checkJwt } from './validator'
+import { ApolloServer } from 'apollo-server-express'
 
 process.on('uncaughtException', e => {
     console.log(e)
@@ -24,6 +24,7 @@ export interface App {
     router: Router
     express: Application
     server: Server
+    apolloServer: ApolloServer
 }
 
 export const createApp = async (): Promise<App> => {
@@ -44,7 +45,8 @@ export const createApp = async (): Promise<App> => {
                 resolve({
                     router: appExpress,
                     express: appExpress,
-                    server: server
+                    server: server,
+                    apolloServer: appGraphql
                 })
             })
         } catch (error) {
