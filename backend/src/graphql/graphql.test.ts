@@ -36,14 +36,14 @@ describe('query notes', () => {
           }
         }`
         //
-        const respQueryNotes = await query({
+        let respQueryNotes = await query({
             query: getNotes
         })
         expect(respQueryNotes.errors).toBeUndefined()
         expect(respQueryNotes.data).toHaveProperty('notes', [])
 
         // now we add notes and todo
-        const createNote = `mutate {
+        const createNote = `mutation {
             createNote(name: "note1") {
                 id
                 name
@@ -58,5 +58,14 @@ describe('query notes', () => {
         const respCreateNote = await mutate({
             mutation: createNote
         })
+        expect(respCreateNote.errors).toBeUndefined()
+        expect(respCreateNote.data).toHaveProperty('createNote')
+        expect(respCreateNote.data).toHaveProperty('createNote.name', 'note1')
+
+        respQueryNotes = await query({
+            query: getNotes
+        })
+        expect(respQueryNotes.errors).toBeUndefined()
+        expect(respQueryNotes.data).toHaveProperty('notes', [{ id: 1, name: 'note1', todos: [] }])
     })
 })
