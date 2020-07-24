@@ -11,6 +11,11 @@ type Mutation {
     createNote(name: String!): Note
     updateNote(id: Int!, name: String!): Note
     deleteNote(id: Int!): Note
+
+    createTodo(name: String!, noteId: Int!): Todo
+    updateTodo(id: Int!, name: String!): Todo
+    deleteTodo(id: Int!): Todo
+    toggleTodo(id: Int!): Todo
 }
 
 interface Node {

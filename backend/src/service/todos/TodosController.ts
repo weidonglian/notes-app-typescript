@@ -16,11 +16,7 @@ export class TodosController {
             name: string
         }
         const postInput = await transformAndValidate(PostInput, req.body as object)
-        const todo = new TodoModel()
-        todo.name = postInput.name
-        todo.done = false
-        todo.noteId = postInput.noteId
-        res.send(await db.todos.add(todo))
+        res.send(await db.todos.add(postInput.name, false, postInput.noteId))
     }
 
     static putTodos = async (req: Request, res: Response) => {

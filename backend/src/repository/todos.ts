@@ -60,16 +60,20 @@ export class TodosRepository {
     }
 
     // Adds a new todo, and returns the new object;
-    async add(todo: TodoModel): Promise<TodoModel> {
+    async add(name: string, done: boolean, noteId: number): Promise<TodoModel> {
         return this.db.one(`
             INSERT INTO todos (todo_name, todo_done, note_id)
             VALUES($1, $2, $3)
             RETURNING *
-        `, [todo.name, todo.done, todo.noteId], tfTodo);
+        `, [name, done, noteId], tfTodo);
     }
 
-    async update(todoId: number, name: string, done: boolean): Promise<TodoModel> {
-        return this.db.one(`UPDATE todos SET todo_name = $1 todo_done=$2 WHERE todo_id=$3`, [name, done, todoId], tfTodo)
+    async update(todoId: number, name: string, done?: boolean): Promise<TodoModel> {
+        if (done === undefined) {
+            return this.db.one(`UPDATE todos SET todo_name = $1 WHERE todo_id=$2`, [name, todoId], tfTodo)
+        } else {
+            return this.db.one(`UPDATE todos SET todo_name = $1 todo_done=$2 WHERE todo_id=$3`, [name, done, todoId], tfTodo)
+        }
     }
 
     async toggle_done(todoId: number): Promise<TodoModel> {
@@ -77,8 +81,8 @@ export class TodosRepository {
     }
 
     // Tries to delete a todo by id, and returns the number of records deleted;
-    async remove(id: number): Promise<number> {
-        return this.db.result('DELETE FROM todos WHERE todo_id = $1', +id, (r: IResult) => r.rowCount);
+    async remove(id: number): Promise<TodoModel | null> {
+        return this.db.oneOrNone('DELETE FROM todos WHERE todo_id = $1 RETURNING *', +id, tfTodoNullable);
     }
 
     // Tries to find a todo from id;

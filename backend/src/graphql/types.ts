@@ -19,6 +19,10 @@ export type Mutation = {
   createNote?: Maybe<Note>;
   updateNote?: Maybe<Note>;
   deleteNote?: Maybe<Note>;
+  createTodo?: Maybe<Todo>;
+  updateTodo?: Maybe<Todo>;
+  deleteTodo?: Maybe<Todo>;
+  toggleTodo?: Maybe<Todo>;
 };
 
 
@@ -34,6 +38,28 @@ export type MutationUpdateNoteArgs = {
 
 
 export type MutationDeleteNoteArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationCreateTodoArgs = {
+  name: Scalars['String'];
+  noteId: Scalars['Int'];
+};
+
+
+export type MutationUpdateTodoArgs = {
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+
+export type MutationDeleteTodoArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationToggleTodoArgs = {
   id: Scalars['Int'];
 };
 
@@ -167,6 +193,10 @@ export type MutationResolvers<ContextType = GraphQLContext, ParentType extends R
   createNote?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, RequireFields<MutationCreateNoteArgs, 'name'>>;
   updateNote?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, RequireFields<MutationUpdateNoteArgs, 'id' | 'name'>>;
   deleteNote?: Resolver<Maybe<ResolversTypes['Note']>, ParentType, ContextType, RequireFields<MutationDeleteNoteArgs, 'id'>>;
+  createTodo?: Resolver<Maybe<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<MutationCreateTodoArgs, 'name' | 'noteId'>>;
+  updateTodo?: Resolver<Maybe<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<MutationUpdateTodoArgs, 'id' | 'name'>>;
+  deleteTodo?: Resolver<Maybe<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<MutationDeleteTodoArgs, 'id'>>;
+  toggleTodo?: Resolver<Maybe<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<MutationToggleTodoArgs, 'id'>>;
 }>;
 
 export type NodeResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = ResolversObject<{
@@ -208,5 +238,4 @@ export type Resolvers<ContextType = GraphQLContext> = ResolversObject<{
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
 export type IResolvers<ContextType = GraphQLContext> = Resolvers<ContextType>;
-
 
