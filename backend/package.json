@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "copyfiles-to-dist": "./node_modules/copyfiles/copyfiles -f './src/graphql/*.graphql' ./dist/graphql/",
-    "graphql-gen": "graphql-codegen --config codegen.yml",
+    "codegen": "graphql-codegen --config codegen.yml",
     "start-dev": "npm run copyfiles-to-dist && tsc-watch --onSuccess \"node ./dist/server.js\"",
     "start-prod": "npm run copyfiles-to-dist && tsc && APP_MODE=prod node ./dist/server.js",
     "start": "npm run start-dev",
