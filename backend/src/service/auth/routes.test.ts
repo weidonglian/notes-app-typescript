@@ -45,6 +45,33 @@ describe('service /auth', () => {
         })
     })
 
+    describe('/auth/signup', () => {
+        beforeAll(async () => {
+            app = await testAppWithTestUser()
+        })
+
+        afterAll(async () => {
+            await testAppShutdown(app)
+        })
+
+        test('signup with existing user and password', async () => {
+            const response = await axiosist(app.express).post('/api/v1/auth/signup', testUser)
+            expect(response.status).toEqual(HttpStatusCode.BadRequest)
+            expect(response.data.message).toContain('Already registered user')
+        })
+
+        test('signup with valid user and valid password', async () => {
+            const response = await axiosist(app.express).post('/api/v1/auth/signup', {
+                username: 'normaluser', password: 'normalpassword'
+            })
+            expect(response.status).toEqual(HttpStatusCode.Success)
+            let user = response.data
+            expect(user).toBeDefined()
+            expect(user).toHaveProperty('username', 'normaluser')
+            expect(user).toHaveProperty('role', 'USER')
+            expect(user).not.toHaveProperty('password')
+        })
+    })
 
     describe('/auth/password', () => {
         test('change password', async () => {

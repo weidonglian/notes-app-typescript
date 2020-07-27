@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { NextFunction, Request, Response } from 'express'
 import axiosist from 'axiosist'
 import { App, createApp, shutdownApp } from '../../app'
 import handleChecks from '../../util/handleChecks'
@@ -12,15 +11,19 @@ describe('service /search', () => {
     let app: TestAppWithTokens
     let authOptions: AxiosRequestConfig
 
-    beforeAll(async () => {
+    beforeAll(async (done) => {
+        console.log('++++= service /search beforeAll starting')
         // now create app
         app = await testAppWithLoginTestUser()
         authOptions = makeAuthHeaderOptions(app.testUserToken)
+        console.log('++++= service /search beforeAll ending')
+        done()
     })
 
-    afterAll(async () => {
+    afterAll(async (done) => {
         // shutdown first
         await testAppShutdown(app)
+        done()
     })
 
     describe('with valid search service', () => {

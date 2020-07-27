@@ -1,14 +1,13 @@
-import express, { Application, Router } from 'express'
+import express, { Application, Router, NextFunction } from 'express'
 import http, { Server } from 'http'
 import 'reflect-metadata'
-import { Connection, createConnection } from 'typeorm'
-import appConfig from './config/config'
-import ormConfig from './config/ormconfig'
+import appConfig, { AppMode } from './config/config'
 import { errorHandlers, middlewares } from './middleware'
 import routes from './service'
 import { applyMiddleware, applyRoutes } from './util'
-import { resolve } from 'dns'
-import { ApolloServer, gql } from 'apollo-server-express';
+import { dbmigrate, db } from './db'
+import { createGraphqlServer } from './graphql'
+import { ApolloServer } from 'apollo-server-express'
 
 process.on('uncaughtException', e => {
     console.log(e)
@@ -25,47 +24,29 @@ export interface App {
     router: Router
     express: Application
     server: Server
-    db: Connection
-}
-
-const createGraphqlServer = (): ApolloServer => {
-    // Construct a schema, using GraphQL schema language
-    const typeDefs =
-        `type Query {
-    hello: String
-  }`
-
-    // Provide resolver functions for your schema fields
-    const resolvers = {
-        Query: {
-            hello: () => 'Hello world!',
-        },
-    }
-
-    return new ApolloServer({ typeDefs, resolvers, playground: true })
+    apolloServer: ApolloServer
 }
 
 export const createApp = async (): Promise<App> => {
-    const dbConnection = await createConnection(ormConfig)
     const appExpress = express()
     const appGraphql = createGraphqlServer()
     applyMiddleware(middlewares, appExpress)
     applyRoutes(routes, appExpress, appConfig.routeBasePath)
-    appGraphql.applyMiddleware({ app: appExpress })
+    appGraphql.applyMiddleware({ app: appExpress, path: appConfig.routeBasePath + '/graphql' })
     applyMiddleware(errorHandlers, appExpress)
-
-
+    await dbmigrate.up() // dbmigration run here
+    await db.users.init(); // db init users
     const { port, appMode } = appConfig
     const server = http.createServer(appExpress)
     return new Promise<App>((resolve: any, reject: any) => {
         try {
             server.listen(port, () => {
-                console.log(`Server is running in '${appMode}' mode http://localhost:${port}${appGraphql.graphqlPath}...`)
+                console.log(`Server is running in '${appMode}' mode http://localhost:${port}`)
                 resolve({
                     router: appExpress,
                     express: appExpress,
                     server: server,
-                    db: dbConnection
+                    apolloServer: appGraphql
                 })
             })
         } catch (error) {
@@ -75,7 +56,6 @@ export const createApp = async (): Promise<App> => {
 }
 
 export const shutdownApp = async (app: App) => {
-    await app.db.close()
     let closePromise = new Promise((resolve, reject) => {
         app.server.close(err => {
             if (err)

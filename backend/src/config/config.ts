@@ -1,3 +1,6 @@
+import { IConnectionParameters } from 'pg-promise/typescript/pg-subset'
+import dbMigration from './db-migration.json'
+
 export enum AppMode {
     Dev = 'dev',
     Prod = 'prod',
@@ -59,5 +62,43 @@ const getAppConfig = (appMode: AppMode) => {
 }
 
 export const appConfig = getAppConfig(currentAppMode)
+
+const dbDevConfig: IConnectionParameters = {
+    host: dbMigration.dev.host,
+    port: dbMigration.dev.port,
+    database: dbMigration.dev.database,
+    user: dbMigration.dev.user,
+    password: dbMigration.dev.password
+}
+
+const dbProdConfig: IConnectionParameters = {
+    host: dbMigration.prod.host,
+    port: dbMigration.prod.port,
+    database: dbMigration.prod.database,
+    user: dbMigration.prod.user,
+    password: dbMigration.prod.password
+}
+
+const dbTestConfig: IConnectionParameters = {
+    //driver: 'sqlite3',
+    //filename: ':memory:'
+    host: dbMigration.test.host,
+    port: dbMigration.test.port,
+    database: dbMigration.test.database,
+    user: dbMigration.test.user,
+    password: dbMigration.test.password
+}
+
+const getDbConfigFromAppMode = (appMode: AppMode): IConnectionParameters => {
+    if (appMode === AppMode.Prod) {
+        return dbProdConfig
+    } else if (appMode === AppMode.Test) {
+        return dbTestConfig
+    } else {
+        return dbDevConfig
+    }
+}
+
+export const dbConfig: IConnectionParameters = getDbConfigFromAppMode(currentAppMode)
 
 export default appConfig

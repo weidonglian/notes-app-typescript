@@ -1,0 +1,17 @@
+overwrite: true
+schema: ./src/graphql/*.graphql
+generates:
+  ./src/graphql/types.ts:
+    config:
+      useIndexSignature: true
+      contextType: ../graphql#GraphQLContext
+      mappers:
+        Todo: ../model#TodoModel
+        Note: ../model#NoteModel
+    plugins:
+      - typescript
+      - typescript-resolvers
+      - typescript-document-nodes
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

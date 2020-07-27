@@ -1,26 +1,29 @@
 import { spyOnConsole, restoreConsole } from './mockConsole'
 import axiosist from 'axiosist'
-import { getRepository } from 'typeorm'
 import { App, createApp, shutdownApp } from '../app'
 import appConfig, { AppMode } from '../config/config'
-import { User } from '../entity/User'
+import { UserModel } from '../model'
+import { db, dbmigrate } from '../db'
 import { HttpStatusCode } from '../util/httpErrors'
 
 const addUser = async (name: string, password: string, role: string) => {
-    let user = new User
+    let user = new UserModel
     user.username = name
     user.password = password
     user.hashPassword()
     user.role = role
-    const userRepository = getRepository(User)
-    await userRepository.save(user)
+    try {
+        await db.users.add(user)
+    } catch (error) {
+        console.log(`+++++===catching ${error}`)
+    }
 }
 
 const loginUser = async (username: string, password: string, app: App) => {
     const resp = await axiosist(app.express).post('/api/v1/auth/login', {
-            username: username,
-            password: password
-        })
+        username: username,
+        password: password
+    })
     expect(resp.status).toBe(HttpStatusCode.Success)
     expect(resp.data.token).toBeDefined()
     return resp.data.token as string
@@ -44,6 +47,8 @@ export const testAppWithTestUser = async (): Promise<TestApp> => {
 
     const consoleMock = spyOnConsole();
     const app = await createApp()
+    await dbmigrate.reset()
+    await dbmigrate.up()
     await addUser('test', 'test', 'USER')
     await addUser('admin', 'admin', 'ADMIN')
     return { ...app, consoleMock }
