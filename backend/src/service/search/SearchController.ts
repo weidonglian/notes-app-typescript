@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { getPlaces } from './providers/OpenCageDataProvider'
 import { HttpStatusCode, HttpErrorBadRequest } from '../../util/httpErrors'
-import { isArray, isEmpty } from 'class-validator'
+import { isEmpty } from 'class-validator'
 
 export class SearchController {
     static search = async (req: Request, res: Response) => {
