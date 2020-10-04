@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import handleChecks from '../util/handleChecks'
-import { isEmpty, Validator } from 'class-validator'
+import { isEmpty } from 'class-validator'
 import { HttpErrorBadRequest } from '../util/httpErrors'
 import { GraphQLContext } from '../graphql'
 
@@ -17,8 +17,6 @@ export const checkJwtQL = (ctx: GraphQLContext) => {
 export const checkRole = (roles: Array<string>) => {
     return handleChecks.checkRole(roles)
 }
-
-export const classValidator = new Validator()
 
 export const checkNotEmpty = (obj: unknown, message: string) => {
     if (isEmpty(obj))
