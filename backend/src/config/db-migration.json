@@ -26,5 +26,13 @@
         "database": "notes_app_prod",
         "port": 5432,
         "ssl": true
+    },
+    "postgres": {
+        "driver": "pg",
+        "user": "postgres",
+        "password": "postgres",
+        "host": "localhost",
+        "database": "postgres",
+        "port": 5432
     }
 }
