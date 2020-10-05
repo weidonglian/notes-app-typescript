@@ -45,7 +45,7 @@ export const testAppWithTestUser = async (): Promise<TestApp> => {
         process.exit(1)
     }
 
-    const consoleMock = spyOnConsole();
+    const consoleMock = spyOnConsole()
     const app = await createApp()
     await dbmigrate.reset()
     await dbmigrate.up()
