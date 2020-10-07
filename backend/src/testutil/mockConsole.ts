@@ -1,12 +1,13 @@
 export const spyOnConsole = (noLog: boolean) => {
     const mocks = {
-        log: jest.spyOn(global.console, 'log'),
-        error: jest.spyOn(global.console, 'error'),
-        warn: jest.spyOn(global.console, 'warn'),
-        info: jest.spyOn(global.console, 'info'),
-        debug: jest.spyOn(global.console, 'debug')
+        log: jest.spyOn(global.console, 'log').mockImplementation(() => { }),
+        error: jest.spyOn(global.console, 'error').mockImplementation(() => { }),
+        warn: jest.spyOn(global.console, 'warn').mockImplementation(() => { }),
+        info: jest.spyOn(global.console, 'info').mockImplementation(() => { }),
+        debug: jest.spyOn(global.console, 'debug').mockImplementation(() => { })
     }
-    return noLog ? undefined : mocks
+
+    return noLog ? mocks : undefined
 }
 
 export const restoreConsole = (consoleMock: ReturnType<typeof spyOnConsole>) => {
