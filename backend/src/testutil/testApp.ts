@@ -36,7 +36,7 @@ export const makeAuthHeaderOptions = (token: string) => ({
 })
 
 export interface TestApp extends App {
-    consoleMock: ReturnType<typeof spyOnConsole>
+    consoleMock?: ReturnType<typeof spyOnConsole>
 }
 
 export const testAppWithTestUser = async (): Promise<TestApp> => {
@@ -45,7 +45,7 @@ export const testAppWithTestUser = async (): Promise<TestApp> => {
         process.exit(1)
     }
 
-    const consoleMock = spyOnConsole()
+    const consoleMock = spyOnConsole(false)
     const app = await createApp()
     await dbmigrate.reset()
     await dbmigrate.up()
@@ -67,6 +67,13 @@ export const testAppWithLoginTestUser = async (): Promise<TestAppWithTokens> => 
 }
 
 export const testAppShutdown = async (app: TestApp) => {
-    restoreConsole(app.consoleMock)
+    if (app.consoleMock) {
+        restoreConsole(app.consoleMock)
+    }
     await shutdownApp(app)
+}
+
+export const getTestUserId = async () => {
+    const testUser = await db.users.findByName('test')
+    return testUser?.id
 }

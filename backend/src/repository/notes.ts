@@ -55,6 +55,11 @@ export class NotesRepository {
         return this.db.none('TRUNCATE TABLE notes CASCADE')
     }
 
+    // Remove all records from the given user
+    async clearByUserId(userId: number): Promise<null> {
+        return this.db.none('DELETE FROM notes WHERE user_id = $1', +userId)
+    }
+
     // Adds a new notes, and returns the new object;
     async add(note: NoteModel): Promise<NoteModel> {
         return this.db.one(`

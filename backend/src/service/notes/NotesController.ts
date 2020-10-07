@@ -31,8 +31,7 @@ export class NotesController {
     static deleteNotes = async (req: Request, res: Response) => {
         const id = req.params.id
         checkNotEmpty(id, 'parameter id empty or not found')
-        await db.notes.remove(+id);
-        res.status(HttpStatusCode.Success)
+        res.send(await db.notes.remove(+id));
     }
 
 
